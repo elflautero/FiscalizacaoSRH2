@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="tabUsuario" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="841.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabUsuarioController">
+   <children>
+      <Pane layoutY="68.0" prefHeight="59.0" prefWidth="803.0">
+         <children>
+            <TextField layoutX="108.0" layoutY="20.0" prefHeight="26.0" prefWidth="230.0" />
+            <Label layoutX="168.0" text="Buscar usuário:" />
+            <Label layoutX="525.0" text="Buscar CPF/CNPJ:" />
+            <TextField layoutX="465.0" layoutY="19.0" prefHeight="26.0" prefWidth="230.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="30.0" layoutY="154.0" prefHeight="157.0" prefWidth="797.0">
+         <children>
+            <ChoiceBox fx:id="cbTipoPessoa" layoutX="9.0" layoutY="28.0" prefHeight="0.0" prefWidth="78.0" />
+            <Label layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="42.0" text="Tipo: " />
+            <Label layoutX="104.0" layoutY="10.0" text="Nome/Razão Social:" />
+            <Label layoutX="597.0" layoutY="10.0" text="CPF/CNPJ:" />
+            <Label layoutX="127.0" layoutY="56.0" text="Endereço:" />
+            <Label layoutX="11.0" layoutY="56.0" text="RA:" />
+            <Label layoutX="530.0" layoutY="56.0" text="CEP:" />
+            <Label layoutX="623.0" layoutY="56.0" text="Cidade:" />
+            <Label layoutX="9.0" layoutY="102.0" text="Telefone:" />
+            <Label layoutX="151.0" layoutY="101.0" text="Celular:" />
+            <Label layoutX="292.0" layoutY="102.0" text="Email:" />
+            <Label layoutX="731.0" layoutY="56.0" text="UF:" />
+            <TextField layoutX="103.0" layoutY="30.0" prefHeight="26.0" prefWidth="482.0" />
+            <TextField layoutX="597.0" layoutY="30.0" prefHeight="26.0" prefWidth="173.0" />
+            <ChoiceBox layoutX="10.0" layoutY="74.0" prefHeight="28.0" prefWidth="107.0" />
+            <TextField layoutX="124.0" layoutY="75.0" prefHeight="26.0" prefWidth="400.0" />
+            <TextField layoutX="530.0" layoutY="75.0" prefHeight="26.0" prefWidth="83.0" />
+            <TextField layoutX="623.0" layoutY="75.0" prefHeight="26.0" prefWidth="99.0" />
+            <ChoiceBox layoutX="731.0" layoutY="73.0" prefHeight="0.0" prefWidth="39.0" />
+            <TextField layoutX="9.0" layoutY="120.0" prefHeight="26.0" prefWidth="130.0" />
+            <TextField layoutX="150.0" layoutY="120.0" prefHeight="26.0" prefWidth="130.0" />
+            <TextField layoutX="291.0" layoutY="120.0" prefHeight="26.0" prefWidth="479.0" />
+         </children>
+      </Pane>
+   </children>
+</Pane>

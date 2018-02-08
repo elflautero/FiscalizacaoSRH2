@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    		<!-- Configuração de conexão com o Banco de Dados -->
+    		
+		<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
+		<property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		
+			<!-- se der erro na hospedage, coloca ?useTimezone=true&amp;serverTimezone=UTC
+			Usar o time zone deu erro, pois não posso cadastrar dois usuários seguidos -->
+			
+		<property name="connection.url">jdbc:mysql://br234.hostgator.com.br:3306/somde078_fiscalizacao</property>
+		<property name="connection.username">somde078_fiscal</property>
+		<property name="connection.password">1.juetania</property>
+		
+			<!-- Enable Hibernate's automatic session context management -->
+		<property name="current_session_context_class">thread</property>
+		
+			<!-- Disable the second-level cache -->
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+		
+			<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">true</property>
+		
+			<!-- Drop and re-create the database schema on startup -->
+		<property name="hbm2ddl.auto">update</property>
+		 
+		 <!-- MAPEAMENTO DAS ENTIDADES -->
+		<mapping class="entity.Fiscal"/>
+		<mapping class="entity.Denuncia"/>
+		
+    </session-factory>
+</hibernate-configuration>
