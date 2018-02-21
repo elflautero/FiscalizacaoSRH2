@@ -144,7 +144,6 @@ import javafx.scene.layout.Pane;
 	    map.addMarker( markerMap );  
 		}
 
-	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		//MAPA

@@ -212,7 +212,6 @@ public class TabDenunciaController implements Initializable {
 		
 	}
 	
-	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		// DENUNCIA - BOTÕES

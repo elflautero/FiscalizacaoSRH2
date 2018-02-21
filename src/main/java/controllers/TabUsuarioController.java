@@ -33,7 +33,6 @@ public class TabUsuarioController implements Initializable {
 			ObservableList<String> olTipoPessoa = FXCollections
 				.observableArrayList("Física" , "Jurídica"); // box - seleção pessoa físcia ou jurídica
 
-			@Override
 			public void initialize(URL url, ResourceBundle rb) {
 				
 
