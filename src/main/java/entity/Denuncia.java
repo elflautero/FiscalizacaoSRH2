@@ -60,6 +60,7 @@ public class Denuncia implements Serializable {
 	}
 
 	// GETTERS AND SETTERS
+	
 	public int getCod_Denuncia() {
 		return Cod_Denuncia;
 	}

@@ -7,7 +7,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import entity.Denuncia;
 import entity.Endereco;
 import entity.HibernateUtil;
 
@@ -25,8 +24,8 @@ public void salvaEndereco (Endereco endereco) {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Denuncia> listDenuncia(String strPesquisa) {
-		List<Denuncia> list = new ArrayList<Denuncia>();
+	public List<Endereco> listEndereco(String strPesquisa) {
+		List<Endereco> list = new ArrayList<Endereco>();
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		
@@ -35,8 +34,6 @@ public void salvaEndereco (Endereco endereco) {
 		Criteria crit = s.createCriteria(Endereco.class);
 		crit.add(Restrictions.like("Endereco", '%' + strPesquisa + '%'));
 		list = crit.list();
-		// SQL list = s.createSQLQuery("SELECT * FROM Denuncia WHERE Documento_Denuncia LIKE '%strPesquisa%'").list();
-		//list = s.createQuery("from Denuncia d where d.Documento_Denuncia= : strPesquisa").setString("strPesquisa",strPesquisa).list();
 		
 		s.getTransaction().commit();
 		s.close();

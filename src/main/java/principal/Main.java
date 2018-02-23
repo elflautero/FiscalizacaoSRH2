@@ -14,7 +14,7 @@ public class Main extends Application{
         Application.launch(args);
     }
     
-    // primeiro comit
+    // 23 de Janeiro de 2017 - Primeiro Commit
     
     @Override
     public void init() throws Exception {

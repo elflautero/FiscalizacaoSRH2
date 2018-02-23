@@ -39,54 +39,62 @@ public class TabDenunciaController implements Initializable {
 	// Endereço google para buscas se for usar o webvew com o google 
 	String google = "https://www.google.com.br/search?source=hp&ei=BqVsWruNOMuXwgSko764DA&q=";
 	
-	
-	@FXML
-	AnchorPane tabDenuncia = new AnchorPane();
-	@FXML
-	TextField tfDocumento = new TextField();
-	@FXML
-	TextField tfDocSei = new TextField();
-	@FXML
-	TextField tfProcSei =  new TextField();
-	@FXML
-	TextField tfResDen = new TextField();
-	@FXML
-	TextField tfPesquisar = new TextField();
+	@FXML private MainController main;
+	@FXML AnchorPane tabDenuncia = new AnchorPane();
+	@FXML TextField tfDocumento = new TextField();
+	@FXML TextField tfDocSei = new TextField();
+	@FXML TextField tfProcSei =  new TextField();
+	@FXML TextField tfResDen = new TextField();
+	@FXML TextField tfPesquisar = new TextField();
 
-	@FXML
-	Button btnNovo = new Button();
-	@FXML
-	Button btnSalvar = new Button();
-	@FXML
-	Button btnEditar = new Button();
-	@FXML
-	Button btnExcluir = new Button();
-	@FXML
-	Button btnCancelar = new Button();
-	@FXML
-	Button btnPesquisar = new Button();
-	@FXML
-	Button btnSair = new Button();
+	@FXML Button btnNovo = new Button();
+	@FXML Button btnSalvar = new Button();
+	@FXML Button btnEditar = new Button();
+	@FXML Button btnExcluir = new Button();
+	@FXML Button btnCancelar = new Button();
+	@FXML Button btnPesquisar = new Button();
+	@FXML Button btnSair = new Button();
 	
-	@FXML
-	private TableView <DenunciaTabela> tvLista;
+	@FXML private TableView <DenunciaTabela> tvLista;
 	// COLUMNS
-	@FXML
-	private TableColumn<DenunciaTabela, String> tcDocumento;
-	@FXML
-	private TableColumn<DenunciaTabela, String> tcDocSEI;
-	@FXML
-	private TableColumn<DenunciaTabela, String> tcProcSEI;
+	@FXML private TableColumn<DenunciaTabela, String> tcDocumento;
+	@FXML private TableColumn<DenunciaTabela, String> tcDocSEI;
+	@FXML private TableColumn<DenunciaTabela, String> tcProcSEI;
+	
+	
+	/////////código  da denunca - botão salvar - enviar para a outra tab (Endereço) /////////////////////////////////////////
+	private static int Cod_Denuncia_TabEnd;
+	private static String Doc_Denuncia_TabEnd;
+	
+	
+	// getters e setters Doc_Denuncia
+	public static String getDoc_Denuncia_TabEnd() {
+		return Doc_Denuncia_TabEnd;
+	}
+
+	public static void setDoc_Denuncia_TabEnd(String doc_Denuncia_TabEnd) {
+		Doc_Denuncia_TabEnd = doc_Denuncia_TabEnd;
+	}
+
+	// getters e setters - Cod_Denuncia
+	public static int getCod_Denuncia_TabEnd() {
+		return Cod_Denuncia_TabEnd;
+	}
+
+	public void setCod_Denuncia_TabEnd(int cod_Denuncia_TabEnd) {
+		Cod_Denuncia_TabEnd = cod_Denuncia_TabEnd;
+	}
 	
 	
 	// String para primeira pesquisa do banco ao chamar o programa
 	String strPesquisa = "";
-	
-	private DenunciaDao denunciaDao = new DenunciaDao();	
-	private List<Denuncia> denunciaList = denunciaDao.listDenuncia(strPesquisa);
-	private ObservableList<DenunciaTabela> obsListDenunciaTabela= FXCollections.observableArrayList();
+	// Conexão e pesquisa de denúncias
+	private DenunciaDao denunciaDao = new DenunciaDao();	//passar classe
+	private List<Denuncia> denunciaList = denunciaDao.listDenuncia(strPesquisa); //passar string de pesquisar
+	private ObservableList<DenunciaTabela> obsListDenunciaTabela= FXCollections.observableArrayList(); //chamar observable list e outra classe
 	
 	public void listarDenuncias () {
+		
 		if (!obsListDenunciaTabela.isEmpty()) {
 			obsListDenunciaTabela.clear();
 		}
@@ -103,11 +111,8 @@ public class TabDenunciaController implements Initializable {
 		}
 		
 		tcDocumento.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_Denuncia")); 
-
         tcDocSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_SEI_Denuncia")); 
-
         tcProcSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Proc_SEI_Denuncia")); 
-        
         tvLista.setItems(obsListDenunciaTabela); 
 	}
 	
@@ -133,20 +138,22 @@ public class TabDenunciaController implements Initializable {
 		
 		Denuncia denuncia = new Denuncia();
 		
-		denuncia.setDoc_Denuncia(tfDocumento.getText()); //doc
-		denuncia.setProc_SEI_Denuncia(tfProcSei.getText());//proc
-		denuncia.setDoc_SEI_Denuncia(tfDocSei.getText()); //docsei
-		denuncia.setDesc_Denuncia(tfResDen.getText()); //desc
+		denuncia.setDoc_Denuncia(tfDocumento.getText()); 
+		denuncia.setProc_SEI_Denuncia(tfProcSei.getText());
+		denuncia.setDoc_SEI_Denuncia(tfDocSei.getText()); 
+		denuncia.setDesc_Denuncia(tfResDen.getText());
 		
 		DenunciaDao dao = new DenunciaDao();
 		dao.salvaDenuncia(denuncia);
 		
-		tfDocumento.setText("");
-		tfDocSei.setText("");
-		tfProcSei.setText("");
-		tfResDen.setText("");
-		
 		denunciaList = denunciaDao.listDenuncia(strPesquisa);
+		
+		// selecionar  a denúncia para a tab endereço
+		Cod_Denuncia_TabEnd = denuncia.getCod_Denuncia();
+		Doc_Denuncia_TabEnd = denuncia.getDoc_Denuncia();
+		// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
+		main.pegarDoc(Doc_Denuncia_TabEnd);
+		
 		listarDenuncias();
 		
 		modularBotoesInicial (); 
@@ -171,9 +178,16 @@ public class TabDenunciaController implements Initializable {
 			denunciaEditar.setDoc_SEI_Denuncia(tfDocSei.getText());
 			denunciaEditar.setProc_SEI_Denuncia(tfProcSei.getText());
 			denunciaEditar.setDesc_Denuncia(tfResDen.getText());
-			
+
 			denunciaDao.editarDenuncia(denunciaEditar);
 			denunciaList = denunciaDao.listDenuncia(strPesquisa);
+			
+			// selecionar a denúncia para a tab endereço
+			Cod_Denuncia_TabEnd = denunciaEditar.getCod_Denuncia();
+			Doc_Denuncia_TabEnd = denunciaEditar.getDoc_Denuncia();
+			// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
+			main.pegarDoc(Doc_Denuncia_TabEnd);
+			
 			listarDenuncias();
 			
 			modularBotoesInicial (); 
@@ -184,16 +198,19 @@ public class TabDenunciaController implements Initializable {
 	public void btnExcluirHabilitar (ActionEvent event) {
 	
 		DenunciaTabela denunciaExcluir = tvLista.getSelectionModel().getSelectedItem();
-		int id = denunciaExcluir.getCod_Denuncia();
-		System.out.println("O id é: " + id);
+		int id = denunciaExcluir.getCod_Denuncia(); // buscar id para deletar
+		
+		denunciaList = denunciaDao.listDenuncia(strPesquisa);
+		
 		obsListDenunciaTabela.remove(denunciaExcluir);
 		denunciaDao.removeDenuncia(id);
+		
 		denunciaList = denunciaDao.listDenuncia(strPesquisa);
+		
 		listarDenuncias();
 		
 		modularBotoesInicial (); 		
 	}
-		
 			
 	public void btnCancelarHabilitar (ActionEvent event) {
 			
@@ -204,9 +221,9 @@ public class TabDenunciaController implements Initializable {
 		
 		strPesquisa = (String) tfPesquisar.getText();
 		
-		DenunciaDao denunciaDao = new DenunciaDao();	
 		denunciaList = denunciaDao.listDenuncia(strPesquisa);
-		listarDenuncias (); 
+		
+		listarDenuncias();
 		
 		modularBotoesInicial (); 
 		
@@ -262,11 +279,20 @@ public class TabDenunciaController implements Initializable {
 					
 				} else {
 
+					// preencher os campos
 					tfDocumento.setText(denTab.getDoc_Denuncia());
 					tfDocSei.setText(denTab.getDoc_SEI_Denuncia());
 					tfProcSei.setText(denTab.getProc_SEI_Denuncia());
 					tfResDen.setText(denTab.getDesc_Denuncia());
 					
+					// selecionar a denúncia  para a tab endereço
+					Cod_Denuncia_TabEnd = denTab.getCod_Denuncia();
+					Doc_Denuncia_TabEnd = denTab.getDoc_Denuncia();
+					
+					// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
+					main.pegarDoc(Doc_Denuncia_TabEnd);
+					
+					// habilitar e desabilitar botões
 					btnNovo.setDisable(true);
 					btnSalvar.setDisable(true);
 					btnEditar.setDisable(false);
@@ -276,5 +302,11 @@ public class TabDenunciaController implements Initializable {
 				}
 			});
 		}
+
+		// Main initialize para transmitir variáveis para outros controllers
+		public void init(MainController mainController) {
+			main = mainController;
+		}
+
 }
 
