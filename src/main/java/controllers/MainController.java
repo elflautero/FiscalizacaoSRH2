@@ -10,6 +10,8 @@ public class MainController {
 	    private TabInterfController tabInterfController;
 	    @FXML
 	    private TabUsuarioController usuarioTabController;
+	    @FXML
+	    private TabEnderecoController tabEnderecoController;
 	    
 
 	    @FXML 

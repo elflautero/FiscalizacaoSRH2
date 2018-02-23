@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import tabela.DenunciaTabela;
 
@@ -17,20 +18,27 @@ public class Denuncia implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column
+	@Column 
 	private int Cod_Denuncia;
 	
-	@Column (name="Documento_Denuncia", nullable = false)
-	private String Documento_Denuncia;
+	@Column (columnDefinition="varchar(80)")
+	private String Doc_Denuncia;
 	
-	@Column (name="Documento_SEI_Denuncia", nullable = false)
-	private String Documento_SEI_Denuncia;
+	@Column (columnDefinition="varchar(20)")
+	private String Doc_SEI_Denuncia;
 	
-	@Column (name="Processo_SEI_Denuncia", nullable = false)
-	private String Processo_SEI_Denuncia;
+	@Column (columnDefinition="varchar(20)")
+	private String Proc_SEI_Denuncia;
 	
-	@Column (name="Descricao_Denuncia", nullable = false)
-	private String Descricao_Denuncia;
+	@Column (columnDefinition="varchar(200)")
+	private String Desc_Denuncia;
+	
+	@ManyToOne 
+	private Endereco EndFK;
+	
+	/*
+	@Column (name="Data_Distribuicao", nullable = false)
+	private String Data_Distribuicao;*/
 	
 	
 	//CONSTRUTOR PADRÃO
@@ -41,12 +49,16 @@ public class Denuncia implements Serializable {
 	//CONSTRUTOR DE EDITAR DOCUMENTO
 	public Denuncia(DenunciaTabela denunciaTabela) {
 		this.Cod_Denuncia = denunciaTabela.getCod_Denuncia();
-		this.Documento_Denuncia = denunciaTabela.getDocumento_Denuncia();
-		this.Documento_SEI_Denuncia = denunciaTabela.getDocumento_SEI_Denuncia();
-		this.Processo_SEI_Denuncia = denunciaTabela.getProcesso_SEI_Denuncia();
+		this.Doc_Denuncia = denunciaTabela.getDoc_Denuncia();
+		this.Doc_SEI_Denuncia = denunciaTabela.getDoc_SEI_Denuncia();
+		this.Proc_SEI_Denuncia = denunciaTabela.getProc_SEI_Denuncia();
 	}
 	
-	
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	// GETTERS AND SETTERS
 	public int getCod_Denuncia() {
 		return Cod_Denuncia;
@@ -56,40 +68,36 @@ public class Denuncia implements Serializable {
 		Cod_Denuncia = cod_Denuncia;
 	}
 
-	public String getDocumento_Denuncia() {
-		return Documento_Denuncia;
+	public String getDoc_Denuncia() {
+		return Doc_Denuncia;
 	}
 
-	public void setDocumento_Denuncia(String documento_Denuncia) {
-		Documento_Denuncia = documento_Denuncia;
+	public void setDoc_Denuncia(String doc_Denuncia) {
+		Doc_Denuncia = doc_Denuncia;
 	}
 
-	public String getDocumento_SEI_Denuncia() {
-		return Documento_SEI_Denuncia;
+	public String getDoc_SEI_Denuncia() {
+		return Doc_SEI_Denuncia;
 	}
 
-	public void setDocumento_SEI_Denuncia(String documento_SEI_Denuncia) {
-		Documento_SEI_Denuncia = documento_SEI_Denuncia;
+	public void setDoc_SEI_Denuncia(String doc_SEI_Denuncia) {
+		Doc_SEI_Denuncia = doc_SEI_Denuncia;
 	}
 
-	public String getProcesso_SEI_Denuncia() {
-		return Processo_SEI_Denuncia;
+	public String getProc_SEI_Denuncia() {
+		return Proc_SEI_Denuncia;
 	}
 
-	public void setProcesso_SEI_Denuncia(String processo_SEI_Denuncia) {
-		Processo_SEI_Denuncia = processo_SEI_Denuncia;
+	public void setProc_SEI_Denuncia(String proc_SEI_Denuncia) {
+		Proc_SEI_Denuncia = proc_SEI_Denuncia;
 	}
 
-	public String getDescricao_Denuncia() {
-		return Descricao_Denuncia;
+	public String getDesc_Denuncia() {
+		return Desc_Denuncia;
 	}
 
-	public void setDescricao_Denuncia(String descricao_Denuncia) {
-		Descricao_Denuncia = descricao_Denuncia;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setDesc_Denuncia(String desc_Denuncia) {
+		Desc_Denuncia = desc_Denuncia;
 	}
 	
 	

@@ -17,7 +17,7 @@
             <TextField fx:id="tfLat" layoutX="116.0" layoutY="52.0" prefHeight="26.0" prefWidth="92.0" promptText="-15.7754084" />
             <TextField fx:id="tfLon" layoutX="324.0" layoutY="52.0" prefHeight="26.0" prefWidth="92.0" promptText="-47.9411395" />
             <Button fx:id="btnAtualizar" layoutX="533.0" layoutY="50.0" mnemonicParsing="false" onAction="#btnAtualizarLatLong" prefHeight="30.0" prefWidth="80.0" text="Atualizar" />
-            <Button fx:id="btnCapturar" layoutX="620.0" layoutY="50.0" mnemonicParsing="false" onAction="#btnCapturarCorqui" prefHeight="30.0" prefWidth="82.0" text="Capturar" />
+            <Button fx:id="btnCapturar" layoutX="620.0" layoutY="50.0" mnemonicParsing="false" onAction="#btnCapturarCroqui" prefHeight="30.0" prefWidth="82.0" text="Capturar" />
             <Button fx:id="btnObterCoord" layoutX="447.0" layoutY="49.0" mnemonicParsing="false" onAction="#btnObterCoordEvento" prefHeight="32.0" prefWidth="79.0" text="Lat Lon" />
             <TextField fx:id="tfInserirLink" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="688.0" promptText="Colar link do Google Maps..." />
          </children>

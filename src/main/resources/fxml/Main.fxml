@@ -17,6 +17,13 @@
                   <fx:include fx:id="tabDenuncia" source="TabDenuncia.fxml" />
                </content>
           </Tab>
+          
+          <Tab text="Endereço">
+           	 <content>
+                 <fx:include fx:id="tabEndereco" source="TabEndereco.fxml" />
+             </content>
+          </Tab>
+          
           <Tab text="Interferência">
                <content>
                   <fx:include fx:id="tabInterferencia" source="TabInterferencia.fxml" />
@@ -27,7 +34,7 @@
                </content></Tab>
         </tabs>
       </TabPane>
-      <MenuBar layoutY="1.0" prefHeight="25.0" prefWidth="941.0">
+      <MenuBar layoutY="1.0" prefHeight="25.0" prefWidth="1099.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -46,13 +53,12 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Button layoutX="954.0" layoutY="37.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
-      <Button layoutX="954.0" layoutY="124.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
-      <Button layoutX="954.0" layoutY="211.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
-      <Button layoutX="954.0" layoutY="298.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
-      <Button layoutX="954.0" layoutY="385.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
-      <Button layoutX="954.0" layoutY="472.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
-      <Button layoutX="954.0" layoutY="559.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="121.0" text="Button" />
-      <Button layoutX="954.0" layoutY="653.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="121.0" text="Button" />
+      <Button layoutX="966.0" layoutY="57.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
+      <Button layoutX="966.0" layoutY="144.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
+      <Button layoutX="966.0" layoutY="231.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
+      <Button layoutX="966.0" layoutY="318.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
+      <Button layoutX="966.0" layoutY="405.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
+      <Button layoutX="966.0" layoutY="492.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="121.0" text="Button" />
+      <Button layoutX="966.0" layoutY="579.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="121.0" text="Button" />
    </children>
 </AnchorPane>

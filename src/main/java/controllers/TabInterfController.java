@@ -83,13 +83,20 @@ import javafx.scene.layout.Pane;
 		
 	}
 			
-	// BOTÃO - CAPTURAR TELA DO MAPA PARA O CROQUI
-	public void btnCapturarCorqui (ActionEvent event) {  // consertar o nome do método, a palavra é croqui
+	// BOTÃO - CAPTURAR TELA DO MAPA PARA O CROQUI - NAO ESTÁ FUNCIONANDO
+	/*
+	 *  ‪C:\Users\fabricio\Documents\croqui.png (A sintaxe do nome do arquivo, do nome do diretório ou do rótulo do volume está incorreta)
+	at java.base/java.io.RandomAccessFile.open0(Native Method)
+	at java.base/java.io.RandomAccessFile.open(Unknown Source)
+	 */
+	public void btnCapturarCroqui (ActionEvent event) {
 	
 	WritableImage i = mapView.snapshot(new SnapshotParameters(), null);
 	
-	File output = new File("C:\\Users\\fabmu\\OneDrive\\Documentos\\mapViewInicial.png");
+	File output = new File("‪C:\\Users\\fabricio\\Documents\\croqui.png");
 	
+	// ‪C:\Users\fabricio\Documents
+	 //"‪C:\\Users\\fabricio\\Desktop\\imagens\\croqui.png"
 	try {
 		//ImageIO.write(i, "png", output); 
 		ImageIO.write(SwingFXUtils.fromFXImage(i, null), "png", output);

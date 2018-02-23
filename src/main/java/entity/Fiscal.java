@@ -16,19 +16,19 @@ public class Fiscal implements Serializable {
 
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column
+	@Column 
 	private int Cod_Fiscal;
 	
-	@Column (name="Nome_Fiscal", nullable = false)
+	@Column (columnDefinition="varchar(60)")
 	private String Nome_Fiscal;
 	
-	@Column (name="Cargo_Fiscal", nullable = false)
+	@Column (columnDefinition="varchar(35)")
 	private String Cargo_Fiscal;
 	
-	@Column (name="Matricula_Fiscal", nullable = false)
+	@Column (columnDefinition="varchar(20)")
 	private String Matricula_Fiscal;
 	
-	@Column (name="Senha_Fiscal", nullable = false)
+	@Column (columnDefinition="varchar(20)")
 	private String Senha_Fiscal;
 	
 	// getter e setter - Nome do Fiscal

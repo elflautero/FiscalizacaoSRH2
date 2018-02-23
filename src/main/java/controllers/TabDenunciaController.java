@@ -93,20 +93,20 @@ public class TabDenunciaController implements Initializable {
 		for (Denuncia denuncia : denunciaList) {
 			DenunciaTabela denTab = new DenunciaTabela(
 					denuncia.getCod_Denuncia(), 
-					denuncia.getDocumento_Denuncia(),
-					denuncia.getDocumento_SEI_Denuncia(), 
-					denuncia.getProcesso_SEI_Denuncia(),
-					denuncia.getDescricao_Denuncia()
+					denuncia.getDoc_Denuncia(),
+					denuncia.getDoc_SEI_Denuncia(), 
+					denuncia.getProc_SEI_Denuncia(),
+					denuncia.getDesc_Denuncia()
 					);
 			
 				obsListDenunciaTabela.add(denTab);
 		}
 		
-		tcDocumento.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Documento_Denuncia")); 
+		tcDocumento.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_Denuncia")); 
 
-        tcDocSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Documento_SEI_Denuncia")); 
+        tcDocSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_SEI_Denuncia")); 
 
-        tcProcSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Processo_SEI_Denuncia")); 
+        tcProcSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Proc_SEI_Denuncia")); 
         
         tvLista.setItems(obsListDenunciaTabela); 
 	}
@@ -133,10 +133,10 @@ public class TabDenunciaController implements Initializable {
 		
 		Denuncia denuncia = new Denuncia();
 		
-		denuncia.setDocumento_Denuncia(tfDocumento.getText());
-		denuncia.setProcesso_SEI_Denuncia(tfProcSei.getText());
-		denuncia.setDocumento_SEI_Denuncia(tfDocSei.getText());
-		denuncia.setDescricao_Denuncia(tfResDen.getText());
+		denuncia.setDoc_Denuncia(tfDocumento.getText()); //doc
+		denuncia.setProc_SEI_Denuncia(tfProcSei.getText());//proc
+		denuncia.setDoc_SEI_Denuncia(tfDocSei.getText()); //docsei
+		denuncia.setDesc_Denuncia(tfResDen.getText()); //desc
 		
 		DenunciaDao dao = new DenunciaDao();
 		dao.salvaDenuncia(denuncia);
@@ -167,10 +167,10 @@ public class TabDenunciaController implements Initializable {
 			DenunciaTabela denunciaTabelaEditar = tvLista.getSelectionModel().getSelectedItem();
 			Denuncia denunciaEditar = new Denuncia(denunciaTabelaEditar);
 			
-			denunciaEditar.setDocumento_Denuncia(tfDocumento.getText());
-			denunciaEditar.setDocumento_SEI_Denuncia(tfDocSei.getText());
-			denunciaEditar.setProcesso_SEI_Denuncia(tfProcSei.getText());
-			denunciaEditar.setDescricao_Denuncia(tfResDen.getText());
+			denunciaEditar.setDoc_Denuncia(tfDocumento.getText());
+			denunciaEditar.setDoc_SEI_Denuncia(tfDocSei.getText());
+			denunciaEditar.setProc_SEI_Denuncia(tfProcSei.getText());
+			denunciaEditar.setDesc_Denuncia(tfResDen.getText());
 			
 			denunciaDao.editarDenuncia(denunciaEditar);
 			denunciaList = denunciaDao.listDenuncia(strPesquisa);
@@ -262,10 +262,10 @@ public class TabDenunciaController implements Initializable {
 					
 				} else {
 
-					tfDocumento.setText(denTab.getDocumento_Denuncia());
-					tfDocSei.setText(denTab.getDocumento_SEI_Denuncia());
-					tfProcSei.setText(denTab.getProcesso_SEI_Denuncia());
-					tfResDen.setText(denTab.getDescricao_Denuncia());
+					tfDocumento.setText(denTab.getDoc_Denuncia());
+					tfDocSei.setText(denTab.getDoc_SEI_Denuncia());
+					tfProcSei.setText(denTab.getProc_SEI_Denuncia());
+					tfResDen.setText(denTab.getDesc_Denuncia());
 					
 					btnNovo.setDisable(true);
 					btnSalvar.setDisable(true);
