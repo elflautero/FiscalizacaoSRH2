@@ -101,5 +101,5 @@ public class Denuncia implements Serializable {
 		Desc_Denuncia = desc_Denuncia;
 	}
 	
-	
+	// depois tira, para o comit
 }
