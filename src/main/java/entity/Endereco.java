@@ -36,7 +36,6 @@ public class Endereco implements Serializable{
 	
 	@OneToMany (mappedBy = "EndFK")
 	private List<Denuncia> denuncias;
-	//private List<Denuncia> denuncias  = new ArrayList<Denuncia>(0);
 
 	public List<Denuncia> getDenuncias() {
 		return denuncias;
