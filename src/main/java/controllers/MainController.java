@@ -1,5 +1,6 @@
 package controllers;
 
+import entity.Denuncia;
 import javafx.fxml.FXML;
 
 public class MainController {
@@ -12,13 +13,15 @@ public class MainController {
 
 	    @FXML 
 	    private void initialize() {
-	       System.out.println("Appliction Started!");
+	       System.out.println("Application Started!");
 	       tabDenunciaController.init(this);
 	       tabEnderecoController.init(this);
 	    }
 
-
-		public void pegarDoc(String doc_Denuncia_TabEnd) {
-			tabEnderecoController.lblDoc.setText(doc_Denuncia_TabEnd);
+	    // mudei voi para retornar  Denuncia
+		public void pegarDoc(Denuncia dGeral) {
+			
+			tabEnderecoController.lblDoc.setText(dGeral.getDoc_Denuncia() + "  |  SEI nº: " + dGeral.getDoc_SEI_Denuncia());
+			tabEnderecoController.dGeralEnd = dGeral;
 		}
 }

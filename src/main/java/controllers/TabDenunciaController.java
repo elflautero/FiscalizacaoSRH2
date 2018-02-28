@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import dao.DenunciaDao;
 import entity.Denuncia;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+
 import tabela.DenunciaTabela;
 
 
@@ -61,33 +63,12 @@ public class TabDenunciaController implements Initializable {
 	@FXML private TableColumn<DenunciaTabela, String> tcDocSEI;
 	@FXML private TableColumn<DenunciaTabela, String> tcProcSEI;
 	
-	
-	/////////código  da denunca - botão salvar - enviar para a outra tab (Endereço) /////////////////////////////////////////
-	private static int Cod_Denuncia_TabEnd;
-	private static String Doc_Denuncia_TabEnd;
-	
-	
-	// getters e setters Doc_Denuncia
-	public static String getDoc_Denuncia_TabEnd() {
-		return Doc_Denuncia_TabEnd;
-	}
-
-	public static void setDoc_Denuncia_TabEnd(String doc_Denuncia_TabEnd) {
-		Doc_Denuncia_TabEnd = doc_Denuncia_TabEnd;
-	}
-
-	// getters e setters - Cod_Denuncia
-	public static int getCod_Denuncia_TabEnd() {
-		return Cod_Denuncia_TabEnd;
-	}
-
-	public void setCod_Denuncia_TabEnd(int cod_Denuncia_TabEnd) {
-		Cod_Denuncia_TabEnd = cod_Denuncia_TabEnd;
-	}
-	
+	// capturar denuncia para a TabEnderecoController
+	private static Denuncia dGeral;
 	
 	// String para primeira pesquisa do banco ao chamar o programa
 	String strPesquisa = "";
+	
 	// Conexão e pesquisa de denúncias
 	private DenunciaDao denunciaDao = new DenunciaDao();	//passar classe
 	private List<Denuncia> denunciaList = denunciaDao.listDenuncia(strPesquisa); //passar string de pesquisar
@@ -99,12 +80,15 @@ public class TabDenunciaController implements Initializable {
 			obsListDenunciaTabela.clear();
 		}
 		for (Denuncia denuncia : denunciaList) {
+			
 			DenunciaTabela denTab = new DenunciaTabela(
 					denuncia.getCod_Denuncia(), 
 					denuncia.getDoc_Denuncia(),
 					denuncia.getDoc_SEI_Denuncia(), 
 					denuncia.getProc_SEI_Denuncia(),
-					denuncia.getDesc_Denuncia()
+					denuncia.getDesc_Denuncia(),
+					// adicionao  o ojeto enderecoFK na DenunciaTabela
+					denuncia.getEnderecoFK()
 					);
 			
 				obsListDenunciaTabela.add(denTab);
@@ -144,15 +128,14 @@ public class TabDenunciaController implements Initializable {
 		denuncia.setDesc_Denuncia(tfResDen.getText());
 		
 		DenunciaDao dao = new DenunciaDao();
+		
 		dao.salvaDenuncia(denuncia);
 		
 		denunciaList = denunciaDao.listDenuncia(strPesquisa);
 		
-		// selecionar  a denúncia para a tab endereço
-		Cod_Denuncia_TabEnd = denuncia.getCod_Denuncia();
-		Doc_Denuncia_TabEnd = denuncia.getDoc_Denuncia();
 		// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
-		main.pegarDoc(Doc_Denuncia_TabEnd);
+		dGeral = denuncia;
+		main.pegarDoc(dGeral);
 		
 		listarDenuncias();
 		
@@ -178,15 +161,38 @@ public class TabDenunciaController implements Initializable {
 			denunciaEditar.setDoc_SEI_Denuncia(tfDocSei.getText());
 			denunciaEditar.setProc_SEI_Denuncia(tfProcSei.getText());
 			denunciaEditar.setDesc_Denuncia(tfResDen.getText());
-
-			denunciaDao.editarDenuncia(denunciaEditar);
+			// para não editar o foreign key, continuar sendo a mesma
+			denunciaEditar.setEnderecoFK(denunciaTabelaEditar.getenderecoTabelaFK());
+			
+			//denunciaDao.salvaDenuncia(denunciaEditar);
+				// com o salva não vai  a  chave estrangeira
+			
+			
+			//denunciaDao.editarDenuncia(denunciaEditar);
+					/*
+					 * up false
+					 * insertable false
+					 * 		não adiciona chave estrangeira
+					 * 
+					 * up true
+					 * insertable true
+					 * 		não adiciona
+					 */
+			
+			denunciaDao.mergeDenuncia(denunciaEditar);
+			
+				 /*com o merge não adiciona a chave
+				estrangeira (updatable false insertable  false
+				
+					com up true  e ins true ele adicionar a chave, porém ao editar o documento, perde a chave estrangeira
+				
+			*/
+			
 			denunciaList = denunciaDao.listDenuncia(strPesquisa);
 			
-			// selecionar a denúncia para a tab endereço
-			Cod_Denuncia_TabEnd = denunciaEditar.getCod_Denuncia();
-			Doc_Denuncia_TabEnd = denunciaEditar.getDoc_Denuncia();
 			// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
-			main.pegarDoc(Doc_Denuncia_TabEnd);
+			dGeral = denunciaEditar;
+			main.pegarDoc(dGeral);
 			
 			listarDenuncias();
 			
@@ -235,7 +241,7 @@ public class TabDenunciaController implements Initializable {
 				modularBotoesInicial();
 				
 				// Selecionar um documento pesquisado
-				SelecionarDenuncia ();
+				selecionarDenuncia ();
 				
 				// listar denuncias
 				listarDenuncias();
@@ -257,7 +263,7 @@ public class TabDenunciaController implements Initializable {
 			
 		}
 		
-		public void SelecionarDenuncia () {
+		public void selecionarDenuncia () {
 			
 			// TABLE VIEW SELECIONAR DOCUMENTO AO CLICAR NELE
 			
@@ -285,12 +291,9 @@ public class TabDenunciaController implements Initializable {
 					tfProcSei.setText(denTab.getProc_SEI_Denuncia());
 					tfResDen.setText(denTab.getDesc_Denuncia());
 					
-					// selecionar a denúncia  para a tab endereço
-					Cod_Denuncia_TabEnd = denTab.getCod_Denuncia();
-					Doc_Denuncia_TabEnd = denTab.getDoc_Denuncia();
-					
-					// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
-					main.pegarDoc(Doc_Denuncia_TabEnd);
+					Denuncia dGeral = new Denuncia(denTab);
+
+					main.pegarDoc(dGeral);
 					
 					// habilitar e desabilitar botões
 					btnNovo.setDisable(true);

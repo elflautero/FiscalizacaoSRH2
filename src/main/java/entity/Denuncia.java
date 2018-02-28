@@ -3,6 +3,7 @@ package entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToOne;
 import tabela.DenunciaTabela;
 
 @Entity
+//@DynamicUpdate
+//@org.hibernate.annotations.Entity(dynamicUpdate = false)
 public class Denuncia implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -35,14 +38,22 @@ public class Denuncia implements Serializable {
 	@Column (columnDefinition="varchar(200)")
 	private String Desc_Denuncia;
 	
-	@ManyToOne 
-	private Endereco EndFK;
+	@ManyToOne (cascade = CascadeType.ALL)
+	//@JoinColumn(updatable = false, insertable = false) // insertable=false
+	private Endereco enderecoFK;
 	
 	/*
 	@Column (name="Data_Distribuicao", nullable = false)
 	private String Data_Distribuicao;*/
 	
-	
+	public Endereco getEnderecoFK() {
+		return enderecoFK;
+	}
+
+	public void setEnderecoFK(Endereco enderecoFK) {
+		this.enderecoFK = enderecoFK;
+	}
+
 	//CONSTRUTOR PADRÃO
 	public Denuncia () {
 		
@@ -50,10 +61,13 @@ public class Denuncia implements Serializable {
 	
 	//CONSTRUTOR DE EDITAR DOCUMENTO
 	public Denuncia(DenunciaTabela denunciaTabela) {
+		
 		this.Cod_Denuncia = denunciaTabela.getCod_Denuncia();
 		this.Doc_Denuncia = denunciaTabela.getDoc_Denuncia();
 		this.Doc_SEI_Denuncia = denunciaTabela.getDoc_SEI_Denuncia();
 		this.Proc_SEI_Denuncia = denunciaTabela.getProc_SEI_Denuncia();
+		this.Desc_Denuncia = denunciaTabela.getDesc_Denuncia();
+		this.enderecoFK = denunciaTabela.getenderecoTabelaFK();
 	}
 	
 
@@ -103,5 +117,4 @@ public class Denuncia implements Serializable {
 		Desc_Denuncia = desc_Denuncia;
 	}
 	
-	// depois tira, para o comit
 }

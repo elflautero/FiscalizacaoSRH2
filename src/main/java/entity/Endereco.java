@@ -1,14 +1,19 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Endereco implements Serializable{
@@ -34,14 +39,17 @@ public class Endereco implements Serializable{
 	@Column (columnDefinition="varchar(2)")
 	private String UF_Endereco;
 	
-	@OneToMany (mappedBy = "EndFK")
-	private List<Denuncia> denuncias;
-
-	public List<Denuncia> getDenuncias() {
+	@OneToMany (mappedBy = "enderecoFK", cascade = CascadeType.ALL)
+	@Fetch (FetchMode.SUBSELECT)
+	private Set<Denuncia> denuncias = new HashSet<Denuncia>(0);
+	//private List<Denuncia> denuncias;
+	
+	// GETTERS AND SETTERS
+	public Set<Denuncia> getDenuncias() {
 		return denuncias;
 	}
 
-	public void setDenuncias(List<Denuncia> denuncias) {
+	public void setDenuncias(Set<Denuncia> denuncias) {
 		this.denuncias = denuncias;
 	}
 

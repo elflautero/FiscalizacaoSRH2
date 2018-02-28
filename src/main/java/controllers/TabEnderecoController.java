@@ -1,7 +1,6 @@
 package controllers;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -9,6 +8,8 @@ import dao.DenunciaDao;
 import dao.EnderecoDao;
 import entity.Denuncia;
 import entity.Endereco;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,6 +73,14 @@ public class TabEnderecoController implements Initializable {
 	@FXML private TableColumn<DenunciaTabela, String> tcDocSEI;
 	@FXML private TableColumn<DenunciaTabela, String> tcProcSEI;
 	
+	// 
+	public Denuncia dGeralEnd;
+	
+	Double latCoord = -15.7754084; // latitude inicial do mapa - ADASA
+ 	Double longCoord = -47.9411395; // longitude inicial do mapa - ADASA
+ 	
+ 	String srtPesquisaEnd = "";
+ 	String strPesquisaDoc = "";
 	
 	public void btnEndNovoHab (ActionEvent event) {
 		
@@ -92,29 +101,32 @@ public class TabEnderecoController implements Initializable {
 		btnEndExc.setDisable(true);
 		btnEndEdit.setDisable(true);
 		
-		
-		
 	}
 	public void btnEndSalvarHab (ActionEvent event) {
 			
 		Endereco endereco = new Endereco();
-		List<Denuncia> denuncias  = new ArrayList<Denuncia>(0);
 		
-		denuncias.get(TabDenunciaController.getCod_Denuncia_TabEnd());
+			endereco.setDesc_Endereco(tfEnd.getText());
+			endereco.setRA_Endereco(tfEndBairro.getText());
+			endereco.setCEP_Endereco(tfEndCep.getText());
+			endereco.setCid_Endereco(tfEndCid.getText());
+			endereco.setUF_Endereco(tfEndUF.getText());
 		
-		//denuncia.setCod_Denuncia(TabDenunciaController.getCod_Denuncia_TabEnd());
+		Denuncia denuncia = new Denuncia();
+			
+			
+			denuncia.setCod_Denuncia(dGeralEnd.getCod_Denuncia());
+			denuncia.setDoc_Denuncia(dGeralEnd.getDoc_Denuncia());
+			denuncia.setDoc_SEI_Denuncia(dGeralEnd.getDoc_SEI_Denuncia());
+			denuncia.setProc_SEI_Denuncia(dGeralEnd.getProc_SEI_Denuncia());
+			denuncia.setDesc_Denuncia(dGeralEnd.getDesc_Denuncia());
+			denuncia.setEnderecoFK(endereco);
 		
-		
-		endereco.setDesc_Endereco(tfEnd.getText());
-		endereco.setRA_Endereco(tfEndBairro.getText());
-		endereco.setCEP_Endereco(tfEndCep.getText());
-		endereco.setUF_Endereco(tfEndUF.getText());
-		endereco.setDenuncias(denuncias);
+		(endereco.getDenuncias()).add(denuncia);
 		
 		EnderecoDao enderecoDao = new EnderecoDao();
 		
-		enderecoDao.salvaEndereco(endereco);
-
+		enderecoDao.mergeEnd(endereco);
 		
 	}
 	public void btnEndEditHab (ActionEvent event) {
@@ -127,20 +139,40 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	public void btnEndPesqHab (ActionEvent event) {
+		String srtPesquisaEnd = tfEndPesq.getText(); // para buscar
+		System.out.println(" O Valor digitado é: " + srtPesquisaEnd);
+		listarEnderecos (srtPesquisaEnd); //listar a busca
 		
 	}
 	
 	public void btnPesqDocHab (ActionEvent event) {
-		String strPesquisa = tfPesquisar.getText();
-		listarDenuncias (strPesquisa); // chamar método listar denúncias //
-		
+		String srtPesquisaDoc = tfPesquisar.getText();
+		listarDenuncias (srtPesquisaDoc); // chamar método listar denúncias //
+		// Selecionar um documento pesquisado
+		selecionarDenunciaDoc ();
 		
 	}
 	
+	public void  btnEndLatLonHab (ActionEvent event) {
+		
+		String linkEndCoord = (tfLinkEnd.getText());
+		
+		int latIni= linkEndCoord.indexOf("@");
+		String lat = linkEndCoord.substring(latIni);
+		
+		int latF = lat.indexOf(",");
+		String latitude = lat.substring(1, latF);
+		
+		String longitude = lat.substring(latF + 1, latF + 1 + latitude.length());
+		
+		tfEndLat.setText(latitude);
+		tfEndLon.setText(longitude);
+	}
+	
 	// criar método para listar denúncias //
-	public void listarDenuncias (String strPesquisa) {
+	public void listarDenuncias (String srtPesquisaDoc) {
 		DenunciaDao denunciaDao = new DenunciaDao();
-		List<Denuncia> denunciaList = denunciaDao.listDenuncia(strPesquisa);
+		List<Denuncia> denunciaList = denunciaDao.listDenuncia(srtPesquisaDoc);
 		ObservableList<DenunciaTabela> obsListDenunciaTabela= FXCollections.observableArrayList();
 		if (!obsListDenunciaTabela.isEmpty()) {
 			obsListDenunciaTabela.clear();
@@ -151,25 +183,90 @@ public class TabEnderecoController implements Initializable {
 					denuncia.getDoc_Denuncia(),
 					denuncia.getDoc_SEI_Denuncia(), 
 					denuncia.getProc_SEI_Denuncia(),
-					denuncia.getDesc_Denuncia()
+					denuncia.getDesc_Denuncia(),
+					//adicionado o objeto  endereçoFK, 
+					denuncia.getEnderecoFK()
 					);
 			
 				obsListDenunciaTabela.add(denTab);
 		}
 		
 		tcDocumento.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_Denuncia")); 
-
         tcDocSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_SEI_Denuncia")); 
-
         tcProcSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Proc_SEI_Denuncia")); 
         
         tvListaDoc.setItems(obsListDenunciaTabela); 
 	}
 	
+	// criar método para listar endereços //
+	public void listarEnderecos (String srtPesquisaEnd) {
+		EnderecoDao enderecoDao = new EnderecoDao();
+		List<Endereco> enderecoList = enderecoDao.listEndereco(srtPesquisaEnd);
+		ObservableList<EnderecoTabela> obsListEnderecoTabela = FXCollections.observableArrayList();
+		//Set<Denuncia> denunciasSet = new HashSet<Denuncia>();
+		
+		if (!obsListEnderecoTabela.isEmpty()) {
+			obsListEnderecoTabela.clear();
+		}
+		for (Endereco endereco : enderecoList) {
+			
+			EnderecoTabela endTab = new EnderecoTabela(
+					endereco.getCod_Endereco(),
+					endereco.getDesc_Endereco(),
+					endereco.getRA_Endereco(),
+					endereco.getCEP_Endereco(), 
+					endereco.getCid_Endereco(),
+					endereco.getUF_Endereco(),
+					endereco.getDenuncias()  
+					);
+					//System.out.println(endereco.getDenuncias());
+					//System.out.println(endTab.getDenuncias());
+					//System.out.println(endereco.getDenuncias());
+					//System.out.println(endereco.getDenuncias().toString());
+					
+					//getEndDenuncias ()
+			
+					obsListEnderecoTabela.add(endTab);
+					
+					
+					//ERRO denuncias=<uninitialized>
+		}
+		
+		tcDesEnd.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("Desc_Endereco")); 
+		tcEndRA.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("RA_Endereco")); 
+		tcEndCid.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("CEP_Endereco")); 
+		
+        tvListaEnd.setItems(obsListEnderecoTabela); 
+	}
+	
+	public void selecionarDenunciaDoc () {
+		
+		// TABLE VIEW SELECIONAR DOCUMENTO AO CLICAR NELE
+		
+		tvListaDoc.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
+																																						DenunciaTabela denTab = (DenunciaTabela) newValue;
+			if (denTab == null) {
+				
+				lblDoc.setText("Campo nulo!");
+				
+			} else {
+
+				
+				Denuncia dGeral = new Denuncia(denTab);
+				
+				dGeralEnd = dGeral;
+				lblDoc.setText(dGeralEnd.getDoc_Denuncia() + "  |  SEI nº: " + dGeralEnd.getDoc_SEI_Denuncia());
+				
+			}
+			}
+		});
+	}
+	
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-	
+		
 	}
 
 	public void init(MainController mainController) {

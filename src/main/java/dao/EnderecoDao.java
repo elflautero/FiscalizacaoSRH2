@@ -24,7 +24,7 @@ public void salvaEndereco (Endereco endereco) {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Endereco> listEndereco(String strPesquisa) {
+	public List<Endereco> listEndereco(String strPesquisaEnd) {
 		List<Endereco> list = new ArrayList<Endereco>();
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
@@ -32,7 +32,7 @@ public void salvaEndereco (Endereco endereco) {
 		s.beginTransaction();
 		
 		Criteria crit = s.createCriteria(Endereco.class);
-		crit.add(Restrictions.like("Endereco", '%' + strPesquisa + '%'));
+		crit.add(Restrictions.like("Desc_Endereco", '%' + strPesquisaEnd + '%'));
 		list = crit.list();
 		
 		s.getTransaction().commit();
@@ -53,6 +53,30 @@ public void salvaEndereco (Endereco endereco) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
 		s.update(endereco);
+		s.getTransaction().commit();
+		s.close();
+	}
+	
+	public void salvaEditar (Endereco endereco) {
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(endereco);  // update(endereco);
+		s.getTransaction().commit();
+		s.close();
+	}
+	
+	public void persistEnd (Endereco endereco) {
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		s.persist(endereco);
+		s.getTransaction().commit();
+		s.close();
+	}
+	
+	public void mergeEnd (Endereco endereco) {
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		s.merge(endereco);
 		s.getTransaction().commit();
 		s.close();
 	}

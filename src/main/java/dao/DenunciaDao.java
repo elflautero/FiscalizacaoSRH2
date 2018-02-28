@@ -57,5 +57,21 @@ public void salvaDenuncia (Denuncia denuncia) {
 		s.getTransaction().commit();
 		s.close();
 	}
+	
+	public void mergeDenuncia(Denuncia denuncia) {
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		s.merge(denuncia);
+		s.getTransaction().commit();
+		s.close();
+	}
+	
+	public void persistDenuncia(Denuncia denuncia) {
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		s.persist(denuncia);
+		s.getTransaction().commit();
+		s.close();
+	}
 
 }
