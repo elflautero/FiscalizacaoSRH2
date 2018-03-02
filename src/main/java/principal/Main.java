@@ -21,6 +21,7 @@ public class Main extends Application{
     @Override
     public void init() throws Exception {
     
+    
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Main.fxml"));
     rootNode = fxmlLoader.load();
     
@@ -28,7 +29,12 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) throws Exception {
+    	
         stage.setScene(new Scene(rootNode));
+        
+        stage.setMaximized(false);
+        stage.setResizable(false);
+        
         stage.show();
     }
 

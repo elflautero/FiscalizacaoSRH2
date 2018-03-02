@@ -21,6 +21,7 @@ public class HibernateUtil {
 			System.out.println("Construiu a fábrica de sessões");
 		
 		return factory;
+		
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 			throw new ExceptionInInitializerError(ex);

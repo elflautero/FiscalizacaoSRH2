@@ -6,9 +6,11 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import tabela.DenunciaTabela;
@@ -18,9 +20,7 @@ import tabela.DenunciaTabela;
 //@org.hibernate.annotations.Entity(dynamicUpdate = false)
 public class Denuncia implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	//
+	private static final long serialVersionUID = -6469401230304931190L;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column 
@@ -38,8 +38,9 @@ public class Denuncia implements Serializable {
 	@Column (columnDefinition="varchar(200)")
 	private String Desc_Denuncia;
 	
-	@ManyToOne (cascade = CascadeType.ALL)
-	//@JoinColumn(updatable = false, insertable = false) // insertable=false
+	@ManyToOne (cascade = CascadeType.ALL, 
+			fetch = FetchType.EAGER) 
+	@JoinColumn (name = "Cod_Endereco")
 	private Endereco enderecoFK;
 	
 	/*
@@ -67,7 +68,7 @@ public class Denuncia implements Serializable {
 		this.Doc_SEI_Denuncia = denunciaTabela.getDoc_SEI_Denuncia();
 		this.Proc_SEI_Denuncia = denunciaTabela.getProc_SEI_Denuncia();
 		this.Desc_Denuncia = denunciaTabela.getDesc_Denuncia();
-		this.enderecoFK = denunciaTabela.getenderecoTabelaFK();
+		this.enderecoFK = denunciaTabela.getenderecoObjetoTabelaFK();
 	}
 	
 
@@ -75,6 +76,15 @@ public class Denuncia implements Serializable {
 		return serialVersionUID;
 	}
 
+	/////////////////////////
+	
+	
+	
+	
+	////////////////////////////
+	
+	
+	
 	// GETTERS AND SETTERS
 	
 	public int getCod_Denuncia() {

@@ -25,6 +25,7 @@ public void salvaEndereco (Endereco endereco) {
 	
 	@SuppressWarnings("unchecked")
 	public List<Endereco> listEndereco(String strPesquisaEnd) {
+	
 		List<Endereco> list = new ArrayList<Endereco>();
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();

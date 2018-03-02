@@ -1,24 +1,22 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 @Entity
 public class Endereco implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4904823824516549278L;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column 
@@ -39,17 +37,17 @@ public class Endereco implements Serializable{
 	@Column (columnDefinition="varchar(2)")
 	private String UF_Endereco;
 	
-	@OneToMany (mappedBy = "enderecoFK", cascade = CascadeType.ALL)
-	@Fetch (FetchMode.SUBSELECT)
-	private Set<Denuncia> denuncias = new HashSet<Denuncia>(0);
-	//private List<Denuncia> denuncias;
+	@OneToMany (mappedBy = "enderecoFK", cascade = CascadeType.MERGE,
+			fetch = FetchType.EAGER, targetEntity = Denuncia.class)
+	private List<Denuncia> denuncias = new ArrayList<Denuncia>();
 	
 	// GETTERS AND SETTERS
-	public Set<Denuncia> getDenuncias() {
+
+	public List<Denuncia> getListDenuncias() {
 		return denuncias;
 	}
 
-	public void setDenuncias(Set<Denuncia> denuncias) {
+	public void setListDenuncias(List<Denuncia> denuncias) {
 		this.denuncias = denuncias;
 	}
 

@@ -1,10 +1,10 @@
 package tabela;
 
-import java.util.Set;
+import java.util.List;
 
 import entity.Denuncia;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleSetProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class EnderecoTabela {
@@ -16,13 +16,12 @@ public class EnderecoTabela {
 	private final SimpleStringProperty CEP_Endereco;
 	private final SimpleStringProperty Cid_Endereco;
 	private final SimpleStringProperty UF_Endereco;
-	private final SimpleSetProperty<Denuncia> denuncias;
+	private final SimpleListProperty<Denuncia> denuncias;
 	
 	// coloquei  o set<Endereco>denuncias para atender o observable value
 	
 	public EnderecoTabela (int Cod_Endereco, String Desc_Endereco, String RA_Endereco,String CEP_Endereco,
-			String Cid_Endereco, String UF_Endereco, Set<Denuncia> denuncias) {
-			//Set<Denuncia> set
+			String Cid_Endereco, String UF_Endereco, List <Denuncia> denuncias ) {
 		super();
 		
 		this.Cod_Endereco = new SimpleIntegerProperty(Cod_Endereco);
@@ -31,28 +30,10 @@ public class EnderecoTabela {
 		this.CEP_Endereco = new SimpleStringProperty(CEP_Endereco);	
 		this.Cid_Endereco = new SimpleStringProperty(Cid_Endereco);
 		this.UF_Endereco = new SimpleStringProperty(UF_Endereco);
-		this.denuncias = new SimpleSetProperty<Denuncia>();
-		
-	
+		this.denuncias = new SimpleListProperty<Denuncia>();
 	}
 	
-	/*
-	public EnderecoTabela (int Cod_Endereco, String Desc_Endereco, String RA_Endereco,String CEP_Endereco,
-			String Cid_Endereco, String UF_Endereco, Set<Endereco> denuncias) {
-		
-		super();
-		
-		this.Cod_Endereco = new SimpleIntegerProperty(Cod_Endereco);
-		this.Desc_Endereco = new SimpleStringProperty(Desc_Endereco);
-		this.RA_Endereco = new SimpleStringProperty(RA_Endereco);
-		this.CEP_Endereco = new SimpleStringProperty(CEP_Endereco);	
-		this.Cid_Endereco = new SimpleStringProperty(Cid_Endereco);
-		this.UF_Endereco = new SimpleStringProperty(UF_Endereco);
-		this.denuncias = new SimpleSetProperty<Endereco>();
-		
 	
-	}
-	*/
 	public int getCod_Endereco() {
 		return Cod_Endereco.get();
 	}
@@ -77,9 +58,8 @@ public class EnderecoTabela {
 		return UF_Endereco.get();
 	}
 
-	public SimpleSetProperty<Denuncia> getDenuncias() {
+	public SimpleListProperty<Denuncia> getListTabelaEnderecoDenuncias(){
 		return denuncias;
 	}
-	
 	
 }

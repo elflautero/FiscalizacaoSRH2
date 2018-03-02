@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -48,6 +49,9 @@ public class TabDenunciaController implements Initializable {
 	@FXML TextField tfProcSei =  new TextField();
 	@FXML TextField tfResDen = new TextField();
 	@FXML TextField tfPesquisar = new TextField();
+	
+	// ----- Label - Endereço da denúncia ------ //
+	@FXML Label lblDenEnd = new Label ();
 
 	@FXML Button btnNovo = new Button();
 	@FXML Button btnSalvar = new Button();
@@ -97,6 +101,7 @@ public class TabDenunciaController implements Initializable {
 		tcDocumento.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_Denuncia")); 
         tcDocSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_SEI_Denuncia")); 
         tcProcSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Proc_SEI_Denuncia")); 
+        
         tvLista.setItems(obsListDenunciaTabela); 
 	}
 	
@@ -161,33 +166,12 @@ public class TabDenunciaController implements Initializable {
 			denunciaEditar.setDoc_SEI_Denuncia(tfDocSei.getText());
 			denunciaEditar.setProc_SEI_Denuncia(tfProcSei.getText());
 			denunciaEditar.setDesc_Denuncia(tfResDen.getText());
+			
 			// para não editar o foreign key, continuar sendo a mesma
-			denunciaEditar.setEnderecoFK(denunciaTabelaEditar.getenderecoTabelaFK());
-			
-			//denunciaDao.salvaDenuncia(denunciaEditar);
-				// com o salva não vai  a  chave estrangeira
-			
-			
-			//denunciaDao.editarDenuncia(denunciaEditar);
-					/*
-					 * up false
-					 * insertable false
-					 * 		não adiciona chave estrangeira
-					 * 
-					 * up true
-					 * insertable true
-					 * 		não adiciona
-					 */
+			//denunciaEditar.setEnderecoFK(denunciaEditar.getEnderecoFK());
 			
 			denunciaDao.mergeDenuncia(denunciaEditar);
-			
-				 /*com o merge não adiciona a chave
-				estrangeira (updatable false insertable  false
 				
-					com up true  e ins true ele adicionar a chave, porém ao editar o documento, perde a chave estrangeira
-				
-			*/
-			
 			denunciaList = denunciaDao.listDenuncia(strPesquisa);
 			
 			// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
@@ -291,6 +275,13 @@ public class TabDenunciaController implements Initializable {
 					tfProcSei.setText(denTab.getProc_SEI_Denuncia());
 					tfResDen.setText(denTab.getDesc_Denuncia());
 					
+					
+					//PRECISA MELHORAR, ESTÁ DANDO NULLPOINTEXCEPTION...
+					/*
+					if (denTab.getenderecoObjetoTabelaFK().getDesc_Endereco() != null) {
+						lblDenEnd.setText(denTab.getenderecoObjetoTabelaFK().getDesc_Endereco());
+					}
+					*/
 					Denuncia dGeral = new Denuncia(denTab);
 
 					main.pegarDoc(dGeral);

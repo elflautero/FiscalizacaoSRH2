@@ -114,7 +114,6 @@ public class TabEnderecoController implements Initializable {
 		
 		Denuncia denuncia = new Denuncia();
 			
-			
 			denuncia.setCod_Denuncia(dGeralEnd.getCod_Denuncia());
 			denuncia.setDoc_Denuncia(dGeralEnd.getDoc_Denuncia());
 			denuncia.setDoc_SEI_Denuncia(dGeralEnd.getDoc_SEI_Denuncia());
@@ -122,11 +121,11 @@ public class TabEnderecoController implements Initializable {
 			denuncia.setDesc_Denuncia(dGeralEnd.getDesc_Denuncia());
 			denuncia.setEnderecoFK(endereco);
 		
-		(endereco.getDenuncias()).add(denuncia);
+			endereco.getListDenuncias().add(denuncia);
 		
-		EnderecoDao enderecoDao = new EnderecoDao();
+			EnderecoDao enderecoDao = new EnderecoDao();
 		
-		enderecoDao.mergeEnd(endereco);
+			enderecoDao.mergeEnd(endereco);
 		
 	}
 	public void btnEndEditHab (ActionEvent event) {
@@ -139,6 +138,7 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	public void btnEndPesqHab (ActionEvent event) {
+		
 		String srtPesquisaEnd = tfEndPesq.getText(); // para buscar
 		System.out.println(" O Valor digitado é: " + srtPesquisaEnd);
 		listarEnderecos (srtPesquisaEnd); //listar a busca
@@ -147,6 +147,9 @@ public class TabEnderecoController implements Initializable {
 	
 	public void btnPesqDocHab (ActionEvent event) {
 		String srtPesquisaDoc = tfPesquisar.getText();
+		
+		System.out.println("O valor de pesquisa da denúncia é: " + strPesquisaDoc);
+		
 		listarDenuncias (srtPesquisaDoc); // chamar método listar denúncias //
 		// Selecionar um documento pesquisado
 		selecionarDenunciaDoc ();
@@ -171,6 +174,7 @@ public class TabEnderecoController implements Initializable {
 	
 	// criar método para listar denúncias //
 	public void listarDenuncias (String srtPesquisaDoc) {
+		
 		DenunciaDao denunciaDao = new DenunciaDao();
 		List<Denuncia> denunciaList = denunciaDao.listDenuncia(srtPesquisaDoc);
 		ObservableList<DenunciaTabela> obsListDenunciaTabela= FXCollections.observableArrayList();
@@ -195,6 +199,13 @@ public class TabEnderecoController implements Initializable {
         tcDocSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_SEI_Denuncia")); 
         tcProcSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Proc_SEI_Denuncia")); 
         
+        System.out.println("/// denuncias ///");
+		
+		System.out.println("Observable List Denuncias: " + obsListDenunciaTabela);
+		
+		System.out.println( "==============" );
+		
+		
         tvListaDoc.setItems(obsListDenunciaTabela); 
 	}
 	
@@ -203,12 +214,16 @@ public class TabEnderecoController implements Initializable {
 		EnderecoDao enderecoDao = new EnderecoDao();
 		List<Endereco> enderecoList = enderecoDao.listEndereco(srtPesquisaEnd);
 		ObservableList<EnderecoTabela> obsListEnderecoTabela = FXCollections.observableArrayList();
-		//Set<Denuncia> denunciasSet = new HashSet<Denuncia>();
+		
+		System.out.println("começo do listarEnderecos");
 		
 		if (!obsListEnderecoTabela.isEmpty()) {
 			obsListEnderecoTabela.clear();
 		}
+		
 		for (Endereco endereco : enderecoList) {
+			
+			System.out.println("Veja os valores de endereco: " +  endereco);
 			
 			EnderecoTabela endTab = new EnderecoTabela(
 					endereco.getCod_Endereco(),
@@ -217,26 +232,27 @@ public class TabEnderecoController implements Initializable {
 					endereco.getCEP_Endereco(), 
 					endereco.getCid_Endereco(),
 					endereco.getUF_Endereco(),
-					endereco.getDenuncias()  
+					endereco.getListDenuncias()
 					);
-					//System.out.println(endereco.getDenuncias());
-					//System.out.println(endTab.getDenuncias());
-					//System.out.println(endereco.getDenuncias());
-					//System.out.println(endereco.getDenuncias().toString());
-					
-					//getEndDenuncias ()
-			
+				
 					obsListEnderecoTabela.add(endTab);
 					
 					
-					//ERRO denuncias=<uninitialized>
+					System.out.println("/// endereços ///");
+					
+					System.out.println("Observable List Endereço: " + obsListEnderecoTabela);
+					
+					System.out.println("O valor dos endereços: " + endereco.getListDenuncias());
+					
+					System.out.println( "==============" );
+					
 		}
 		
 		tcDesEnd.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("Desc_Endereco")); 
 		tcEndRA.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("RA_Endereco")); 
 		tcEndCid.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("CEP_Endereco")); 
 		
-        tvListaEnd.setItems(obsListEnderecoTabela); 
+		tvListaEnd.setItems(obsListEnderecoTabela); 
 	}
 	
 	public void selecionarDenunciaDoc () {

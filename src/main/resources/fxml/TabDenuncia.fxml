@@ -45,6 +45,8 @@
                         <Label layoutX="19.0" layoutY="57.0" prefHeight="17.0" prefWidth="120.0" text="Resumo da Denúncia:" />
                      </children>
                   </Pane>
+                  <Label fx:id="lblDenEnd" layoutX="82.0" layoutY="314.0" prefHeight="23.0" prefWidth="500.0" />
+                  <Label layoutX="21.0" layoutY="317.0" text="Endereço:" />
                </children>
             </AnchorPane>
         </content>
