@@ -9,6 +9,7 @@ public class MainController {
 	    @FXML private TabInterfController tabInterfController;
 	    @FXML private TabUsuarioController tabUsuarioController;
 	    @FXML private TabEnderecoController tabEnderecoController;
+	    @FXML private TabNavegadorController tabNavegadorController;
 	    
 
 	    @FXML 

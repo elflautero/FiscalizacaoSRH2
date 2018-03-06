@@ -277,11 +277,15 @@ public class TabDenunciaController implements Initializable {
 					
 					
 					//PRECISA MELHORAR, ESTÁ DANDO NULLPOINTEXCEPTION...
-					/*
-					if (denTab.getenderecoObjetoTabelaFK().getDesc_Endereco() != null) {
-						lblDenEnd.setText(denTab.getenderecoObjetoTabelaFK().getDesc_Endereco());
+					
+					if (denTab.getenderecoObjetoTabelaFK() != null) {
+						
+						lblDenEnd.setText(denTab.getenderecoObjetoTabelaFK().getDesc_Endereco() + ", " + denTab.getenderecoObjetoTabelaFK().getRA_Endereco());
+					} else {
+						lblDenEnd.setText("Sem endereço cadastrado!");
+						
 					}
-					*/
+					
 					Denuncia dGeral = new Denuncia(denTab);
 
 					main.pegarDoc(dGeral);

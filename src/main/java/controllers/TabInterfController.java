@@ -16,6 +16,7 @@ import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
 import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -154,8 +155,15 @@ import javafx.scene.layout.Pane;
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		//MAPA
+		Platform.runLater(() ->{
 		mapView.addMapInializedListener(this);
+		});
 		
+		/*
+		Platform.runLater(() ->{
+		navegarWebInitialize();
+		});
+		*/
 	}		
 			
 }

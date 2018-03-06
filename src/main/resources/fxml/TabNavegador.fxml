@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane fx:id="tabNavegador" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabNavegadorController">
+   <children>
+      <Pane layoutX="-2.0" prefHeight="78.0" prefWidth="947.0">
+         <children>
+            <TextField layoutX="44.0" layoutY="39.0" prefHeight="25.0" prefWidth="900.0" />
+            <Button fx:id="btnGo" layoutX="12.0" layoutY="39.0" mnemonicParsing="false" onAction="#bntGoHab" text="Go" />
+            <Button fx:id="btnSEI" layoutX="43.0" layoutY="8.0" mnemonicParsing="false" onAction="#btnSEIHab" prefHeight="25.0" prefWidth="55.0" text="SEI" />
+            <Button fx:id="btnGoogle" layoutX="98.0" layoutY="8.0" mnemonicParsing="false" onAction="#btnGoogleHab" text="Google" />
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>
-

@@ -3,7 +3,6 @@ package entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,8 +15,6 @@ import javax.persistence.ManyToOne;
 import tabela.DenunciaTabela;
 
 @Entity
-//@DynamicUpdate
-//@org.hibernate.annotations.Entity(dynamicUpdate = false)
 public class Denuncia implements Serializable {
 
 	private static final long serialVersionUID = -6469401230304931190L;
@@ -38,8 +35,7 @@ public class Denuncia implements Serializable {
 	@Column (columnDefinition="varchar(200)")
 	private String Desc_Denuncia;
 	
-	@ManyToOne (cascade = CascadeType.ALL, 
-			fetch = FetchType.EAGER) 
+	@ManyToOne (fetch = FetchType.EAGER) 
 	@JoinColumn (name = "Cod_Endereco")
 	private Endereco enderecoFK;
 	
@@ -76,15 +72,6 @@ public class Denuncia implements Serializable {
 		return serialVersionUID;
 	}
 
-	/////////////////////////
-	
-	
-	
-	
-	////////////////////////////
-	
-	
-	
 	// GETTERS AND SETTERS
 	
 	public int getCod_Denuncia() {

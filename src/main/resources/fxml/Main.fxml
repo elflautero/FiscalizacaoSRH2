@@ -12,6 +12,12 @@
    <children>
       <TabPane layoutX="8.0" layoutY="37.0" prefHeight="676.0" prefWidth="948.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="37.0">
         <tabs>
+          <Tab text="Navegador">
+               <content>
+                  <fx:include fx:id="tabNavegador" source="TabNavegador.fxml" />
+               </content>
+          </Tab>
+        	
           <Tab text="Denúncia">
                <content>
                   <fx:include fx:id="tabDenuncia" source="TabDenuncia.fxml" />

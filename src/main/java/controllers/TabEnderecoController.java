@@ -4,12 +4,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import dao.DenunciaDao;
 import dao.EnderecoDao;
 import entity.Denuncia;
 import entity.Endereco;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,12 +19,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import tabela.DenunciaTabela;
 import tabela.EnderecoTabela;
 
 public class TabEnderecoController implements Initializable {
 	
 	@FXML Pane tabEndereco = new Pane();
+	
+	@FXML Button btnBuscarDoc = new Button();
 	
 	@FXML TextField tfEnd = new TextField();
 	@FXML TextField tfEndBairro = new TextField();
@@ -53,9 +51,6 @@ public class TabEnderecoController implements Initializable {
 	
 	@FXML Button btnEndLatLon = new Button();
 	@FXML Button btnEndAtualizar = new Button();
-	@FXML Button btnPesqDoc = new Button();
-
-	@FXML TextField tfPesquisar = new TextField();
 	
 	// TABLE VIEW - BUSCAR, EDITAR ETC ENDERECO
 	@FXML private TableView <EnderecoTabela> tvListaEnd;
@@ -66,12 +61,6 @@ public class TabEnderecoController implements Initializable {
 	
 	//
 	
-	// TABLE BUSCAR DENÚNCIA
-	@FXML private TableView <DenunciaTabela> tvListaDoc;
-	
-	@FXML private TableColumn<DenunciaTabela, String> tcDocumento;
-	@FXML private TableColumn<DenunciaTabela, String> tcDocSEI;
-	@FXML private TableColumn<DenunciaTabela, String> tcProcSEI;
 	
 	// 
 	public Denuncia dGeralEnd;
@@ -81,6 +70,10 @@ public class TabEnderecoController implements Initializable {
  	
  	String srtPesquisaEnd = "";
  	String strPesquisaDoc = "";
+ 	
+ 	public void btnBuscarDocHab (ActionEvent event) {
+ 		
+ 	}
 	
 	public void btnEndNovoHab (ActionEvent event) {
 		
@@ -145,17 +138,6 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	
-	public void btnPesqDocHab (ActionEvent event) {
-		String srtPesquisaDoc = tfPesquisar.getText();
-		
-		System.out.println("O valor de pesquisa da denúncia é: " + strPesquisaDoc);
-		
-		listarDenuncias (srtPesquisaDoc); // chamar método listar denúncias //
-		// Selecionar um documento pesquisado
-		selecionarDenunciaDoc ();
-		
-	}
-	
 	public void  btnEndLatLonHab (ActionEvent event) {
 		
 		String linkEndCoord = (tfLinkEnd.getText());
@@ -172,42 +154,7 @@ public class TabEnderecoController implements Initializable {
 		tfEndLon.setText(longitude);
 	}
 	
-	// criar método para listar denúncias //
-	public void listarDenuncias (String srtPesquisaDoc) {
-		
-		DenunciaDao denunciaDao = new DenunciaDao();
-		List<Denuncia> denunciaList = denunciaDao.listDenuncia(srtPesquisaDoc);
-		ObservableList<DenunciaTabela> obsListDenunciaTabela= FXCollections.observableArrayList();
-		if (!obsListDenunciaTabela.isEmpty()) {
-			obsListDenunciaTabela.clear();
-		}
-		for (Denuncia denuncia : denunciaList) {
-			DenunciaTabela denTab = new DenunciaTabela(
-					denuncia.getCod_Denuncia(), 
-					denuncia.getDoc_Denuncia(),
-					denuncia.getDoc_SEI_Denuncia(), 
-					denuncia.getProc_SEI_Denuncia(),
-					denuncia.getDesc_Denuncia(),
-					//adicionado o objeto  endereçoFK, 
-					denuncia.getEnderecoFK()
-					);
-			
-				obsListDenunciaTabela.add(denTab);
-		}
-		
-		tcDocumento.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_Denuncia")); 
-        tcDocSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Doc_SEI_Denuncia")); 
-        tcProcSEI.setCellValueFactory(new PropertyValueFactory<DenunciaTabela, String>("Proc_SEI_Denuncia")); 
-        
-        System.out.println("/// denuncias ///");
-		
-		System.out.println("Observable List Denuncias: " + obsListDenunciaTabela);
-		
-		System.out.println( "==============" );
-		
-		
-        tvListaDoc.setItems(obsListDenunciaTabela); 
-	}
+	
 	
 	// criar método para listar endereços //
 	public void listarEnderecos (String srtPesquisaEnd) {
@@ -238,14 +185,6 @@ public class TabEnderecoController implements Initializable {
 					obsListEnderecoTabela.add(endTab);
 					
 					
-					System.out.println("/// endereços ///");
-					
-					System.out.println("Observable List Endereço: " + obsListEnderecoTabela);
-					
-					System.out.println("O valor dos endereços: " + endereco.getListDenuncias());
-					
-					System.out.println( "==============" );
-					
 		}
 		
 		tcDesEnd.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("Desc_Endereco")); 
@@ -255,38 +194,31 @@ public class TabEnderecoController implements Initializable {
 		tvListaEnd.setItems(obsListEnderecoTabela); 
 	}
 	
-	public void selecionarDenunciaDoc () {
+	
+	
+	private void modularBotoesInicial () {
 		
-		// TABLE VIEW SELECIONAR DOCUMENTO AO CLICAR NELE
+		tfEnd.setDisable(true);
+		tfEndBairro.setDisable(true);
+		tfEndCep.setDisable(true);
+		tfEndCid.setDisable(true);
+		tfEndUF.setDisable(true);
+		btnEndSalvar.setDisable(true);
+		btnEndEdit.setDisable(true);
+		btnEndExc.setDisable(true);
+		btnEndNovo.setDisable(false);
 		
-		tvListaDoc.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
-			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
-																																						DenunciaTabela denTab = (DenunciaTabela) newValue;
-			if (denTab == null) {
-				
-				lblDoc.setText("Campo nulo!");
-				
-			} else {
-
-				
-				Denuncia dGeral = new Denuncia(denTab);
-				
-				dGeralEnd = dGeral;
-				lblDoc.setText(dGeralEnd.getDoc_Denuncia() + "  |  SEI nº: " + dGeralEnd.getDoc_SEI_Denuncia());
-				
-			}
-			}
-		});
 	}
 	
-
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
+		// modular a forma de abrir dos botões
+		modularBotoesInicial ();
+		
 	}
-
 	public void init(MainController mainController) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	
