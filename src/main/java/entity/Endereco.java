@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import tabela.EnderecoTabela;
+
 @Entity
 public class Endereco implements Serializable{
 
@@ -41,7 +43,23 @@ public class Endereco implements Serializable{
 			fetch = FetchType.EAGER, targetEntity = Denuncia.class)
 	private List<Denuncia> denuncias = new ArrayList<Denuncia>();
 	
-	// GETTERS AND SETTERS
+	//-- Construtor padrão -- //
+	public Endereco () {
+		
+	}
+	
+	//-- Construtor --//
+	public Endereco (EnderecoTabela enderecoTabela) {
+		
+		this.Cod_Endereco = enderecoTabela.getCod_Endereco();
+		this.Desc_Endereco = enderecoTabela.getDesc_Endereco();
+		this.RA_Endereco = enderecoTabela.getRA_Endereco();
+		this.CEP_Endereco = enderecoTabela.getCEP_Endereco();
+		this.Cid_Endereco = enderecoTabela.getCid_Endereco();
+		this.UF_Endereco = enderecoTabela.getUF_Endereco();
+	}
+	
+	// -- GETTERS AND SETTERS - //
 
 	public List<Denuncia> getListDenuncias() {
 		return denuncias;

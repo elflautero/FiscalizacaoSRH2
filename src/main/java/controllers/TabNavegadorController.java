@@ -53,8 +53,6 @@ public class TabNavegadorController implements Initializable{
 		
 		wv1.setLayoutY(78);
 		
-		
-		
 		//String linkSEI = "https://sei.df.gov.br/sei/controlador.php?acao=procedimento_controlar&acao_origem=principal&acao_retorno=principal&inicializando=1&infra_sistema=100000100&infra_unidade_atual=110009258&infra_hash=688e8ef9fede6855054f40e147899f5fac4b7abf3ec418381d989e65cf55b902";
 		
 		wv1.getEngine().setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
@@ -68,7 +66,6 @@ public class TabNavegadorController implements Initializable{
 		        }
 		    });
 
-
 		    StackPane root = new StackPane();
 		   
 		    root.getChildren().add(wv1);
@@ -76,14 +73,14 @@ public class TabNavegadorController implements Initializable{
 		    wv1.getEngine().load(link);
 		    
 		    tabNavegador.getChildren().add(wv1);
-		    
-		    System.out.println("Chamou  o WebView initialize");
+		  
 	}
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		 
+		
+		// -- inicitalizar o mapa -- //
 		Platform.runLater(() ->{
-		navegarWebInitialize();
+		navegarWebInitialize();  
 		});
 		
 	}

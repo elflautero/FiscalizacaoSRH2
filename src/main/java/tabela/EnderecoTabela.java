@@ -33,7 +33,6 @@ public class EnderecoTabela {
 		this.denuncias = new SimpleListProperty<Denuncia>();
 	}
 	
-	
 	public int getCod_Endereco() {
 		return Cod_Endereco.get();
 	}

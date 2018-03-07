@@ -37,9 +37,9 @@
                            <children>
                               <Button fx:id="btnEndNovo" layoutX="8.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndNovoHab" prefHeight="22.0" prefWidth="76.0" text="Novo" />
                               <Button fx:id="btnEndSalvar" layoutX="93.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndSalvarHab" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
-                              <Button fx:id="btnEndEditar" layoutX="176.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndEditHab" prefHeight="22.0" prefWidth="76.0" text="Editar" />
+                              <Button fx:id="btnEndEditar" layoutX="176.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndEditarHab" prefHeight="22.0" prefWidth="76.0" text="Editar" />
                               <Button fx:id="btnEndExc" layoutX="260.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndExcHab" prefHeight="22.0" prefWidth="76.0" text="Excluir" />
-                              <Button fx:id="btnEndEdit" layoutX="344.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndCancHab" prefHeight="22.0" prefWidth="76.0" text="Cancelar" />
+                              <Button fx:id="btnEndCan" layoutX="344.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndCanHab" prefHeight="22.0" prefWidth="76.0" text="Cancelar" />
                               <Button fx:id="btnEndPesq" layoutX="724.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndPesqHab" prefHeight="22.0" prefWidth="76.0" text="Pesquisar" />
                               <TextField fx:id="tfEndPesq" layoutX="426.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
                            </children>

@@ -64,6 +64,7 @@ public class Denuncia implements Serializable {
 		this.Doc_SEI_Denuncia = denunciaTabela.getDoc_SEI_Denuncia();
 		this.Proc_SEI_Denuncia = denunciaTabela.getProc_SEI_Denuncia();
 		this.Desc_Denuncia = denunciaTabela.getDesc_Denuncia();
+		
 		this.enderecoFK = denunciaTabela.getenderecoObjetoTabelaFK();
 	}
 	

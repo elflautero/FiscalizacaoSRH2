@@ -15,12 +15,9 @@ public class Main extends Application{
     public static void main(final String[] args) {
         Application.launch(args);
     }
-    
-    // 23 de Janeiro de 2017 - Primeiro Commit
-    
+   
     @Override
     public void init() throws Exception {
-    
     
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Main.fxml"));
     rootNode = fxmlLoader.load();

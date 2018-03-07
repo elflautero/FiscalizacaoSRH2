@@ -37,6 +37,9 @@ public class TabEndBuscarDocController implements Initializable {
 		//variável geral para outros controllers
 		public Denuncia dGeralEnd;
 		
+		String strPesquisaDoc = "";
+	
+		
 		public void btnPesqDocHab (ActionEvent event) {
 			
 			String srtPesquisaDoc = tfPesquisar.getText();
