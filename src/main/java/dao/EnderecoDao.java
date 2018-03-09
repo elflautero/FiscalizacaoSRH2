@@ -33,8 +33,10 @@ public void salvaEndereco (Endereco endereco) {
 		s.beginTransaction();
 		
 		Criteria crit = s.createCriteria(Endereco.class);
-		crit.add(Restrictions.like("Desc_Endereco", '%' + strPesquisaEnd + '%'));
+		crit.add(Restrictions.like("Desc_Endereco", '%' + strPesquisaEnd + '%')).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		list = crit.list();
+		
+		//.setResultTransformer(crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY));
 		
 		s.getTransaction().commit();
 		s.close();

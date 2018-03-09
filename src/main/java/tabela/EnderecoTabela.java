@@ -3,6 +3,7 @@ package tabela;
 import java.util.List;
 
 import entity.Denuncia;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,12 +17,14 @@ public class EnderecoTabela {
 	private final SimpleStringProperty CEP_Endereco;
 	private final SimpleStringProperty Cid_Endereco;
 	private final SimpleStringProperty UF_Endereco;
+	private final SimpleDoubleProperty Lat_Endereco;
+	private final SimpleDoubleProperty Lon_Endereco;
 	private final SimpleListProperty<Denuncia> denuncias;
 	
 	// coloquei  o set<Endereco>denuncias para atender o observable value
 	
 	public EnderecoTabela (int Cod_Endereco, String Desc_Endereco, String RA_Endereco,String CEP_Endereco,
-			String Cid_Endereco, String UF_Endereco, List <Denuncia> denuncias ) {
+			String Cid_Endereco, String UF_Endereco, Double Lat_Endereco, Double Lon_Endereco, List <Denuncia> denuncias ) {
 		super();
 		
 		this.Cod_Endereco = new SimpleIntegerProperty(Cod_Endereco);
@@ -30,6 +33,8 @@ public class EnderecoTabela {
 		this.CEP_Endereco = new SimpleStringProperty(CEP_Endereco);	
 		this.Cid_Endereco = new SimpleStringProperty(Cid_Endereco);
 		this.UF_Endereco = new SimpleStringProperty(UF_Endereco);
+		this.Lat_Endereco = new SimpleDoubleProperty(Lat_Endereco);
+		this.Lon_Endereco = new SimpleDoubleProperty(Lon_Endereco);
 		this.denuncias = new SimpleListProperty<Denuncia>();
 	}
 	
@@ -55,6 +60,14 @@ public class EnderecoTabela {
 
 	public String getUF_Endereco() {
 		return UF_Endereco.get();
+	}
+	
+	public Double getLat_Endereco () {
+		return Lat_Endereco.get();
+	}
+	
+	public Double getLon_Endereco () {
+		return Lon_Endereco.get();
 	}
 
 	public SimpleListProperty<Denuncia> getListTabelaEnderecoDenuncias(){

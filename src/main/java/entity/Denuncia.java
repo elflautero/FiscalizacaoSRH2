@@ -26,10 +26,10 @@ public class Denuncia implements Serializable {
 	@Column (columnDefinition="varchar(80)")
 	private String Doc_Denuncia;
 	
-	@Column (columnDefinition="varchar(20)")
+	@Column (columnDefinition="varchar(25)")
 	private String Doc_SEI_Denuncia;
 	
-	@Column (columnDefinition="varchar(20)")
+	@Column (columnDefinition="varchar(25)")
 	private String Proc_SEI_Denuncia;
 	
 	@Column (columnDefinition="varchar(200)")

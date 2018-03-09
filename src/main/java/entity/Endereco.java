@@ -27,17 +27,39 @@ public class Endereco implements Serializable{
 	@Column (columnDefinition="varchar(90)")
 	private String Desc_Endereco;
 	
-	@Column (columnDefinition="varchar(15)")
+	@Column (columnDefinition="varchar(20)")
 	private String RA_Endereco;
 	
-	@Column (columnDefinition="varchar(15)")
+	@Column (columnDefinition="varchar(20)")
 	private String CEP_Endereco;
 	
-	@Column (columnDefinition="varchar(15)")
+	@Column (columnDefinition="varchar(20)")
 	private String Cid_Endereco;
 	
 	@Column (columnDefinition="varchar(2)")
 	private String UF_Endereco;
+	
+	@Column
+	private Double Lat_Endereco;
+	
+	public Double getLat_Endereco() {
+		return Lat_Endereco;
+	}
+
+	public void setLat_Endereco(Double lat_Endereco) {
+		Lat_Endereco = lat_Endereco;
+	}
+
+	public Double getLon_Endereco() {
+		return Lon_Endereco;
+	}
+
+	public void setLon_Endereco(Double lon_Endereco) {
+		Lon_Endereco = lon_Endereco;
+	}
+
+	@Column
+	private Double Lon_Endereco;
 	
 	@OneToMany (mappedBy = "enderecoFK", cascade = CascadeType.MERGE,
 			fetch = FetchType.EAGER, targetEntity = Denuncia.class)
@@ -119,4 +141,3 @@ public class Endereco implements Serializable{
 	}
 	
 }
-

@@ -217,6 +217,7 @@ public class TabDenunciaController implements Initializable {
 	public void btnEditarHabilitar (ActionEvent event) {
 			
 		if (tfDocumento.isDisable()) {
+			
 			tfDocumento.setDisable(false);
 			tfDocumento.setDisable(false);
 			tfDocSei.setDisable(false);
@@ -280,6 +281,8 @@ public class TabDenunciaController implements Initializable {
 	// -- botão pesquisar denúncia -- //
 	public void btnPesquisarHabilitar (ActionEvent event) {
 		
+		System.out.println("///////---////////-----/////////// denúncias abaixo ----/////////////////-----//////////////////");
+		
 		strPesquisa = (String) tfPesquisar.getText();
 		
 		denunciaList = denunciaDao.listDenuncia(strPesquisa);
@@ -287,6 +290,8 @@ public class TabDenunciaController implements Initializable {
 		listarDenuncias();
 		
 		modularBotoesInicial (); 
+		
+		System.out.println("///////---////////-----/////////// denúncias acima ----/////////////////-----//////////////////");
 		
 	}
 	
