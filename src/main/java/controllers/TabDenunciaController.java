@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -22,7 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-
+import javafx.scene.paint.Color;
 import tabela.DenunciaTabela;
 
 
@@ -115,7 +116,6 @@ public class TabDenunciaController implements Initializable {
 	public void selecionarDenuncia () {
 		
 		// TableView - selecionar denúncia ao clicar -- //
-		
 		tvLista.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
 			
@@ -148,8 +148,10 @@ public class TabDenunciaController implements Initializable {
 				if (denTab.getenderecoObjetoTabelaFK() != null) {
 					
 					lblDenEnd.setText(denTab.getenderecoObjetoTabelaFK().getDesc_Endereco() + ", " + denTab.getenderecoObjetoTabelaFK().getRA_Endereco());
+					lblDenEnd.setTextFill(Color.BLACK);
 				} else {
 					lblDenEnd.setText("Sem endereço cadastrado!");
+					lblDenEnd.setTextFill(Color.RED);
 					
 				}
 				
@@ -208,8 +210,15 @@ public class TabDenunciaController implements Initializable {
 		main.pegarDoc(dGeral);
 		
 		listarDenuncias();
+	
+		modularBotoesInicial ();
 		
-		modularBotoesInicial (); 
+		//-- Alerta de denúncia salva --//
+		Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
+		aSalvo.setTitle("Parabéns!");
+		aSalvo.setContentText("A denúncia salva com sucesso!");
+		aSalvo.setHeaderText(null);
+		aSalvo.show();
 			
 		}
 
@@ -281,7 +290,6 @@ public class TabDenunciaController implements Initializable {
 	// -- botão pesquisar denúncia -- //
 	public void btnPesquisarHabilitar (ActionEvent event) {
 		
-		System.out.println("///////---////////-----/////////// denúncias abaixo ----/////////////////-----//////////////////");
 		
 		strPesquisa = (String) tfPesquisar.getText();
 		
@@ -290,8 +298,6 @@ public class TabDenunciaController implements Initializable {
 		listarDenuncias();
 		
 		modularBotoesInicial (); 
-		
-		System.out.println("///////---////////-----/////////// denúncias acima ----/////////////////-----//////////////////");
 		
 	}
 	

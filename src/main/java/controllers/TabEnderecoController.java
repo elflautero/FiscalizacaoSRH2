@@ -1,10 +1,15 @@
 package controllers;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-//import javax.persistence.EntityManager;
+import javax.script.ScriptException;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import dao.EnderecoDao;
 import entity.Denuncia;
@@ -13,9 +18,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,10 +30,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import tabela.EnderecoTabela;
 
 public class TabEnderecoController implements Initializable {
+
 	
 	@FXML Pane tabEndereco = new Pane();
 	
@@ -51,70 +65,70 @@ public class TabEnderecoController implements Initializable {
 	@FXML Button btnEndExc = new Button();
 	@FXML Button btnEndCan = new Button();
 	@FXML Button btnEndPesq = new Button();
+	
+	@FXML Button btnEndMaps = new Button ();
 
 	@FXML Button btnDenAtualizar = new Button();
 	@FXML TextField tfEndPesq = new TextField();
 	
 	@FXML Button btnEndLatLon = new Button();
-	@FXML Button btnEndAtualizar = new Button();
+	@FXML Button btnEndAtualizar = new Button(); 
 	
-	// TABLE VIEW - BUSCAR, EDITAR ETC ENDERECO
+	@FXML AnchorPane aPaneEnd = new AnchorPane();
+	
+	//-- TableView Endereço --//
 	@FXML private TableView <EnderecoTabela> tvListaEnd;
 	
 	@FXML TableColumn<EnderecoTabela, String> tcDesEnd;
 	@FXML TableColumn<EnderecoTabela, String> tcEndRA;
 	@FXML TableColumn<EnderecoTabela, String> tcEndCid;
 	
-	
+	//-- String para chamar as coordenadas corretas do mapa --//
+	String linkEndMap;
+		
 	// --- Objeto para passar os valor pelo MainControoler para outro controller --- //
 	public Denuncia dGeralEnd;
 	
+	//-- String de pesquisa de endereços --//
 	String strPesquisaEnd = "";
 	
-	Double latCoord = -15.7754084; // latitude inicial do mapa - ADASA
- 	Double longCoord = -47.9411395; // longitude inicial do mapa - ADASA
- 	
- 	
  	// --- método para listar endereços --- //
  	public void listarEnderecos (String strPesquisa) {
  		
  	// --- conexão - listar endereços --- //
- 		EnderecoDao enderecoDao = new EnderecoDao();
- 		List<Endereco> enderecoList = enderecoDao.listEndereco(strPesquisaEnd);
- 		ObservableList<EnderecoTabela> obsListEnderecoTabela = FXCollections.observableArrayList();
- 		
- 		
- 		if (!obsListEnderecoTabela.isEmpty()) {
- 			obsListEnderecoTabela.clear();
- 		}
- 		
- 		for (Endereco endereco : enderecoList) {
- 			
- 			EnderecoTabela endTab = new EnderecoTabela(
- 					endereco.getCod_Endereco(),
- 					endereco.getDesc_Endereco(),
- 					endereco.getRA_Endereco(),
- 					endereco.getCEP_Endereco(), 
- 					endereco.getCid_Endereco(),
- 					endereco.getUF_Endereco(),
- 					endereco.getLat_Endereco(),
- 					endereco.getLon_Endereco(),
- 					endereco.getListDenuncias()
- 					);
- 				
- 					System.out.println("foreign key: " + endTab.getListTabelaEnderecoDenuncias());
- 					System.out.println(endTab);
+	EnderecoDao enderecoDao = new EnderecoDao();
+	List<Endereco> enderecoList = enderecoDao.listEndereco(strPesquisaEnd);
+	ObservableList<EnderecoTabela> obsListEnderecoTabela = FXCollections.observableArrayList();
+	
+	
+	if (!obsListEnderecoTabela.isEmpty()) {
+		obsListEnderecoTabela.clear();
+	}
+	
+		for (Endereco endereco : enderecoList) {
+			
+		EnderecoTabela endTab = new EnderecoTabela(
+				endereco.getCod_Endereco(),
+				endereco.getDesc_Endereco(),
+				endereco.getRA_Endereco(),
+				endereco.getCEP_Endereco(), 
+				endereco.getCid_Endereco(),
+				endereco.getUF_Endereco(),
+				endereco.getLat_Endereco(),
+				endereco.getLon_Endereco(),
+				endereco.getListDenuncias()
+				);
+			
+			obsListEnderecoTabela.add(endTab);
  					
- 					obsListEnderecoTabela.add(endTab);
- 					
- 		}
- 		
- 		tcDesEnd.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("Desc_Endereco")); 
- 		tcEndRA.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("RA_Endereco")); 
- 		tcEndCid.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("CEP_Endereco")); 
- 		
- 		tvListaEnd.setItems(obsListEnderecoTabela); 
- 		
+	}
+		
+		tcDesEnd.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("Desc_Endereco")); 
+		tcEndRA.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("RA_Endereco")); 
+		tcEndCid.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("CEP_Endereco")); 
+		
+		tvListaEnd.setItems(obsListEnderecoTabela); 
+	
  		
  	}
  	
@@ -195,12 +209,29 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	
+	//-- Buscador de endereços e coordenadas --//
+	public void btnEndMapsHab (ActionEvent event) throws IOException {
+		
+		File file = new File("../FiscalizacaoSRH/src/main/resources/html/mapSearch.html");
+		
+		Document docHtml = Jsoup.parse(file, "UTF-8").clone();
+	
+		linkEndMap = docHtml.toString();
+		
+		WebView wvEndMapsView = new WebView();
+		WebEngine weEndMapsView = wvEndMapsView.getEngine();
+		weEndMapsView.loadContent(linkEndMap);
+		wvEndMapsView.setMaxSize(500, 300);
+		
+		Stage stage = new Stage(StageStyle.UTILITY);
+        stage.setScene(new Scene(wvEndMapsView, 911, 600));
+        stage.show();
+	}
+	
 	// --  botão salvar -- //
 	public void btnEndSalvarHab (ActionEvent event) {
 			
 		if (tfEndLat.getText().isEmpty() || tfEndLon.getText().isEmpty()) {
-			
-			System.out.println("não é número");
 			
 			Alert aLat = new Alert (Alert.AlertType.ERROR);
 			aLat.setTitle("Alerta!!!");
@@ -234,6 +265,16 @@ public class TabEnderecoController implements Initializable {
 			EnderecoDao enderecoDao = new EnderecoDao();
 		
 			enderecoDao.mergeEnd(endereco);
+			
+			//-- Alerta de endereço salvo --//
+			Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
+			aSalvo.setTitle("Parabéns!");
+			aSalvo.setContentText("O endereço salvo com sucesso!");
+			aSalvo.setHeaderText(null);
+			aSalvo.show();
+			
+			//-- Modular botões --//
+			modularBotoesInicial ();
 			
 		}
 			
@@ -301,30 +342,24 @@ public class TabEnderecoController implements Initializable {
 		
 		EnderecoDao enderecoDao = new EnderecoDao();
 		
-		enderecoDao.removeEndereco(id);
+		if (!endereco.getListTabelaEnderecoDenuncias().isEmpty()) { // eu vejo que é  se !endereco  diferente de vazio, isso quer dizer que há denúncia associada
+			
+			//-- Alerta de denúncia salva --//
+			Alert aSalvo = new Alert (Alert.AlertType.ERROR);
+			aSalvo.setTitle("Alerta!!!");
+			aSalvo.setContentText("Há denúncia associada à este endereço! Delete antes a denúncia!");
+			aSalvo.setHeaderText(null);
+			aSalvo.show();
+			
+		} else {
+			
+			enderecoDao.removeEndereco(id);
+			
+			listarEnderecos(strPesquisaEnd);
+			
+			modularBotoesInicial();
+		}
 		
-		listarEnderecos(strPesquisaEnd);
-		
-		modularBotoesInicial();
-		
-		/*
-		 
-		DenunciaTabela denunciaExcluir = tvLista.getSelectionModel().getSelectedItem();
-		
-		int id = denunciaExcluir.getCod_Denuncia(); // buscar id para deletar
-		
-		denunciaList = denunciaDao.listDenuncia(strPesquisa);
-		
-		obsListDenunciaTabela.remove(denunciaExcluir);
-		
-		denunciaDao.removeDenuncia(id);
-		
-		denunciaList = denunciaDao.listDenuncia(strPesquisa);
-		
-		listarDenuncias();
-		
-		modularBotoesInicial (); 	
-		 */
 	}
 	
 	//-- botão cancelar --//
@@ -337,8 +372,6 @@ public class TabEnderecoController implements Initializable {
 	//-- botão pesquisar endereço --//
 	public void btnEndPesqHab (ActionEvent event) {
 		
-		System.out.println("///////---////////-----/////////// endereços abaixo ----/////////////////-----//////////////////");
-		
 		strPesquisaEnd = tfEndPesq.getText();
 		
 		//enderecoList = enderecoDao.listEndereco();
@@ -347,50 +380,87 @@ public class TabEnderecoController implements Initializable {
 		listarEnderecos (strPesquisaEnd);
 		
 		modularBotoesInicial (); 
-		
-		System.out.println("///////---////////-----/////////// endereços acima ----/////////////////-----//////////////////");
-		
+	
 	}
 	
 	public void  btnEndLatLonHab (ActionEvent event) {
 		
-		String linkEndCoord = (tfLinkEnd.getText());
-		
-		int latIni= linkEndCoord.indexOf("@");
-		String lat = linkEndCoord.substring(latIni);
-		
-		int latF = lat.indexOf(",");
-		String latitude = lat.substring(1, latF);
-		
-		String longitude = lat.substring(latF + 1, latF + latitude.length());
-		
-		 /*
-		 tirei o +1 para resolver o aparecimento da vírgula neste link
-		 https://www.google.com.br/maps/place/Brazl%C3%A2ndia,+Bras%C3%ADlia+-+DF/@-15.8422254,-48.097489,10364m/data=!3m1!1e3!4m5!3m4!1s0x935bb399f0e712b7:0xe5dd05c541a49871!8m2!3d-15.6701849!4d-48.200585
-		 String longitude = lat.substring(latF + 1, latF + 1 + latitude.length());
-		 */
-		
-		tfEndLat.setText(latitude);
-		tfEndLon.setText(longitude);
+		if (tfLinkEnd.getText().isEmpty()) {
+			
+			Alert aLink = new Alert (Alert.AlertType.ERROR);
+			aLink.setTitle("Alerta!!!");
+			aLink.setContentText("Não há link associado à solicitação!");
+			aLink.setHeaderText(null);
+			aLink.show();
+			
+		} else {
+			
+			String linkEndCoord = (tfLinkEnd.getText());
+			
+			int latIni= linkEndCoord.indexOf("@");
+			String lat = linkEndCoord.substring(latIni);
+			
+			int latF = lat.indexOf(",");
+			String latitude = lat.substring(1, latF);
+			
+			String longitude = lat.substring(latF + 1, latF + latitude.length());
+			
+			 /*
+			 tirei o +1 para resolver o aparecimento da vírgula neste link
+			 https://www.google.com.br/maps/place/Brazl%C3%A2ndia,+Bras%C3%ADlia+-+DF/@-15.8422254,-48.097489,10364m/data=!3m1!1e3!4m5!3m4!1s0x935bb399f0e712b7:0xe5dd05c541a49871!8m2!3d-15.6701849!4d-48.200585
+			 String longitude = lat.substring(latF + 1, latF + 1 + latitude.length());
+			 */
+			
+			tfEndLat.setText(latitude);
+			tfEndLon.setText(longitude);
+			
+		}
 	}
 	
+	//-- Botão atualizar mapa de acordo com as coordenadas --//
+	public void btnEndAtualizarHab (ActionEvent event) throws IOException, ScriptException {
+		
+		
+		//-- jsoup e html maps --//
+		String latMap = tfEndLat.getText();
+		String lonMap = tfEndLon.getText();
+		
+		File file = new File("../FiscalizacaoSRH/src/main/resources/html/enderecoMap.html");
+			
+		Document docHtml = Jsoup.parse(file, "UTF-8").clone();
+	
+		docHtml.select("script").prepend("var uluru = {lat: " + latMap + ", lng: " + lonMap + "};");
+	
+		linkEndMap = docHtml.toString();
+		
+		getWvEndMap ();
+		
+		
+	}
+	
+	//-- Botão pesquisar documento na TabEndereco --//
 	public void btnBuscarDocHab (ActionEvent event) {
 		
 	}
 	
-	
+	//-- INITIALIZE --//
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		// modular a forma de abrir dos botões
+		//-- Modular a forma de abrir dos botões --//
 		modularBotoesInicial ();
-		
+		//-- Selecionar endereço --//
 		selecionarEndereco ();
 		
-		//listarEnderecos (strPesquisaEnd);
-		
+		/*
+		//-- Chamar o Google Maps da TabEndereco --//
+		Platform.runLater(() ->{
+			getWvEndMap ();
+			});
+		*/
 	}
-	
+
+	//-- Modular os botões na iniciação do programa --//
 	private void modularBotoesInicial () {
 		
 		tfEnd.setDisable(true);
@@ -410,11 +480,48 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	
-	
-	public void init(MainController mainController) {
+	//-- Método getWebView para o mapa do endereço --//
+	public void getWvEndMap () {
 		
+		WebView wv1 = new WebView();
+		WebEngine engine = wv1.getEngine();
+		engine.loadContent(linkEndMap);
+		
+		wv1.setPrefSize(700,500);
+		wv1.getEngine();
+	
+		BorderPane root = new BorderPane();
+		root.setCenter(wv1);
+		root.setPrefSize(700, 420);
+		root.setLayoutY(349);
+		root.setLayoutX(122);
+		
+		aPaneEnd.getChildren().add(root);
+	
+		engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            if (Worker.State.SUCCEEDED.equals(newValue)) {
+            	
+            }
+        });
 		
 	}
 	
-
+	//-- Main Controller --//
+	public void init(MainController mainController) {
+		
+	}
 }
+
+/*
+ WebView wv1 = new WebView();
+		wv1.setPrefSize(700,500);
+		wv1.getEngine().loadContent(linkEndMap);
+	
+		BorderPane root = new BorderPane();
+		root.setCenter(wv1);
+		root.setPrefSize(700, 420);
+		root.setLayoutY(349);
+		root.setLayoutX(122);
+		
+		aPaneEnd.getChildren().add(root);
+	*/

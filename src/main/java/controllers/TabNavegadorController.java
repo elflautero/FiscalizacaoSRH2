@@ -21,10 +21,9 @@ import javafx.util.Callback;
 
 public class TabNavegadorController implements Initializable{
 	
-	String link = "http://treinamento3.sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI";
+	String link = "https://sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI";
 	
-	@FXML
-	AnchorPane tabNavegador = new AnchorPane();
+	@FXML AnchorPane tabNavegador = new AnchorPane();
 	
 	@FXML
 	Button btnSEI = new Button();
@@ -33,24 +32,30 @@ public class TabNavegadorController implements Initializable{
 	@FXML
 	Button btnGo = new Button();
 	
-	
+	//-- botão SEI --//
 	public void btnSEIHab (ActionEvent event) {
-		link = "https://sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI";
-		navegarWebInitialize()  ;
+		
+		link = "http://treinamento3.sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI";
+		navegarWeb();
+		
+		
 	}
+	
+	//-- botão Google --//
 	public void btnGoogleHab (ActionEvent event) {
+		
 		link = "http://gis.adasa.df.gov.br/portal/home/index.html";
-		//link = "http://gis.adasa.df.gov.br/portal/home/webmap/viewer.html?webmap=ae675a7f879845a1a16a9a3134284384";
-		//link = "https://www.google.com.br/search?q=adasa&safe=active&source=lnms&sa=X&ved=0ahUKEwiO6ZPN_9fZAhXFGZAKHT0uDbgQ_AUICSgA&biw=1360&bih=647&dpr=1";
-		
-		
-		navegarWebInitialize();
+		navegarWeb();
 	}
+	
+	//-- botão Go - atualizar navegador --//
 	public void bntGoHab (ActionEvent event) {
 		
+		
 	}
 	
-	public void navegarWebInitialize() {
+	//-- método navegar --//
+	public void navegarWeb() {
 		
 		WebView wv1 = new WebView();
 		wv1.setPrefSize(947,622);
@@ -74,15 +79,16 @@ public class TabNavegadorController implements Initializable{
 		    wv1.getEngine().load(link);
 		    
 		    tabNavegador.getChildren().add(wv1);
-	
+		    
 	}
 	
+	//-- INITIALIZE --//
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		// -- inicitalizar o mapa -- //
 		Platform.runLater(() ->{
-		navegarWebInitialize();  
+		navegarWeb();  
 		});
 		
 	}

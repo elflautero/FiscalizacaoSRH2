@@ -17,9 +17,9 @@
                <children>
                   <TableView fx:id="tvLista" layoutX="20.0" layoutY="175.0" prefHeight="113.0" prefWidth="889.0">
                     <columns>
-                      <TableColumn fx:id="tcDocumento" prefWidth="404.0" text="Documento" />
-                      <TableColumn fx:id="tcDocSEI" minWidth="0.0" prefWidth="240.0" text="Doc SEI" />
-                        <TableColumn fx:id="tcProcSEI" prefWidth="244.0" text="Proc SEI" />
+                      <TableColumn fx:id="tcDocumento" prefWidth="409.0" text="Documento" />
+                      <TableColumn fx:id="tcDocSEI" minWidth="0.0" prefWidth="231.0" text="Doc SEI" />
+                        <TableColumn fx:id="tcProcSEI" prefWidth="247.0" text="Proc SEI" />
                     </columns>
                   </TableView>
                   <Pane layoutX="21.0" layoutY="118.0" prefHeight="47.0" prefWidth="884.0">

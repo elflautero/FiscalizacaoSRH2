@@ -1,40 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.lynden.gmapsfx.GoogleMapView?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-
-<Pane fx:id="tabInterferencia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="883.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabInterfController">
+<Pane fx:id="tabInterferencia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabInterfController">
    <children>
-      <Pane layoutX="122.0" layoutY="128.0" prefHeight="88.0" prefWidth="710.0">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="631.0" prefWidth="947.0">
          <children>
-            <Label layoutX="14.0" layoutY="56.0" text="Coordenadas X:" />
-            <Label layoutX="220.0" layoutY="56.0" text="Coordenadas Y:" />
-            <TextField fx:id="tfLat" layoutX="116.0" layoutY="52.0" prefHeight="26.0" prefWidth="92.0" promptText="-15.7754084" />
-            <TextField fx:id="tfLon" layoutX="324.0" layoutY="52.0" prefHeight="26.0" prefWidth="92.0" promptText="-47.9411395" />
-            <Button fx:id="btnAtualizar" layoutX="533.0" layoutY="50.0" mnemonicParsing="false" onAction="#btnAtualizarLatLong" prefHeight="30.0" prefWidth="80.0" text="Atualizar" />
-            <Button fx:id="btnCapturar" layoutX="620.0" layoutY="50.0" mnemonicParsing="false" onAction="#btnCapturarCroqui" prefHeight="30.0" prefWidth="82.0" text="Capturar" />
-            <Button fx:id="btnObterCoord" layoutX="447.0" layoutY="49.0" mnemonicParsing="false" onAction="#btnObterCoordEvento" prefHeight="32.0" prefWidth="79.0" text="Lat Lon" />
-            <TextField fx:id="tfInserirLink" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="688.0" promptText="Colar link do Google Maps..." />
-         </children>
-      </Pane>
-      <GoogleMapView fx:id="mapView" layoutX="215.0" layoutY="230.0" prefHeight="385.0" prefWidth="531.0" />
-      <Pane layoutX="10.0" layoutY="23.0" prefHeight="64.0" prefWidth="864.0">
-         <children>
-            <Label layoutX="422.0" layoutY="2.0" text="RA:" />
-            <TextField layoutX="553.0" layoutY="23.0" prefHeight="26.0" prefWidth="120.0" />
-            <TextField layoutX="682.0" layoutY="23.0" prefHeight="26.0" prefWidth="120.0" />
-            <ChoiceBox layoutX="423.0" layoutY="23.0" prefHeight="28.0" prefWidth="120.0" />
-            <ChoiceBox layoutX="807.0" layoutY="21.0" prefHeight="0.0" prefWidth="43.0" />
-            <Label layoutX="14.0" layoutY="7.0" text="Endereço:" />
-            <TextField layoutX="14.0" layoutY="25.0" prefHeight="26.0" prefWidth="396.0" />
-            <Label layoutX="553.0" layoutY="4.0" text="CEP:" />
-            <Label layoutX="683.0" layoutY="4.0" text="Cidade:" />
-            <Label layoutX="809.0" layoutY="4.0" text="UF:" />
+            <ScrollPane layoutY="1.0" prefHeight="630.0" prefWidth="948.0">
+              <content>
+                <AnchorPane fx:id="aPaneInt" minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="944.0">
+                     <children>
+                        <Pane layoutY="7.0" prefHeight="363.0" prefWidth="933.0">
+                           <children>
+                              <TextField fx:id="tfLinkInt" layoutX="48.0" layoutY="133.0" prefHeight="25.0" prefWidth="759.0" promptText="Inserir link do GoogleMaps..." />
+                              <TextField fx:id="tfIntLat" layoutX="284.0" layoutY="166.0" prefHeight="25.0" prefWidth="100.0" promptText="-15.7754084" />
+                              <TextField fx:id="tfIntLon" layoutX="488.0" layoutY="166.0" prefHeight="25.0" prefWidth="100.0" promptText="-47.9411395" />
+                              <Label layoutX="190.0" layoutY="170.0" text="Coordenadas X:" />
+                              <Label layoutX="394.0" layoutY="170.0" text="Coordenadas Y:" />
+                              <Pane layoutX="58.0" layoutY="190.0" prefHeight="47.0" prefWidth="819.0">
+                                 <children>
+                                    <Button fx:id="btnIntNovo" layoutX="8.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnIntNovoHab" prefHeight="22.0" prefWidth="76.0" text="Novo" />
+                                    <Button fx:id="btnIntSalvar" layoutX="93.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnIntSalvarHab" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
+                                    <Button fx:id="btnIntEdit" layoutX="176.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnIntEditHab" prefHeight="22.0" prefWidth="76.0" text="Editar" />
+                                    <Button fx:id="btnIntExc" layoutX="260.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnIntExcHab" prefHeight="22.0" prefWidth="76.0" text="Excluir" />
+                                    <Button fx:id="btnIntCan" layoutX="344.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnIntCanHab" prefHeight="22.0" prefWidth="76.0" text="Cancelar" />
+                                    <Button fx:id="btnIntPesq" layoutX="724.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnIntPesqHab" prefHeight="22.0" prefWidth="76.0" text="Pesquisar" />
+                                    <TextField fx:id="tfIntPesq" layoutX="426.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
+                                 </children>
+                              </Pane>
+                              <Button fx:id="btnIntLatLon" layoutX="598.0" layoutY="166.0" mnemonicParsing="false" onAction="#btnEndLatLonHab" prefHeight="25.0" prefWidth="69.0" text="Lat Lon" />
+                              <TableView fx:id="tvListaInt" layoutX="21.0" layoutY="246.0" prefHeight="113.0" prefWidth="890.0">
+                                 <columns>
+                                    <TableColumn fx:id="tcDesEnd" prefWidth="363.0" text="Interferência" />
+                                    <TableColumn fx:id="tcEndRA" minWidth="0.0" prefWidth="250.0" text="Corpo Hídrico" />
+                                    <TableColumn fx:id="tcEndCid" prefWidth="276.0" text="UH" />
+                                 </columns>
+                              </TableView>
+                              <Label fx:id="lblEnd" layoutX="87.0" layoutY="3.0" prefHeight="25.0" prefWidth="726.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="27.0" layoutY="2.0" prefHeight="26.0" prefWidth="72.0" text="Endereço:" />
+                              <Button fx:id="btnBuscarInt" layoutX="823.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnBuscarIntHab" prefHeight="25.0" prefWidth="104.0" text="Buscar Endereço" />
+                              <Button fx:id="btnIntAtualizar" layoutX="676.0" layoutY="166.0" mnemonicParsing="false" onAction="#btnIntAtualizarHab" prefHeight="25.0" prefWidth="65.0" text="Atualizar" />
+                              <Pane layoutX="11.0" layoutY="28.0" prefHeight="95.0" prefWidth="914.0">
+                                 <children>
+                                    <ComboBox layoutX="23.0" layoutY="27.0" prefHeight="25.0" prefWidth="110.0" />
+                                    <Label layoutX="24.0" layoutY="8.0" text="Tipo de Captação:" />
+                                    <Label layoutX="384.0" layoutY="8.0" text="Corpo Hídrico:" />
+                                    <TextField layoutX="383.0" layoutY="27.0" prefHeight="25.0" prefWidth="220.0" />
+                                    <TextField layoutX="733.0" layoutY="25.0" prefHeight="25.0" prefWidth="38.0" />
+                                    <Label layoutX="734.0" layoutY="6.0" text="UH:" />
+                                    <Label layoutX="614.0" layoutY="7.0" text="Bacia:" />
+                                    <ComboBox layoutX="613.0" layoutY="26.0" prefHeight="25.0" prefWidth="110.0" />
+                                    <Label layoutX="264.0" layoutY="8.0" text="Subsistema:" />
+                                    <Label layoutX="144.0" layoutY="8.0" text="Tipo de Poço:" />
+                                    <ComboBox layoutX="143.0" layoutY="27.0" prefHeight="25.0" prefWidth="110.0" />
+                                    <ComboBox layoutX="263.0" layoutY="27.0" prefHeight="25.0" prefWidth="110.0" />
+                                    <Label layoutX="782.0" layoutY="7.0" text="Forma de Captação:" />
+                                    <ComboBox layoutX="781.0" layoutY="25.0" prefHeight="25.0" prefWidth="110.0" />
+                                    <TextField layoutX="23.0" layoutY="63.0" prefHeight="25.0" prefWidth="868.0" />
+                                 </children>
+                              </Pane>
+                              <Button layoutX="813.0" layoutY="133.0" mnemonicParsing="false" text="Buscar Link" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
          </children>
       </Pane>
    </children>

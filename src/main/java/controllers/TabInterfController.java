@@ -1,114 +1,82 @@
 package controllers;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
-
-import com.lynden.gmapsfx.GoogleMapView;
-import com.lynden.gmapsfx.MapComponentInitializedListener;
-import com.lynden.gmapsfx.javascript.object.GoogleMap;
-import com.lynden.gmapsfx.javascript.object.LatLong;
-import com.lynden.gmapsfx.javascript.object.MapOptions;
-import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
-import com.lynden.gmapsfx.javascript.object.Marker;
-import com.lynden.gmapsfx.javascript.object.MarkerOptions;
-
-import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
-
-
-	public class TabInterfController implements Initializable, MapComponentInitializedListener  {
+public class TabInterfController implements Initializable {
 
     @FXML private Pane tabInterferencia;
     
-    // TAB ENDEREÇO - GOOGLE MAPS ////WEB BROWSER
+    @FXML AnchorPane aPaneInt = new AnchorPane();
+    
+    //-- Botões do crud --//
+ 	@FXML Button btnIntLatLon = new Button();
+ 	@FXML Button btnIntAtualizar = new Button();
+	@FXML Button btnCapturar = new Button();
+	@FXML Button btnIntNovo = new Button();
+	@FXML Button btnIntSalvar = new Button();
+	@FXML Button btnIntEdit = new Button();
+	@FXML Button btnIntExc = new Button();
+	@FXML Button btnIntCan = new Button();
+	@FXML Button btnIntPesq = new Button();
+	@FXML Button btnBuscarInt = new Button();
 	
- 		// colocar alerta de webview sem conexao
- 					
- 					
- 	Double latCoord = -15.7754084; // latitude inicial do mapa - ADASA
- 	Double longCoord = -47.9411395; // longitude inicial do mapa - ADASA
- 	
- 	String linkSEI = "http://treinamento3.sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI";
- 	
- 	@FXML
- 	Button btnAtualizar = new Button();
- 	@FXML
- 	Button btnObterCoord = new Button();
- 	@FXML
- 	Button btnCapturar = new Button();
- 	@FXML
- 	TabPane tpTelaInicial = new TabPane();
-
-	// TAB ENDEREÇO - LATITUDE E LONGITUDE
-	@FXML
-	TextField tfLat = new TextField();
-	@FXML
-	TextField tfLon = new TextField();
-	@FXML
-	TextField tfInserirLink = new TextField();
- 		
-	// TAB ENDEREÇO - BOTÕES
-	@FXML 
-	Button btnHome = new Button();
-	@FXML
-	ImageView imgVHome = new ImageView();
-
-
-	//TAB ENDEREÇO - GOOGLE MAPS - GMAPSFX
-	@FXML
-	private GoogleMapView mapView; 
+	@FXML Label lblEnd = new  Label();
 	
-	private GoogleMap map;
+	//-- Tab interferência latitude e longitude --//
+	@FXML TextField tfIntLat = new TextField();
+	@FXML TextField tfIntLon = new TextField();
+	@FXML TextField tfLinkInt = new TextField();
+	@FXML TextField tfIntPesq = new TextField();
 	
-	// BOTÃO - OBTER COORDENADAS E ATUALIZAR GMAPSFX
-	public void btnAtualizarLatLong (ActionEvent event) {
-		latCoord = Double.parseDouble(tfLat.getText());
-		longCoord = Double.parseDouble(tfLon.getText());
-		
-		mapInitialized();
+	public void btnBuscarIntHab (ActionEvent event) {
 		
 	}
-			
-	// BOTÃO - CAPTURAR TELA DO MAPA PARA O CROQUI - NAO ESTÁ FUNCIONANDO
-	/*
-	 *  ‪C:\Users\fabricio\Documents\croqui.png (A sintaxe do nome do arquivo, do nome do diretório ou do rótulo do volume está incorreta)
-	at java.base/java.io.RandomAccessFile.open0(Native Method)
-	at java.base/java.io.RandomAccessFile.open(Unknown Source)
-	 */
+ 		
+	public void btnLatLongHab (ActionEvent event) {
+		
+	}
+	
+	public void btnIntAtualizarHab (ActionEvent event) {
+		
+	}
+	public void btnIntNovoHab (ActionEvent event) {
+		
+	}
+	public void btnIntSalvarHab (ActionEvent event) {
+		
+	}
+	
+	public void btnIntEditHab (ActionEvent event) {
+		
+	}
+	public void btnIntExcHab (ActionEvent event) {
+		
+	}
+	public void btnIntCanHab (ActionEvent event) {
+		
+	}
+	public void btnIntPesqHab (ActionEvent event) {
+		
+	}
+
 	public void btnCapturarCroqui (ActionEvent event) {
 	
-	WritableImage i = mapView.snapshot(new SnapshotParameters(), null);
 	
-	File output = new File("‪C:\\Users\\fabricio\\Documents\\croqui.png");
-	
-	// ‪C:\Users\fabricio\Documents
-	 //"‪C:\\Users\\fabricio\\Desktop\\imagens\\croqui.png"
-	try {
-		//ImageIO.write(i, "png", output); 
-		ImageIO.write(SwingFXUtils.fromFXImage(i, null), "png", output);
-	} catch (IOException e){
-		e.printStackTrace();
-	}
 	}
 	
-	public void btnObterCoordEvento (ActionEvent event) {
+	public void btnEndLatLonHab (ActionEvent event) {
 			
-		String linkCoord = (tfInserirLink.getText());
+		String linkCoord = (tfLinkInt.getText());
 		
 		int latIni= linkCoord.indexOf("@");
 		String lat = linkCoord.substring(latIni);
@@ -116,54 +84,28 @@ import javafx.scene.layout.Pane;
 		int latF = lat.indexOf(",");
 		String latitude = lat.substring(1, latF);
 		
-		String longitude = lat.substring(latF + 1, latF + 1 + latitude.length());
+		String longitude = lat.substring(latF + 1, latF + latitude.length());
 		
-		tfLat.setText(latitude);
-		tfLon.setText(longitude);
+		tfIntLat.setText(latitude);
+		tfIntLon.setText(longitude);
 		
 	}
 
-	// INICIALIZE DO GOOGLE MAPS
-	public void mapInitialized() {
-	
-	// Propriedades e opcoes do mapa //
-	MapOptions mapaOpcoes = new MapOptions();
-	
-	mapaOpcoes.center(new LatLong(latCoord,longCoord))
-    .mapType(MapTypeIdEnum.SATELLITE)
-    .overviewMapControl(false)
-    .panControl(false)
-    .rotateControl(false)
-    .scaleControl(false)
-    .streetViewControl(false)
-    .zoomControl(true)
-    .zoom(12)
-    ;
-	
-	map = mapView.createMap(mapaOpcoes);
-
-		// ADICIONAR MARCADOR AO MAPA
-	    MarkerOptions marcador = new MarkerOptions();
-	    
-	    marcador.position(new LatLong(latCoord,longCoord));
-	    
-	    Marker markerMap = new Marker(marcador);
-	    
-	    map.addMarker( markerMap );  
-		}
-
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		//MAPA
-		Platform.runLater(() ->{
-		mapView.addMapInializedListener(this);
-		});
-		
-		/*
-		Platform.runLater(() ->{
-		navegarWebInitialize();
-		});
-		*/
 	}		
 			
 }
+
+
+/*
+File output = new File("‪C:\\Users\\fabricio\\Documents\\croqui.png");
+
+try {
+	//ImageIO.write(i, "png", output); 
+	ImageIO.write(SwingFXUtils.fromFXImage(i, null), "png", output);
+} catch (IOException e){
+	e.printStackTrace();
+}
+*/
+	
