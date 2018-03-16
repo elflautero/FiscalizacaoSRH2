@@ -37,6 +37,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import netscape.javascript.JSObject;
 import tabela.EnderecoTabela;
 
 public class TabEnderecoController implements Initializable {
@@ -129,13 +130,11 @@ public class TabEnderecoController implements Initializable {
 		
 		tvListaEnd.setItems(obsListEnderecoTabela); 
 	
- 		
  	}
  	
  	// método selecionar endereço -- //
  	public void selecionarEndereco () {
 	
- 		
 		tvListaEnd.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
 			
@@ -209,22 +208,47 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	
+	public static final class MyMapSearch {
+		
+	//-- obter as coordenadas do javascript --//
+	public void getEndCoord (String lat, String lon) {
+			
+			System.out.println("Classe MyMapSearch " + lat + " e " + lon);
+				
+		}
+	}
+	
 	//-- Buscador de endereços e coordenadas --//
 	public void btnEndMapsHab (ActionEvent event) throws IOException {
 		
-		File file = new File("../FiscalizacaoSRH/src/main/resources/html/mapSearch.html");
+		final WebView wView = new WebView();
+		//WebView wView = new WebView();
+		WebEngine wEnginer = wView.getEngine();
 		
-		Document docHtml = Jsoup.parse(file, "UTF-8").clone();
-	
-		linkEndMap = docHtml.toString();
+		wEnginer.getLoadWorker().stateProperty().addListener(
+				
+				new ChangeListener<Worker.State>() {
+					@Override
+					public void changed (final ObservableValue<? extends Worker.State> observable, final Worker.State
+							oldValue,  final Worker.State newValue) {
+						if (newValue == Worker.State.SUCCEEDED) {
+							System.out.println("succeded");
+							JSObject windowObject = (JSObject) wEnginer.executeScript("window");
+							windowObject.setMember("app", new MyMapSearch());
+							
+						} 
+					}
+				}
+			);
 		
-		WebView wvEndMapsView = new WebView();
-		WebEngine weEndMapsView = wvEndMapsView.getEngine();
-		weEndMapsView.loadContent(linkEndMap);
-		wvEndMapsView.setMaxSize(500, 300);
+	    URL url = getClass().getResource("/html/mapSearch.html");	
+		wEnginer.load(url.toString());
 		
+		Pane pane = new Pane(wView);
+		pane.setPrefSize(1211, 610);
+		wView.setPrefSize(1211, 620);
 		Stage stage = new Stage(StageStyle.UTILITY);
-        stage.setScene(new Scene(wvEndMapsView, 911, 600));
+        stage.setScene(new Scene(pane));
         stage.show();
 	}
 	
@@ -525,3 +549,198 @@ public class TabEnderecoController implements Initializable {
 		
 		aPaneEnd.getChildren().add(root);
 	*/
+
+
+/*
+ //-- Buscador de endereços e coordenadas --//
+	public void btnEndMapsHab (ActionEvent event) throws IOException {
+		
+		File file = new File("../FiscalizacaoSRH/src/main/resources/html/mapSearch.html");
+		
+		Document docHtml = Jsoup.parse(file, "UTF-8").clone();
+	
+		linkEndMap = docHtml.toString();
+		
+		WebView wvEndMapsView = new WebView();
+		WebEngine weEndMapsView = wvEndMapsView.getEngine();
+		weEndMapsView.loadContent(linkEndMap);
+		wvEndMapsView.setMaxSize(500, 300);
+		
+		
+		
+		Stage stage = new Stage(StageStyle.UTILITY);
+        stage.setScene(new Scene(wvEndMapsView, 911, 600));
+        stage.show();
+	}
+	*/
+
+
+/*
+ 
+ File file = new File("../FiscalizacaoSRH/src/main/resources/html/mapSearch.html");
+		
+		Document docHtml = Jsoup.parse(file, "UTF-8").clone();
+	
+		linkEndMap = docHtml.toString();
+		
+		WebView wvEndMapsView = new WebView();
+		WebEngine weEndMapsView = wvEndMapsView.getEngine();
+		
+		
+		//weEndMapsView.loadContent("../FiscalizacaoSRH/src/main/resources/html/mapSearch.html");
+		weEndMapsView.loadContent(linkEndMap);
+		wvEndMapsView.setMaxSize(500, 300);
+		
+		JSObject window = (JSObject) weEndMapsView.executeScript("window");
+		window.setMember("app", new TabEnderecoController());
+  */
+
+
+/*
+ 
+ 
+ //-- Buscador de endereços e coordenadas --//
+	public void btnEndMapsHab (ActionEvent event) throws IOException {
+		
+		//File file = new File("../FiscalizacaoSRH/src/main/resources/html/mapSearch.html");
+		
+		//Document docHtml = Jsoup.parse(file, "UTF-8").clone();
+	
+		//linkEndMap = docHtml.toString();
+		
+		WebView wvEndMapsView = new WebView();
+		WebEngine weEndMapsView = wvEndMapsView.getEngine();
+		
+		
+		weEndMapsView.getLoadWorker().stateProperty().addListener(
+				
+				new ChangeListener<Worker.State>() {
+					@Override
+					public void changed (ObservableValue<? extends Worker.State> observable, Worker.State
+							oldValue, Worker.State newValue) {
+						if (newValue == Worker.State.SUCCEEDED) {
+							System.out.println("succeded");
+							JSObject windowObject = (JSObject) weEndMapsView.executeScript("window");
+							windowObject.setMember("app", new TabEnderecoController());
+							windowObject.call("ready");
+							
+						}
+					}
+				}
+			);
+				
+		URL url = getClass().getResource("/html/mapSearch.html");	
+		weEndMapsView.load(url.toString());
+		
+  */
+
+
+/*
+ 
+ public static class MeuMapa () {
+		
+		//-- obter as coordenadas do javascript --//
+		public void getEndCoord (String lat, String lon) {
+			
+			try {
+				//tfLatMap.setText(lat):
+				tfEndLat.setText(lat);
+				tfEndLon.setText(lon);
+			
+				System.out.println("primeiro método: " + lat + " e " + lon);
+				
+				getEndCoordJavaFX (lat, lon);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+ 
+ */
+
+
+//File file = new File("../FiscalizacaoSRH/src/main/resources/html/mapSearch.html");
+
+//Document docHtml = Jsoup.parse(file, "UTF-8").clone();
+
+//linkEndMap = docHtml.toString();
+
+
+//weEndMapsView.loadContent(linkEndMap);
+/*
+weEndMapsView.loadContent("../FiscalizacaoSRH/src/main/resources/html/mapSearch.html");
+weEndMapsView.loadContent(linkEndMap);
+wvEndMapsView.setMaxSize(500, 300);
+
+JSObject window = (JSObject) weEndMapsView.executeScript("window");
+window.setMember("app", new TabEnderecoController());
+
+
+engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+    if (Worker.State.SUCCEEDED.equals(newValue)) {
+    	
+    }
+});
+
+*/
+
+
+//TENTANDO INCLUIR O WEBVIEW UM TEXTFIELD JAVAFX E PREENCHER COM AS COORDENADAS
+
+//TextField tfLatMap = new TextField();
+//tfLatMap.setText("TextField");
+//tfLatMap.setLayoutY(10);
+
+/*
+	DOIS WEBVIEW PARA DIVIDIR A PARTE DO JSOBJECT DO TEXTFIELD QUE RECEBE AS COORDENADAS
+	
+	NÃO DEU CERTO, TERMINA QUE O JSOBJECT PERDE A REFERÊNCIA
+	
+	
+public void btnEndMapsHab (ActionEvent event) throws IOException {
+	
+	WebView wvEndMapsView = new WebView();
+	WebView wvEndBuscador = new WebView();
+	
+	WebEngine weEndMapsView = wvEndMapsView.getEngine();
+	WebEngine weEngineEndBuscador = wvEndBuscador.getEngine();
+	
+	URL url = getClass().getResource("/html/mapSearch.html");	
+	weEndMapsView.load(url.toString());
+	
+	weEngineEndBuscador.getLoadWorker().stateProperty().addListener(
+			
+			new ChangeListener<Worker.State>() {
+				@Override
+				public void changed (ObservableValue<? extends Worker.State> observable, Worker.State
+						oldValue, Worker.State newValue) {
+					if (newValue == Worker.State.SUCCEEDED) {
+						System.out.println("succeded");
+						JSObject windowObject = (JSObject) weEngineEndBuscador.executeScript("window");
+						windowObject.setMember("app", new MyMapSearch());
+						
+					} 
+				}
+			}
+		);
+			
+	URL urlEndBuscador = getClass().getResource("/html/endBuscador.html");	
+	
+	weEngineEndBuscador.load(urlEndBuscador.toString());
+	
+	wvEndMapsView.setLayoutY(50);
+	wvEndBuscador.setLayoutY(5);
+	
+	Pane paneMap = new Pane();
+	paneMap.getChildren().setAll(wvEndBuscador, wvEndMapsView);
+	
+	Stage stage = new Stage(StageStyle.UTILITY);
+    stage.setScene(new Scene(paneMap));  //911600   
+    //stage.setScene(new Scene(wvEndMapsView, 911, 600));
+    stage.show();
+}
+
+*/
+

@@ -4,8 +4,13 @@
 
 <style>
 
+#div {
+   margin: 5px;
+   transform: translate(10%, -20%) } 
+   
 #map {
   height: 90%;
+  
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
@@ -67,6 +72,7 @@ html, body {
   text-overflow: ellipsis;
   width: 300px;
 }
+
 #buttonCoord {
   background-color: #fff;
   font-family: Roboto;
@@ -78,7 +84,6 @@ html, body {
   width: 100px;
   
 }
-
 
 #pac-input:focus {
   border-color: #4d90fe;
@@ -116,6 +121,7 @@ html, body {
 var uluru = {lat: -15.7751152, lng: -47.9403877};
 
 function initAutocomplete() {
+	
 	  var map = new google.maps.Map(document.getElementById('map'), {
 	    center: uluru,
 	    zoom: 13,
@@ -137,8 +143,8 @@ function initAutocomplete() {
 
 	google.maps.event.addListener(map, "click", function(event) {
 
-	      var lat = event.latLng.lat().toFixed(6);
-	      var lng = event.latLng.lng().toFixed(6);
+	      var lat = event.latLng.lat().toFixed(7);
+	      var lng = event.latLng.lng().toFixed(7);
 
 	      //createMarker(lat, lng);
 
@@ -211,23 +217,38 @@ function initAutocomplete() {
 	  });
 	}
 	
-    function coordJavaScript (){
-	  var latGMaps = document.getElementById("lat").value;
-	  var lonGMaps = document.getElementById("lng").value;
-	  //alert (latGMaps + " , " + lonGMaps);
-	  document.getElementById("pac-input").value = "";
-	  document.getElementById("pac-input").value =  latGMaps + " , " + lonGMaps ;
-	}
+</script>
+
+<script>
+
+function coordJavaScript (){
+	
+	var latGMaps = document.getElementById("lat").value;
+	var lonGMaps = document.getElementById("lng").value;
+
+	app.getEndCoord (latGMaps, lonGMaps);
+
+}
+
+function reload() {
+	
+	window.location.reload();
+
+}
 
 </script>
 
 <body>
 
-<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+<div id="div">
 <input type="text" class="controlsLat" name="lat" id="lat" placeholder="Latitude" />
 <input type="text" class="controlsLat" name="lng" id="lng" placeholder="Longitude" />
 <button class="controlsLat" onClick="coordJavaScript()" name="coordButton" id="buttonCoord">Capturar</button>
+<button class="controlsLat" onClick="reload()" name="coordButton" id="buttonCoord">Reload</button>
 
+</div>
+
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
 
 <div id="map"></div>
 
