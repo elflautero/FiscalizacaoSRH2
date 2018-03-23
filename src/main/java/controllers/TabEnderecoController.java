@@ -20,8 +20,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -30,6 +32,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -37,7 +41,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import netscape.javascript.JSObject;
+import principal.GoogleMap;
 import tabela.EnderecoTabela;
 
 public class TabEnderecoController implements Initializable {
@@ -83,6 +87,14 @@ public class TabEnderecoController implements Initializable {
 	@FXML TableColumn<EnderecoTabela, String> tcDesEnd;
 	@FXML TableColumn<EnderecoTabela, String> tcEndRA;
 	@FXML TableColumn<EnderecoTabela, String> tcEndCid;
+	
+	//-- botão para chamar o mapa javascript --//
+	@FXML Image imgGetCoord = new Image(getClass().getResourceAsStream("../images/getCoord.png"));
+	@FXML Button btnCoord = new Button ();
+	
+	//-- coordenadas do mapa javascript --//
+	static String latDec;
+	static String lngDec;
 	
 	//-- String para chamar as coordenadas corretas do mapa --//
 	String linkEndMap;
@@ -216,39 +228,36 @@ public class TabEnderecoController implements Initializable {
 			System.out.println("Classe MyMapSearch " + lat + " e " + lon);
 				
 		}
+	
 	}
 	
 	//-- Buscador de endereços e coordenadas --//
 	public void btnEndMapsHab (ActionEvent event) throws IOException {
+
+		Group group = new Group();
 		
-		final WebView wView = new WebView();
-		//WebView wView = new WebView();
-		WebEngine wEnginer = wView.getEngine();
+		GoogleMap google = new GoogleMap();
+	
+		group.getChildren().addAll(google, btnCoord);
 		
-		wEnginer.getLoadWorker().stateProperty().addListener(
-				
-				new ChangeListener<Worker.State>() {
-					@Override
-					public void changed (final ObservableValue<? extends Worker.State> observable, final Worker.State
-							oldValue,  final Worker.State newValue) {
-						if (newValue == Worker.State.SUCCEEDED) {
-							System.out.println("succeded");
-							JSObject windowObject = (JSObject) wEnginer.executeScript("window");
-							windowObject.setMember("app", new MyMapSearch());
-							
-						} 
-					}
-				}
-			);
+		Scene scene = new Scene(group);
 		
-	    URL url = getClass().getResource("/html/mapSearch.html");	
-		wEnginer.load(url.toString());
+		btnCoord.setLayoutY(5);
+		btnCoord.setLayoutX(490);
+		btnCoord.setGraphic(new ImageView(imgGetCoord));
 		
-		Pane pane = new Pane(wView);
-		pane.setPrefSize(1211, 610);
-		wView.setPrefSize(1211, 620);
+		btnCoord.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	tfEndLat.setText(latDec);
+        		tfEndLon.setText(lngDec);
+        		
+            }
+        });
+	    
 		Stage stage = new Stage(StageStyle.UTILITY);
-        stage.setScene(new Scene(pane));
+		stage.setWidth(1300);
+        stage.setScene(scene);
+        
         stage.show();
 	}
 	
@@ -529,6 +538,16 @@ public class TabEnderecoController implements Initializable {
         });
 		
 	}
+	
+	//-- método atualizar latitude e longitude --//
+	
+		public void setLatLng (double lat, double lng) {
+		
+			latDec = Double.toString(lat);
+			lngDec = Double.toString(lng);
+			
+		}
+
 	
 	//-- Main Controller --//
 	public void init(MainController mainController) {

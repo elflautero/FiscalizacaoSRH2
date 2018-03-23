@@ -29,10 +29,10 @@
                         <Label layoutX="721.0" layoutY="40.0" text="Cidade:" />
                         <Label layoutX="878.0" layoutY="38.0" text="UF:" />
                         <TextField fx:id="tfLinkEnd" layoutX="22.0" layoutY="94.0" prefHeight="25.0" prefWidth="835.0" promptText="Inserir link do GoogleMaps..." />
-                        <TextField fx:id="tfEndLat" layoutX="284.0" layoutY="127.0" prefHeight="25.0" prefWidth="100.0" promptText="-15.7754084" />
-                        <TextField fx:id="tfEndLon" layoutX="488.0" layoutY="127.0" prefHeight="25.0" prefWidth="100.0" promptText="-47.9411395" />
-                        <Label layoutX="190.0" layoutY="131.0" text="Coordenadas X:" />
-                        <Label layoutX="394.0" layoutY="131.0" text="Coordenadas Y:" />
+                        <TextField fx:id="tfEndLat" layoutX="259.0" layoutY="127.0" prefHeight="25.0" prefWidth="140.0" promptText="-15.7754084" />
+                        <TextField fx:id="tfEndLon" layoutX="504.0" layoutY="127.0" prefHeight="25.0" prefWidth="140.0" promptText="-47.9411395" />
+                        <Label layoutX="165.0" layoutY="131.0" text="Coordenadas X:" />
+                        <Label layoutX="410.0" layoutY="131.0" text="Coordenadas Y:" />
                         <Pane layoutX="58.0" layoutY="152.0" prefHeight="47.0" prefWidth="819.0">
                            <children>
                               <Button fx:id="btnEndNovo" layoutX="8.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnEndNovoHab" prefHeight="22.0" prefWidth="76.0" text="Novo" />
@@ -44,7 +44,7 @@
                               <TextField fx:id="tfEndPesq" layoutX="426.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
                            </children>
                         </Pane>
-                        <Button fx:id="btnEndLatLon" layoutX="598.0" layoutY="127.0" mnemonicParsing="false" onAction="#btnEndLatLonHab" prefHeight="25.0" prefWidth="69.0" text="Lat Lon" />
+                        <Button fx:id="btnEndLatLon" layoutX="655.0" layoutY="127.0" mnemonicParsing="false" onAction="#btnEndLatLonHab" prefHeight="25.0" prefWidth="69.0" text="Lat Lon" />
                         <TableView fx:id="tvListaEnd" layoutX="22.0" layoutY="209.0" prefHeight="113.0" prefWidth="890.0">
                            <columns>
                               <TableColumn fx:id="tcDesEnd" prefWidth="363.0" text="Endereço" />
@@ -59,7 +59,7 @@
                         </Label>
                         <Label layoutX="27.0" layoutY="2.0" prefHeight="26.0" prefWidth="72.0" text="Documento:" />
                         <Button fx:id="btnBuscarDoc" layoutX="861.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnBuscarDocHab" text="Buscar" />
-                        <Button fx:id="btnEndAtualizar" layoutX="676.0" layoutY="127.0" mnemonicParsing="false" onAction="#btnEndAtualizarHab" prefHeight="25.0" prefWidth="65.0" text="Atualizar" />
+                        <Button fx:id="btnEndAtualizar" layoutX="730.0" layoutY="127.0" mnemonicParsing="false" onAction="#btnEndAtualizarHab" prefHeight="25.0" prefWidth="65.0" text="Atualizar" />
                         <Button fx:id="btnEndMaps" layoutX="861.0" layoutY="94.0" mnemonicParsing="false" onAction="#btnEndMapsHab" prefHeight="25.0" prefWidth="50.0" text="Maps" />
                      </children>
                   </Pane>

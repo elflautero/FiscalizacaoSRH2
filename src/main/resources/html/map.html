@@ -1,0 +1,365 @@
+<html>
+
+<style>
+
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+
+ #map  {
+   height: 93% 
+   
+   }
+
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.controls {
+  margin-top: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.coord {
+  margin-top: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 300px;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+.pac-container {
+  font-family: Roboto;
+}
+
+#type-selector {
+  color: #fff;
+  background-color: #4d90fe;
+  padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+#target {
+  width: 345px;
+}
+
+//-- busca reversa, coordenada para endereço --//
+#floating-panel {
+  position: absolute;
+  top: 1px;
+  left: 25%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 10px;
+  padding-left: 10px;
+}
+#floating-panel {
+  position: absolute;
+  top: 1px;
+  left: 70%;
+  margin-left: -180px;
+  width: 500px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+}
+#latlng {
+  width: 300px;
+  
+}
+
+#coord_panel {
+	margin-bottom: 0.4%;
+	margin-top: 0.4%%;
+	margin-left: 0.4%;
+	margin-right: 0.4%;
+	background-color: #fff;
+	border: 1.5px solid #999;
+}
+
+.btnSearchCoord span.icon {
+	background: url(../images/searchCoord.png) no-repeat;
+	float: left;
+    float: left;
+    width: 24px;
+    height: 24px;
+}
+
+#labelLat {
+	margin-left: 25px;
+	
+}
+
+#labelBuscar {
+	margin-left: 350px;
+
+}
+ 
+</style>
+
+
+<script>
+
+function initAutocomplete() {
+
+	//-- ADASA -15.775073004902042, -47.940351677729836    --//
+	 var defLatLng = new google.maps.LatLng(-15.775073004902042, -47.940351677729836);
+	 var mapOptions = {
+	        center: defLatLng,
+	        zoom: 13,
+	        mapTypeId: google.maps.MapTypeId.HYBRID,
+	        //disableDefaultUI: true,
+	        //panControl: false
+	        scaleControl: true,
+	    	streetViewControl: false,
+	    };
+	 		map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+	 		google.maps.event.addListener(map, 'click', get_click_position);
+
+	    marker = new google.maps.Marker({
+	        position: defLatLng,
+	        map: map,
+	        icon: "img/Pin.png"
+	    }
+      
+      );
+      
+    var geocoder = new google.maps.Geocoder;
+  	var infowindow = new google.maps.InfoWindow;
+
+ 	document.getElementById('submit').addEventListener('click', function() {
+   	geocodeLatLng(geocoder, map, infowindow);
+ 	});
+      
+    function geocodeLatLng(geocoder, map, infowindow) {
+	  	var input = document.getElementById('latlng').value;
+	  	var latlngStr = input.split(',', 2);
+	  	var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+		  geocoder.geocode({'location': latlng}, function(results, status) {
+		    if (status === 'OK') {
+		      if (results[1]) {
+		        map.setZoom(11);
+		        var marker = new google.maps.Marker({
+		          position: latlng,
+		          map: map
+		        });
+	        infowindow.setContent(results[1].formatted_address);
+	        infowindow.open(map, marker);
+	      } else {
+	        window.alert('No results found');
+	      }
+	    } else {
+	      window.alert('Geocoder failed due to: ' + status);
+	    }
+  		});
+	}
+
+	  // Create the search box and link it to the UI element.
+	  var input = document.getElementById('pac-input');
+	  var searchBox = new google.maps.places.SearchBox(input);
+	  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+	
+	  // Bias the SearchBox results towards current map's viewport.
+	  map.addListener('bounds_changed', function() {
+	    searchBox.setBounds(map.getBounds());
+	  });
+	
+	  var markers = [];
+	  // Listen for the event fired when the user selects a prediction and retrieve
+	  // more details for that place.
+	  searchBox.addListener('places_changed', function() {
+	    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    // Clear out the old markers.
+    markers.forEach(function(marker) {
+      marker.setMap(null);
+    });
+    markers = [];
+
+    // For each place, get the icon, name and location.
+    var bounds = new google.maps.LatLngBounds();
+    places.forEach(function(place) {
+      if (!place.geometry) {
+        console.log("Returned place contains no geometry");
+        return;
+      }
+      var icon = {
+        //url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+
+      // Create a marker for each place.
+      markers.push(new google.maps.Marker({
+        map: map,
+        icon: icon,
+        title: place.name,
+        position: place.geometry.location
+      }));
+
+      if (place.geometry.viewport) {
+        // Only geocodes have viewport.
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    map.fitBounds(bounds);
+  });
+  
+		function get_click_position(event){
+        var location = event.latLng;
+        var lat = location.lat();
+        var lng = location.lng();
+        setMarkerPosition(lat, lng);
+
+        //-- preencher os campos do input com as coordenas--//
+        document.getElementById('lat').value = lat;
+ 	    document.getElementById('lng').value = lng;
+
+        app.handle(lat, lng);
+        }
+
+        function setMarkerPosition(lat, lng) {
+            var clickLatLng = new google.maps.LatLng(lat, lng);
+            marker.setPosition(clickLatLng);
+        }
+
+        function startJumping(){
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+
+        function stopJumping(){
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+
+        function setMapCenter(lat, lng) {
+            var latlng = new google.maps.LatLng(lat, lng);
+            map.setCenter(latlng);
+        }
+
+        function switchSatellite() {
+            var mapOptions = {
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+            };
+            map.setOptions(mapOptions);
+            setLightMarkerIcon();
+        }
+
+        function switchRoadmap() {
+            var mapOptions = {
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map.setOptions(mapOptions);
+            setDarkMarkerIcon();
+        }
+
+        function switchHybrid() {
+            var mapOptions = {
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            };
+            map.setOptions(mapOptions);
+            setLightMarkerIcon();
+        }
+
+        function switchTerrain() {
+            var mapOptions = {
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+            };
+            map.setOptions(mapOptions);
+            setDarkMarkerIcon();
+        }
+
+        function setDarkMarkerIcon() {
+            marker.setIcon("img/Pin.png");
+        }
+
+        function setLightMarkerIcon() {
+            marker.setIcon("img/Pin_s.png");
+        }
+
+}
+</script>
+
+<body>
+<div id="coord_panel">
+		
+		<label for="latitude" id="labelLat">
+		Latitude: 
+		<input id="lat"  type="text" name="latitude"></label>
+
+		<label for="longitude">
+		Longitude: 
+		<input id="lng"  type="text" name="longitude"></label>
+		
+		<label for="adasa" id="labelBuscar">
+		Buscar: 
+		<input id="latlng" type="text" value="-15.775073004902042, -47.940351677729836" name="adasa"></label>
+		
+		<button id="submit" class="btnSearchCoord"><span class="icon"></span></button>
+</div>
+
+<input id="pac-input" class="controls" type="text" placeholder="Buscar Endereço">
+<div id="map"></div>
+
+
+<script>
+//-- pegar coordenada e enviar para o textfield javafx --//
+function get_Coord (){
+    
+	var lat = document.getElementById('lat').value;
+    var lng = document.getElementById('lng').value;
+    
+    app.handle(lat, lng);
+    
+    }
+
+</script>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnDFMB5jZdijtWMqKg29OgvnCPEtxyMkI&libraries=places&callback=initAutocomplete" async defer></script>
+
+
+</body>
+
+</html>
