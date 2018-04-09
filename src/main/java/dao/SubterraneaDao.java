@@ -7,81 +7,70 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import entity.Endereco;
+import entity.Denuncia;
 import entity.HibernateUtil;
+import entity.Subterranea;
 
-public class EnderecoDao {
-
+public class SubterraneaDao {
 	
-public void salvaEndereco (Endereco endereco) {
+public void salvaSubterranea (Subterranea subterranea) {
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.save(endereco);
+		s.save(subterranea);
 		s.getTransaction().commit();
 		s.close();
 		
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Endereco> listEndereco(String strPesquisaEnd) {
-	
-		List<Endereco> list = new ArrayList<Endereco>();
+	public List<Subterranea> listSubterranea(String strSubPesquisa) {
+		List<Subterranea> list = new ArrayList<Subterranea>();
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		
 		s.beginTransaction();
 		
-		Criteria crit = s.createCriteria(Endereco.class);
-		crit.add(Restrictions.like("Desc_Endereco", '%' + strPesquisaEnd + '%')).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		Criteria crit = s.createCriteria(Denuncia.class);
+		crit.add(Restrictions.like("sub_Codigo", '%' + strSubPesquisa + '%'));
 		list = crit.list();
-		
-		//.setResultTransformer(crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY));
 		
 		s.getTransaction().commit();
 		s.close();
 		return list;
 	}
 	
-	public void removeEndereco(Integer id) {
+	public void removeSubterranea(Integer id) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		Endereco e = (Endereco) s.load(Endereco.class, id);
-		s.delete(e);
+		Subterranea sub = (Subterranea) s.load(Subterranea.class, id);
+		s.delete(sub);
 		s.getTransaction().commit();
 		s.close();
 	}
 
-	public void editarEndereco(Endereco endereco) {
+	public void editarSubterranea(Subterranea subterranea) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.update(endereco);
+		s.update(subterranea);
 		s.getTransaction().commit();
 		s.close();
 	}
 	
-	public void salvaEditar (Endereco endereco) {
+	public void mergeSubterranea(Subterranea subterranea) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.saveOrUpdate(endereco);  // update(endereco);
+		s.merge(subterranea);
 		s.getTransaction().commit();
 		s.close();
 	}
 	
-	public void persistEnd (Endereco endereco) {
+	public void persistSubterranea(Subterranea subterranea) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.persist(endereco);
+		s.persist(subterranea);
 		s.getTransaction().commit();
 		s.close();
 	}
-	
-	public void mergeEnd (Endereco endereco) {
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		s.beginTransaction();
-		s.merge(endereco);
-		s.getTransaction().commit();
-		//s.flush(); // para retornar o id do objeto gravado
-		s.close();
-	}
+
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="209.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ChoiceBox fx:id="cbCaesb" layoutX="178.0" layoutY="55.0" prefHeight="25.0" prefWidth="54.0" />
+      <Label layoutX="29.0" layoutY="59.0" text="Área atendida pela Caesb: " />
+      <Label layoutX="260.0" layoutY="59.0" text="Local de Captação: " />
+      <ChoiceBox fx:id="cbCaptacao" layoutX="388.0" layoutY="55.0" prefHeight="25.0" prefWidth="124.0" />
+      <ChoiceBox fx:id="cbFormaCaptacao" layoutX="659.0" layoutY="55.0" prefWidth="150.0" />
+      <Label layoutX="537.0" layoutY="59.0" text="Forma de Captação: " />
+      <Label layoutX="88.0" layoutY="109.0" text="Marca da Bomba: " />
+      <Label layoutX="353.0" layoutY="109.0" text="Potência da Bomba (cv): " />
+      <Label layoutX="145.0" layoutY="152.0" text="Tamanho da Porpriedade (ha): " />
+      <Label layoutX="558.0" layoutY="109.0" text="Tempo (h/dia): " />
+      <TextField layoutX="192.0" layoutY="105.0" />
+      <TextField layoutX="492.0" layoutY="105.0" prefHeight="25.0" prefWidth="54.0" />
+      <TextField layoutX="319.0" layoutY="148.0" prefHeight="25.0" prefWidth="102.0" />
+      <TextField layoutX="648.0" layoutY="105.0" />
+      <Label layoutX="479.0" layoutY="152.0" text="Em operação desde: " />
+      <DatePicker layoutX="599.0" layoutY="148.0" prefHeight="25.0" prefWidth="124.0" />
+      <Label layoutX="14.0" layoutY="6.0" text="Superficial">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

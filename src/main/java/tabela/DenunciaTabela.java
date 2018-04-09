@@ -17,8 +17,14 @@ public class DenunciaTabela {
 	
 	// CONSTRUTOR 
 	
-	public DenunciaTabela (int Cod_Denuncia, String Doc_Denuncia, String Doc_SEI_Denuncia, 
-			String Proc_SEI_Denuncia, String Desc_Denuncia, Endereco enderecoObjetoFK) {
+	public DenunciaTabela (
+			
+			int Cod_Denuncia, 
+			String Doc_Denuncia, 
+			String Doc_SEI_Denuncia, 
+			String Proc_SEI_Denuncia, 
+			String Desc_Denuncia, 
+			Endereco enderecoObjetoFK) {
 		
 		super();
 		

@@ -25,6 +25,7 @@ public class EnderecoTabela {
 	
 	public EnderecoTabela (int Cod_Endereco, String Desc_Endereco, String RA_Endereco,String CEP_Endereco,
 			String Cid_Endereco, String UF_Endereco, Double Lat_Endereco, Double Lon_Endereco, List <Denuncia> denuncias ) {
+		
 		super();
 		
 		this.Cod_Endereco = new SimpleIntegerProperty(Cod_Endereco);

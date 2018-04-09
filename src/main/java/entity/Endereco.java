@@ -13,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import tabela.EnderecoTabela;
 
 @Entity
@@ -23,6 +26,7 @@ public class Endereco implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column 
 	private int Cod_Endereco;
+	
 	
 	@Column (columnDefinition="varchar(90)")
 	private String Desc_Endereco;
@@ -42,28 +46,40 @@ public class Endereco implements Serializable{
 	@Column
 	private Double Lat_Endereco;
 	
-	public Double getLat_Endereco() {
-		return Lat_Endereco;
-	}
-
-	public void setLat_Endereco(Double lat_Endereco) {
-		Lat_Endereco = lat_Endereco;
-	}
-
-	public Double getLon_Endereco() {
-		return Lon_Endereco;
-	}
-
-	public void setLon_Endereco(Double lon_Endereco) {
-		Lon_Endereco = lon_Endereco;
-	}
-
 	@Column
 	private Double Lon_Endereco;
 	
+	//-- Lista de endereços vinculados --//
 	@OneToMany (mappedBy = "enderecoFK", cascade = CascadeType.MERGE,
 			fetch = FetchType.EAGER, targetEntity = Denuncia.class)
+	@Fetch(FetchMode.SUBSELECT) 
 	private List<Denuncia> denuncias = new ArrayList<Denuncia>();
+	
+	//-- Lista de interferências vinculadas --//
+		@OneToMany (mappedBy = "inter_End_CodigoFK", cascade = CascadeType.MERGE,
+				fetch = FetchType.EAGER, targetEntity = Interferencia.class)
+		@Fetch(FetchMode.SUBSELECT) 
+		private List<Interferencia> interferencias = new ArrayList<Interferencia>();
+	
+	//-- Lista de usuários vinculados --//
+			@OneToMany (mappedBy = "us_End_Codigo", cascade = CascadeType.MERGE,
+					fetch = FetchType.EAGER, targetEntity = Usuario.class)
+			@Fetch(FetchMode.SUBSELECT) 
+			private List<Usuario> usuarios = new ArrayList<Usuario>();
+	
+	//-- Lista de fiscais vinculados --//
+				@OneToMany (mappedBy = "fis_End_Codigo", cascade = CascadeType.MERGE,
+						fetch = FetchType.EAGER, targetEntity = Fiscal.class)
+				@Fetch(FetchMode.SUBSELECT) 
+				private List<Fiscal> fiscais = new ArrayList<Fiscal>();
+				
+	//-- Lista de atos vinculados --//
+					@OneToMany (mappedBy = "ato_End_Codigo", cascade = CascadeType.MERGE,
+							fetch = FetchType.EAGER, targetEntity = Ato.class)
+					@Fetch(FetchMode.SUBSELECT) 
+					private List<Ato> atos = new ArrayList<Ato>();
+		
+				
 	
 	//-- Construtor padrão -- //
 	public Endereco () {
@@ -82,7 +98,29 @@ public class Endereco implements Serializable{
 	}
 	
 	// -- GETTERS AND SETTERS - //
+	
+	
+	//-- get e set Latitude --//
+	public Double getLat_Endereco() {
+		return Lat_Endereco;
+	}
 
+	public void setLat_Endereco(Double lat_Endereco) {
+		Lat_Endereco = lat_Endereco;
+	}
+
+	
+	//-- get e set Longitude --//
+	public Double getLon_Endereco() {
+		return Lon_Endereco;
+	}
+
+	public void setLon_Endereco(Double lon_Endereco) {
+		Lon_Endereco = lon_Endereco;
+	}
+
+	
+	//-- get e set OneToMany List Denuncia --//
 	public List<Denuncia> getListDenuncias() {
 		return denuncias;
 	}
@@ -90,8 +128,18 @@ public class Endereco implements Serializable{
 	public void setListDenuncias(List<Denuncia> denuncias) {
 		this.denuncias = denuncias;
 	}
-
-	// getters and setters
+	
+		//-- get e set OneToMany List Interferencia --//
+			public List<Interferencia> getListInterferencias() {
+				return interferencias;
+			}
+	
+			public void setListInterferencias(List<Interferencia> interferencias) {
+				this.interferencias = interferencias;
+			}
+	
+	
+    
 	public int getCod_Endereco() {
 		return Cod_Endereco;
 	}

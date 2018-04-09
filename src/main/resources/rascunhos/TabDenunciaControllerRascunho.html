@@ -29,7 +29,7 @@ import tabela.DenunciaTabela;
 
 public class TabDenunciaController implements Initializable {
 	
-	// --- String teste para o leitor de relat√≥rios  --- //
+	// --- String teste para o leitor de relatÛrios  --- //
 	
 	String INITIAL_TEXT = "<table style='border:4px solid;border-bottom-width:0px; margin-left:auto;margin-right:auto;width:800px;'>"
 			+ 				"<tbody>" 
@@ -40,7 +40,7 @@ public class TabDenunciaController implements Initializable {
 			+				"</tbody>"
 			+			"</table>";
 	
-	// Endere√ßo google para buscas se for usar o webvew com o google 
+	// EndereÁo google para buscas se for usar o webvew com o google 
 	String google = "https://www.google.com.br/search?source=hp&ei=BqVsWruNOMuXwgSko764DA&q=";
 	
 	// --- Controller Principal - MainController --- //
@@ -54,7 +54,7 @@ public class TabDenunciaController implements Initializable {
 	@FXML TextField tfResDen = new TextField();
 	@FXML TextField tfPesquisar = new TextField();
 	
-	// ----- Label - Endere√ßo da den√∫ncia ------ //
+	// ----- Label - EndereÁo da den˙ncia ------ //
 	@FXML Label lblDenEnd = new Label ();
 
 	@FXML Button btnNovo = new Button();
@@ -79,12 +79,12 @@ public class TabDenunciaController implements Initializable {
 	// --- String para primeira pesquisa --- //
 	String strPesquisa = "";
 	
-	// -- Conex√£o e pesquisa de den√∫ncias -- //
+	// -- Conex„o e pesquisa de den˙ncias -- //
 	private DenunciaDao denunciaDao = new DenunciaDao();	//passar classe
 	private List<Denuncia> denunciaList = denunciaDao.listDenuncia(strPesquisa); //passar string de pesquisar
 	private ObservableList<DenunciaTabela> obsListDenunciaTabela= FXCollections.observableArrayList(); //chamar observable list e outra classe
 	
-	// --- m√©todo listarDenuncias --- //
+	// --- mÈtodo listarDenuncias --- //
 	public void listarDenuncias () {
 		
 		if (!obsListDenunciaTabela.isEmpty()) {
@@ -112,10 +112,10 @@ public class TabDenunciaController implements Initializable {
         tvLista.setItems(obsListDenunciaTabela); 
 	}
 	
-	// -- selecionar den√∫ncia -- //
+	// -- selecionar den˙ncia -- //
 	public void selecionarDenuncia () {
 		
-		// TableView - selecionar den√∫ncia ao clicar -- //
+		// TableView - selecionar den˙ncia ao clicar -- //
 		tvLista.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
 			
@@ -143,14 +143,14 @@ public class TabDenunciaController implements Initializable {
 				tfResDen.setText(denTab.getDesc_Denuncia());
 				
 				
-				//PRECISA MELHORAR, EST√Å DANDO NULLPOINTEXCEPTION...
+				//PRECISA MELHORAR, EST¡ DANDO NULLPOINTEXCEPTION...
 				
 				if (denTab.getenderecoObjetoTabelaFK() != null) {
 					
 					lblDenEnd.setText(denTab.getenderecoObjetoTabelaFK().getDesc_Endereco() + ", " + denTab.getenderecoObjetoTabelaFK().getRA_Endereco());
 					lblDenEnd.setTextFill(Color.BLACK);
 				} else {
-					lblDenEnd.setText("Sem endere√ßo cadastrado!");
+					lblDenEnd.setText("Sem endereÁo cadastrado!");
 					lblDenEnd.setTextFill(Color.RED);
 					
 				}
@@ -159,7 +159,7 @@ public class TabDenunciaController implements Initializable {
 
 				main.pegarDoc(dGeral);
 				
-				// habilitar e desabilitar bot√µes
+				// habilitar e desabilitar botıes
 				btnNovo.setDisable(true);
 				btnSalvar.setDisable(true);
 				btnEditar.setDisable(false);
@@ -170,7 +170,7 @@ public class TabDenunciaController implements Initializable {
 		});
 	}
 	
-	// --  bot√£o novo -- //
+	// --  bot„o novo -- //
 	public void btnNovoHabilitar (ActionEvent event) {
 		
 		tfDocumento.setText("");
@@ -189,7 +189,7 @@ public class TabDenunciaController implements Initializable {
 		btnNovo.setDisable(true);
 	}
 	
-	// -- bot√£o salvar -- //
+	// -- bot„o salvar -- //
 	public void btnSalvarSalvar (ActionEvent event) {
 		
 		Denuncia denuncia = new Denuncia();
@@ -201,13 +201,8 @@ public class TabDenunciaController implements Initializable {
 		
 		DenunciaDao dao = new DenunciaDao();
 		
-		System.out.println("antes de salvar: " + denuncia.getCod_Denuncia());
-		
 		dao.salvaDenuncia(denuncia);
 		
-		System.out.println("depois de salvar: " + denuncia.getCod_Denuncia());
-		
-		//-- atualizar as den√∫ncias  e listar --//
 		denunciaList = denunciaDao.listDenuncia(strPesquisa);
 		
 		// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
@@ -218,20 +213,16 @@ public class TabDenunciaController implements Initializable {
 	
 		modularBotoesInicial ();
 		
-		System.out.println("DenunciaControoler, bot√£o salvar, dGEral: " + dGeral.getCod_Denuncia());
-		
-		System.out.println(denuncia.getCod_Denuncia());
-		
-		//-- Alerta de den√∫ncia salva --//
+		//-- Alerta de den˙ncia salva --//
 		Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
-		aSalvo.setTitle("Parab√©ns!");
-		aSalvo.setContentText("A den√∫ncia salva com sucesso!");
+		aSalvo.setTitle("ParabÈns!");
+		aSalvo.setContentText("A den˙ncia salva com sucesso!");
 		aSalvo.setHeaderText(null);
 		aSalvo.show();
 			
 		}
 
-	// -- bot√£o editar -- //
+	// -- bot„o editar -- //
 	public void btnEditarHabilitar (ActionEvent event) {
 			
 		if (tfDocumento.isDisable()) {
@@ -252,7 +243,7 @@ public class TabDenunciaController implements Initializable {
 			denunciaEditar.setProc_SEI_Denuncia(tfProcSei.getText());
 			denunciaEditar.setDesc_Denuncia(tfResDen.getText());
 			
-			// para n√£o editar o foreign key, continuar sendo a mesma
+			// para n„o editar o foreign key, continuar sendo a mesma
 			//denunciaEditar.setEnderecoFK(denunciaEditar.getEnderecoFK());
 			
 			denunciaDao.mergeDenuncia(denunciaEditar);
@@ -270,7 +261,7 @@ public class TabDenunciaController implements Initializable {
 			}
 	}
 	
-	// -- bot√£o excluir -- //
+	// -- bot„o excluir -- //
 	public void btnExcluirHabilitar (ActionEvent event) {
 	
 		DenunciaTabela denunciaExcluir = tvLista.getSelectionModel().getSelectedItem();
@@ -290,13 +281,13 @@ public class TabDenunciaController implements Initializable {
 		modularBotoesInicial (); 		
 	}
 			
-	// -- bot√£o cancelar -- //
+	// -- bot„o cancelar -- //
 	public void btnCancelarHabilitar (ActionEvent event) {
 			
 		modularBotoesInicial();
 	}
 		
-	// -- bot√£o pesquisar den√∫ncia -- //
+	// -- bot„o pesquisar den˙ncia -- //
 	public void btnPesquisarHabilitar (ActionEvent event) {
 		
 		
@@ -313,7 +304,7 @@ public class TabDenunciaController implements Initializable {
 	// -- INITIALIZE -- //
 	public void initialize(URL url, ResourceBundle rb) {
 		
-        // --- habilitar e desabilitar bot√µes ---- //
+        // --- habilitar e desabilitar botıes ---- //
 		modularBotoesInicial();
 		
 		// --- Selecionar um documento pesquisado  --- //
@@ -324,7 +315,7 @@ public class TabDenunciaController implements Initializable {
 		
 	}
 		
-	// -- m√©todo habilitar e desabilitar bot√µes -- //
+	// -- mÈtodo habilitar e desabilitar botıes -- //
 	private void modularBotoesInicial () {
 			
 			tfDocumento.setDisable(true);
@@ -339,7 +330,7 @@ public class TabDenunciaController implements Initializable {
 			
 	}
 	
-	// -- Main initialize para transmitir vari√°veis para outros controllers -- //
+	// -- Main initialize para transmitir vari·veis para outros controllers -- //
 	public void init(MainController mainController) {
 			main = mainController;
 	}

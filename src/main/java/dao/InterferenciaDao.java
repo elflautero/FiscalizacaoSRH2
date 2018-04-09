@@ -7,81 +7,71 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import entity.Endereco;
 import entity.HibernateUtil;
+import entity.Interferencia;
 
-public class EnderecoDao {
+public class InterferenciaDao {
 
 	
-public void salvaEndereco (Endereco endereco) {
+public void salvaInterferencia (Interferencia interferencia) {
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.save(endereco);
+		s.save(interferencia);
 		s.getTransaction().commit();
 		s.close();
 		
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Endereco> listEndereco(String strPesquisaEnd) {
-	
-		List<Endereco> list = new ArrayList<Endereco>();
+	public List<Interferencia> listInterferencia(String strPesquisaInterferencia) {
+		
+		List<Interferencia> list = new ArrayList<Interferencia>();
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		
 		s.beginTransaction();
 		
-		Criteria crit = s.createCriteria(Endereco.class);
-		crit.add(Restrictions.like("Desc_Endereco", '%' + strPesquisaEnd + '%')).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		Criteria crit = s.createCriteria(Interferencia.class);
+		crit.add(Restrictions.like("inter_Desc_Endereco", '%' + strPesquisaInterferencia + '%'));
 		list = crit.list();
-		
-		//.setResultTransformer(crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY));
-		
+			
 		s.getTransaction().commit();
 		s.close();
 		return list;
 	}
 	
-	public void removeEndereco(Integer id) {
+	public void removeInterferencia(Integer id) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		Endereco e = (Endereco) s.load(Endereco.class, id);
-		s.delete(e);
+		Interferencia i = (Interferencia) s.load(Interferencia.class, id);
+		s.delete(i);
 		s.getTransaction().commit();
 		s.close();
 	}
 
-	public void editarEndereco(Endereco endereco) {
+	public void editarInterferencia(Interferencia interferencia) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.update(endereco);
+		s.update(interferencia);
 		s.getTransaction().commit();
 		s.close();
 	}
 	
-	public void salvaEditar (Endereco endereco) {
+	public void mergeInterferencia(Interferencia interferencia) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.saveOrUpdate(endereco);  // update(endereco);
+		s.merge(interferencia);
 		s.getTransaction().commit();
 		s.close();
 	}
 	
-	public void persistEnd (Endereco endereco) {
+	public void persistInterferencia(Interferencia interferencia) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.persist(endereco);
+		s.persist(interferencia);
 		s.getTransaction().commit();
 		s.close();
 	}
 	
-	public void mergeEnd (Endereco endereco) {
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		s.beginTransaction();
-		s.merge(endereco);
-		s.getTransaction().commit();
-		//s.flush(); // para retornar o id do objeto gravado
-		s.close();
-	}
 }

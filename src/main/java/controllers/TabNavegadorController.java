@@ -58,7 +58,7 @@ public class TabNavegadorController implements Initializable{
 	public void navegarWeb() {
 		
 		WebView wv1 = new WebView();
-		wv1.setPrefSize(947,622);
+		wv1.setPrefSize(1140,750);
 		wv1.setLayoutY(78);
 		
 		wv1.getEngine().setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
@@ -66,7 +66,7 @@ public class TabNavegadorController implements Initializable{
 		    public WebEngine call(PopupFeatures p) {
 		            Stage stage = new Stage(StageStyle.UTILITY);
 		            WebView wv2 = new WebView();
-		            stage.setScene(new Scene(wv2, 800, 600));
+		            stage.setScene(new Scene(wv2, 1140, 750));
 		            stage.show();
 		            return wv2.getEngine();
 		        }

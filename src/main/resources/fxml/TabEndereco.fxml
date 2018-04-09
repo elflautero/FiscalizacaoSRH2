@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="tabEndereco" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="631.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabEnderecoController">
+<Pane fx:id="tabEndereco" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabEnderecoController">
    <children>
-      <ScrollPane layoutY="1.0" prefHeight="630.0" prefWidth="948.0">
+      <ScrollPane layoutY="1.0" prefHeight="750.0" prefWidth="1140.0">
         <content>
-          <AnchorPane fx:id="aPaneEnd" minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="944.0">
+          <AnchorPane fx:id="aPaneEnd" minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="1140.0">
                <children>
-                  <Pane layoutY="7.0" prefHeight="332.0" prefWidth="944.0">
+                  <Pane layoutX="105.0" layoutY="22.0" prefHeight="332.0" prefWidth="944.0">
                      <children>
                         <TextField fx:id="tfEnd" layoutX="23.0" layoutY="58.0" prefHeight="25.0" prefWidth="435.0" />
                         <TextField fx:id="tfEndRA" layoutX="467.0" layoutY="58.0" prefHeight="25.0" prefWidth="133.0" />
@@ -28,7 +28,7 @@
                         <TextField fx:id="tfEndUF" layoutX="877.0" layoutY="58.0" prefHeight="25.0" prefWidth="34.0" />
                         <Label layoutX="721.0" layoutY="40.0" text="Cidade:" />
                         <Label layoutX="878.0" layoutY="38.0" text="UF:" />
-                        <TextField fx:id="tfLinkEnd" layoutX="22.0" layoutY="94.0" prefHeight="25.0" prefWidth="835.0" promptText="Inserir link do GoogleMaps..." />
+                        <TextField fx:id="tfLinkEnd" layoutX="45.0" layoutY="95.0" prefHeight="25.0" prefWidth="785.0" promptText="Inserir link do GoogleMaps..." />
                         <TextField fx:id="tfEndLat" layoutX="259.0" layoutY="127.0" prefHeight="25.0" prefWidth="140.0" promptText="-15.7754084" />
                         <TextField fx:id="tfEndLon" layoutX="504.0" layoutY="127.0" prefHeight="25.0" prefWidth="140.0" promptText="-47.9411395" />
                         <Label layoutX="165.0" layoutY="131.0" text="Coordenadas X:" />
@@ -60,7 +60,7 @@
                         <Label layoutX="27.0" layoutY="2.0" prefHeight="26.0" prefWidth="72.0" text="Documento:" />
                         <Button fx:id="btnBuscarDoc" layoutX="861.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnBuscarDocHab" text="Buscar" />
                         <Button fx:id="btnEndAtualizar" layoutX="730.0" layoutY="127.0" mnemonicParsing="false" onAction="#btnEndAtualizarHab" prefHeight="25.0" prefWidth="65.0" text="Atualizar" />
-                        <Button fx:id="btnEndMaps" layoutX="861.0" layoutY="94.0" mnemonicParsing="false" onAction="#btnEndMapsHab" prefHeight="25.0" prefWidth="50.0" text="Maps" />
+                        <Button fx:id="btnEndMaps" layoutX="841.0" layoutY="95.0" mnemonicParsing="false" onAction="#btnEndMapsHab" prefHeight="25.0" prefWidth="50.0" text="Mapa" />
                      </children>
                   </Pane>
                </children></AnchorPane>

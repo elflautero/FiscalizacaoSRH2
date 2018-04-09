@@ -31,6 +31,12 @@
 		<mapping class="entity.Fiscal"/>
 		<mapping class="entity.Denuncia"/>
 		<mapping class="entity.Endereco"/>
+		<mapping class="entity.Interferencia"/>
+		<mapping class="entity.Usuario"/>
+		<mapping class="entity.Ato"/>
+		<mapping class="entity.Superficial"/>
+		<mapping class="entity.Subterranea"/>
 		
+	
     </session-factory>
 </hibernate-configuration>

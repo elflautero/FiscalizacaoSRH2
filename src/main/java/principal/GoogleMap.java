@@ -1,6 +1,7 @@
 package principal;
 
 import controllers.TabEnderecoController;
+import controllers.TabInterfController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -32,7 +33,8 @@ public class GoogleMap extends Parent {
 	    {
 	        webView = new WebView();
 	        webEngine = webView.getEngine();
-	        webView.setPrefWidth(1300);
+	        webView.setPrefWidth(1250);
+	        webView.setPrefHeight(710);
 	        webEngine.load(getClass().getResource("/html/map.html").toExternalForm());
 	        ready = false;
 	        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
@@ -124,9 +126,20 @@ public class GoogleMap extends Parent {
 	   
 	    public void handle(double lat, double lng) {
 	    	
+	    	System.out.println("método handle chamado: " + lat + " e " + lng);
+	    	
 	    	TabEnderecoController tabEndCont = new TabEnderecoController();
 	    	
 	    	tabEndCont.setLatLng(lat, lng);
+	    	 
+	    	TabInterfController tabIntCont = new TabInterfController();
+	    	 
+	    	tabIntCont.setLatLng(lat, lng);
+	    	
+	    	
+	    	//tabEndCont.clickButton();
+	    	
+	    	
 	    	
 	    	/*
 	        if(onMapLatLngChanged != null) {

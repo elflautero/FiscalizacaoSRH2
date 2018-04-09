@@ -47,6 +47,9 @@ import tabela.EnderecoTabela;
 public class TabEnderecoController implements Initializable {
 
 	
+	// --- Controller Principal - MainController --- //
+	@FXML private MainController main;
+	
 	@FXML Pane tabEndereco = new Pane();
 	
 	@FXML Button btnBuscarDoc = new Button();
@@ -88,6 +91,9 @@ public class TabEnderecoController implements Initializable {
 	@FXML TableColumn<EnderecoTabela, String> tcEndRA;
 	@FXML TableColumn<EnderecoTabela, String> tcEndCid;
 	
+	// capturar endereço para a TabInterfController
+	private static Endereco eGeral;
+	
 	//-- botão para chamar o mapa javascript --//
 	@FXML Image imgGetCoord = new Image(getClass().getResourceAsStream("../images/getCoord.png"));
 	@FXML Button btnCoord = new Button ();
@@ -96,10 +102,10 @@ public class TabEnderecoController implements Initializable {
 	static String latDec;
 	static String lngDec;
 	
-	//-- String para chamar as coordenadas corretas do mapa --//
+	//-- string para chamar as coordenadas corretas do mapa --//
 	String linkEndMap;
 		
-	// --- Objeto para passar os valor pelo MainControoler para outro controller --- //
+	// --- objeto para passar os valor pelo MainControoler para outro controller --- //
 	public Denuncia dGeralEnd;
 	
 	//-- String de pesquisa de endereços --//
@@ -186,6 +192,32 @@ public class TabEnderecoController implements Initializable {
 				btnEndExc.setDisable(false);
 				btnEndCan.setDisable(false);
 				
+				
+				//PRECISA MELHORAR, ESTÁ DANDO NULLPOINTEXCEPTION...
+				
+				/*
+				if (endTab.getenderecoObjetoTabelaFK() != null) {
+					
+					lblDenEnd.setText(denTab.getenderecoObjetoTabelaFK().getDesc_Endereco() + ", " + denTab.getenderecoObjetoTabelaFK().getRA_Endereco());
+					lblDenEnd.setTextFill(Color.BLACK);
+				} else {
+					lblDenEnd.setText("Sem endereço cadastrado!");
+					lblDenEnd.setTextFill(Color.RED);
+					
+				}
+				*/
+				
+				Endereco eGeral = new Endereco(endTab);
+				System.out.println(eGeral.getCEP_Endereco());
+				System.out.println(eGeral.getCid_Endereco());
+				System.out.println(eGeral.getCod_Endereco());
+				System.out.println(eGeral.getDesc_Endereco());
+				System.out.println(eGeral.getRA_Endereco());
+				System.out.println(eGeral.getUF_Endereco());
+				System.out.println(eGeral.getLat_Endereco());
+				System.out.println(eGeral.getLon_Endereco());
+				System.out.println(eGeral.getListDenuncias());
+				main.pegarEnd(eGeral);
 			}
 			}
 		});
@@ -220,6 +252,7 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	
+	/*
 	public static final class MyMapSearch {
 		
 	//-- obter as coordenadas do javascript --//
@@ -230,36 +263,7 @@ public class TabEnderecoController implements Initializable {
 		}
 	
 	}
-	
-	//-- Buscador de endereços e coordenadas --//
-	public void btnEndMapsHab (ActionEvent event) throws IOException {
-
-		Group group = new Group();
-		
-		GoogleMap google = new GoogleMap();
-	
-		group.getChildren().addAll(google, btnCoord);
-		
-		Scene scene = new Scene(group);
-		
-		btnCoord.setLayoutY(5);
-		btnCoord.setLayoutX(490);
-		btnCoord.setGraphic(new ImageView(imgGetCoord));
-		
-		btnCoord.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	tfEndLat.setText(latDec);
-        		tfEndLon.setText(lngDec);
-        		
-            }
-        });
-	    
-		Stage stage = new Stage(StageStyle.UTILITY);
-		stage.setWidth(1300);
-        stage.setScene(scene);
-        
-        stage.show();
-	}
+	*/
 	
 	// --  botão salvar -- //
 	public void btnEndSalvarHab (ActionEvent event) {
@@ -274,7 +278,7 @@ public class TabEnderecoController implements Initializable {
 			
 		} else {
 			
-			Endereco endereco = new Endereco();
+		Endereco endereco = new Endereco();
 			
 			endereco.setDesc_Endereco(tfEnd.getText());
 			endereco.setRA_Endereco(tfEndRA.getText());
@@ -291,13 +295,20 @@ public class TabEnderecoController implements Initializable {
 			denuncia.setDoc_SEI_Denuncia(dGeralEnd.getDoc_SEI_Denuncia());
 			denuncia.setProc_SEI_Denuncia(dGeralEnd.getProc_SEI_Denuncia());
 			denuncia.setDesc_Denuncia(dGeralEnd.getDesc_Denuncia());
+			
 			denuncia.setEnderecoFK(endereco);
 		
 			endereco.getListDenuncias().add(denuncia);
 		
-			EnderecoDao enderecoDao = new EnderecoDao();
+		EnderecoDao enderecoDao = new EnderecoDao();
 		
-			enderecoDao.mergeEnd(endereco);
+				System.out.println("endereço antes do merge: " + endereco.getCod_Endereco());
+		
+			//enderecoDao.mergeEnd(endereco);
+				enderecoDao.salvaEndereco(endereco);
+				enderecoDao.mergeEnd(endereco);
+			
+				System.out.println("endereço depois do merge: " + endereco.getCod_Endereco());
 			
 			//-- Alerta de endereço salvo --//
 			Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
@@ -305,6 +316,11 @@ public class TabEnderecoController implements Initializable {
 			aSalvo.setContentText("O endereço salvo com sucesso!");
 			aSalvo.setHeaderText(null);
 			aSalvo.show();
+			
+			// pegar o valor, levar para o MainController  e depois para o label lblEnd no InterfController
+			eGeral = endereco;
+			main.pegarEnd(eGeral);
+			
 			
 			//-- Modular botões --//
 			modularBotoesInicial ();
@@ -355,6 +371,12 @@ public class TabEnderecoController implements Initializable {
 	
 		enderecoDao.mergeEnd(endereco);
 		
+		
+		// pegar o valor, levar para o MainController  e depois para o label lblEnd no InterfController
+		eGeral = endereco;
+		main.pegarEnd(eGeral);
+					
+					
 		listarEnderecos(strPesquisaEnd);
 		
 		modularBotoesInicial (); 
@@ -416,6 +438,7 @@ public class TabEnderecoController implements Initializable {
 	
 	}
 	
+	//-- botão obter coordenadas do link --//
 	public void  btnEndLatLonHab (ActionEvent event) {
 		
 		if (tfLinkEnd.getText().isEmpty()) {
@@ -476,6 +499,39 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	
+	
+	//-- buscador de endereços e coordenadas --//
+		public void btnEndMapsHab (ActionEvent event) throws IOException {
+
+			
+			
+			GoogleMap google = new GoogleMap();
+			
+			Group group = new Group();
+			group.getChildren().addAll(google, btnCoord);
+			
+			Scene scene = new Scene(group);
+			
+			btnCoord.setLayoutY(8);
+			btnCoord.setLayoutX(502);
+			btnCoord.setGraphic(new ImageView(imgGetCoord));
+			
+			btnCoord.setOnAction(new EventHandler<ActionEvent>() {
+	            @Override public void handle(ActionEvent e) {
+	            	tfEndLat.setText(latDec);
+	        		tfEndLon.setText(lngDec);
+	        		
+	            }
+	        });
+		    
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.setWidth(1250);
+			stage.setHeight(750);
+	        stage.setScene(scene);
+	        
+	        stage.show();
+		}
+	
 	//-- INITIALIZE --//
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -526,8 +582,8 @@ public class TabEnderecoController implements Initializable {
 		BorderPane root = new BorderPane();
 		root.setCenter(wv1);
 		root.setPrefSize(700, 420);
-		root.setLayoutY(349);
-		root.setLayoutX(122);
+		root.setLayoutY(365);
+		root.setLayoutX(220);
 		
 		aPaneEnd.getChildren().add(root);
 	
@@ -541,18 +597,21 @@ public class TabEnderecoController implements Initializable {
 	
 	//-- método atualizar latitude e longitude --//
 	
-		public void setLatLng (double lat, double lng) {
+	public void setLatLng (double lat, double lng) {
 		
-			latDec = Double.toString(lat);
-			lngDec = Double.toString(lng);
+		latDec = Double.toString(lat);
+		lngDec = Double.toString(lng);
 			
-		}
-
+			
+	}
+	
 	
 	//-- Main Controller --//
 	public void init(MainController mainController) {
-		
+		main = mainController;
 	}
+
+	
 }
 
 /*

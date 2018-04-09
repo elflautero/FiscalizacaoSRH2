@@ -23,6 +23,10 @@ public class Denuncia implements Serializable {
 	@Column 
 	private int Cod_Denuncia;
 	
+	@ManyToOne (fetch = FetchType.EAGER) 
+	@JoinColumn (name = "Cod_Endereco")
+	private Endereco enderecoFK;
+	
 	@Column (columnDefinition="varchar(80)")
 	private String Doc_Denuncia;
 	
@@ -35,22 +39,11 @@ public class Denuncia implements Serializable {
 	@Column (columnDefinition="varchar(200)")
 	private String Desc_Denuncia;
 	
-	@ManyToOne (fetch = FetchType.EAGER) 
-	@JoinColumn (name = "Cod_Endereco")
-	private Endereco enderecoFK;
-	
 	/*
 	@Column (name="Data_Distribuicao", nullable = false)
 	private String Data_Distribuicao;*/
 	
-	public Endereco getEnderecoFK() {
-		return enderecoFK;
-	}
-
-	public void setEnderecoFK(Endereco enderecoFK) {
-		this.enderecoFK = enderecoFK;
-	}
-
+	
 	//CONSTRUTOR PADRÃO
 	public Denuncia () {
 		
@@ -72,7 +65,16 @@ public class Denuncia implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
+	
+			//-- foreign key --//
+			public Endereco getEnderecoFK() {
+				return enderecoFK;
+			}
+		
+			public void setEnderecoFK(Endereco enderecoFK) {
+				this.enderecoFK = enderecoFK;
+			}
+	
 	// GETTERS AND SETTERS
 	
 	public int getCod_Denuncia() {

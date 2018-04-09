@@ -9,20 +9,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="tabDenuncia" minHeight="0.0" minWidth="0.0" prefHeight="631.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabDenunciaController">
+<AnchorPane fx:id="tabDenuncia" minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabDenunciaController">
    <children>
-      <ScrollPane layoutY="-1.0" prefHeight="633.0" prefWidth="948.0">
+      <ScrollPane layoutY="-1.0" prefHeight="750.0" prefWidth="1140.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="945.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="1127.0">
                <children>
-                  <TableView fx:id="tvLista" layoutX="20.0" layoutY="175.0" prefHeight="113.0" prefWidth="889.0">
+                  <TableView fx:id="tvLista" layoutX="127.0" layoutY="209.0" prefHeight="113.0" prefWidth="889.0">
                     <columns>
                       <TableColumn fx:id="tcDocumento" prefWidth="409.0" text="Documento" />
                       <TableColumn fx:id="tcDocSEI" minWidth="0.0" prefWidth="231.0" text="Doc SEI" />
                         <TableColumn fx:id="tcProcSEI" prefWidth="247.0" text="Proc SEI" />
                     </columns>
                   </TableView>
-                  <Pane layoutX="21.0" layoutY="118.0" prefHeight="47.0" prefWidth="884.0">
+                  <Pane layoutX="122.0" layoutY="149.0" prefHeight="47.0" prefWidth="884.0">
                      <children>
                         <Button fx:id="btnNovo" layoutX="46.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnNovoHabilitar" prefHeight="22.0" prefWidth="76.0" text="Novo" />
                         <Button fx:id="btnSalvar" layoutX="131.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnSalvarSalvar" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
@@ -33,7 +33,9 @@
                         <TextField fx:id="tfPesquisar" layoutX="464.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
                      </children>
                   </Pane>
-                  <Pane layoutX="1.0" layoutY="6.0" prefHeight="108.0" prefWidth="924.0">
+                  <Label fx:id="lblDenEnd" layoutX="188.0" layoutY="365.0" prefHeight="23.0" prefWidth="500.0" />
+                  <Label layoutX="127.0" layoutY="368.0" text="Endereço:" />
+                  <Pane layoutX="102.0" layoutY="27.0" prefHeight="108.0" prefWidth="924.0">
                      <children>
                         <TextField fx:id="tfDocumento" layoutX="20.0" layoutY="27.0" prefHeight="25.0" prefWidth="591.0" />
                         <TextField fx:id="tfDocSei" layoutX="621.0" layoutY="27.0" prefHeight="23.0" prefWidth="139.0" />
@@ -45,8 +47,6 @@
                         <Label layoutX="19.0" layoutY="57.0" prefHeight="17.0" prefWidth="120.0" text="Resumo da Denúncia:" />
                      </children>
                   </Pane>
-                  <Label fx:id="lblDenEnd" layoutX="82.0" layoutY="314.0" prefHeight="23.0" prefWidth="500.0" />
-                  <Label layoutX="21.0" layoutY="317.0" text="Endereço:" />
                </children>
             </AnchorPane>
         </content>
