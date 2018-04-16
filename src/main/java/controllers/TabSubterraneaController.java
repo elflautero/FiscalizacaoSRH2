@@ -3,11 +3,16 @@ package controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class TabSubterraneaController implements Initializable {
@@ -43,6 +48,7 @@ public class TabSubterraneaController implements Initializable {
 				.observableArrayList(
 						"Poço Tubular", 
 						"Poço Manual"
+						
 						); 
 			
 			@FXML
@@ -55,12 +61,27 @@ public class TabSubterraneaController implements Initializable {
 		
 	
 
+	@FXML Image imSubt = new Image(getClass().getResourceAsStream("../images/subterranea.png"));
+	@FXML ImageView	iVewSubt;
+	
+	@FXML TextField tfVazao = new TextField();
+	@FXML TextField tfEstatico = new TextField();
+	@FXML TextField tfDinamico = new TextField();
+	@FXML TextField tfProfundidade = new TextField();
+	@FXML DatePicker dpDataSubterranea = new DatePicker();
+	
+				
+	//-- INITIALIZE --//		
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		
 		cbTipoCaptacao.setItems(olTipoCaptacao);
 		cbSubCaesb.setItems(olSubCaesb);
 	
 		cbSubSis.setItems(olSubSis);
+		
+		iVewSubt = new ImageView();
+		iVewSubt.setImage(imSubt);
 		
 	}
 

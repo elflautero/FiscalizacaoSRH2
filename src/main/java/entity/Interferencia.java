@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import tabela.InterferenciaTabela;
 
@@ -22,6 +24,9 @@ public class Interferencia implements Serializable {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column 
 	private int inter_Codigo;
+	
+		@OneToOne (cascade = CascadeType.ALL, mappedBy = "interf_SubFK")
+		private Subterranea sub_Interferencia_Codigo;
 	
 	@ManyToOne (fetch = FetchType.EAGER) 
 	@JoinColumn (name = "inter_End_Codigo")

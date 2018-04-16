@@ -99,8 +99,13 @@ public class TabEnderecoController implements Initializable {
 	@FXML Button btnCoord = new Button ();
 	
 	//-- coordenadas do mapa javascript --//
-	static String latDec;
-	static String lngDec;
+	public static String latDec;
+	public static String lngDec;
+	public static String endMap;
+	
+	
+	
+	@FXML Label lblEndereco = new Label();
 	
 	//-- string para chamar as coordenadas corretas do mapa --//
 	String linkEndMap;
@@ -518,8 +523,10 @@ public class TabEnderecoController implements Initializable {
 			
 			btnCoord.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override public void handle(ActionEvent e) {
+	            	
 	            	tfEndLat.setText(latDec);
 	        		tfEndLon.setText(lngDec);
+	        		lblEndereco.setText(endMap);
 	        		
 	            }
 	        });
@@ -528,8 +535,27 @@ public class TabEnderecoController implements Initializable {
 			stage.setWidth(1250);
 			stage.setHeight(750);
 	        stage.setScene(scene);
+	        stage.setMaximized(false);
+	        stage.setResizable(false);
+	        /*
+	        stage.setOnCloseRequest(new EventHandler<javafx.stage.WindowEvent>() {
+                public void handle(javafx.stage.WindowEvent event) {
+                    tfEndLat.setText(latDec);
+                });*/
 	        
 	        stage.show();
+	        
+	        /* para ao fechar o mapa trazer os valores de coord, mas achei melhor tirar
+	         
+	        stage.setOnCloseRequest(new EventHandler<javafx.stage.WindowEvent>() {
+                public void handle(javafx.stage.WindowEvent event) {
+                	lblEndereco.setText(endMap);
+                	tfEndLat.setText(latDec);
+                	tfEndLon.setText(lngDec);
+                    System.out.println("beleza ao fechar map");
+                }
+            });
+            */
 		}
 	
 	//-- INITIALIZE --//
@@ -546,6 +572,12 @@ public class TabEnderecoController implements Initializable {
 		Platform.runLater(() ->{
 			getWvEndMap ();
 			});
+		*/
+		
+		/* text field com ouvinte para captar modificações na strin latDec
+		tfEndLat.textProperty().addListener((observable, oldValue, newValue) -> {
+		    tfEndLat.setText(latDec);
+		});
 		*/
 	}
 
@@ -597,10 +629,23 @@ public class TabEnderecoController implements Initializable {
 	
 	//-- método atualizar latitude e longitude --//
 	
-	public void setLatLng (double lat, double lng) {
+	public void setLatLng (double lat, double lng, String address) {
 		
 		latDec = Double.toString(lat);
 		lngDec = Double.toString(lng);
+		
+		try {
+			//lblEndereco = new Label(address);
+			lblEndereco.setText(address.toString());
+		}
+		
+		 catch (Exception e) {
+			 e.printStackTrace();
+			 System.out.println("o erro no label foi: " + e);
+		 }
+		
+		
+		System.out.printf("método setLatLng, no endereço controler " + lat + ", " + lng + ", e endereço; " + address);
 			
 			
 	}

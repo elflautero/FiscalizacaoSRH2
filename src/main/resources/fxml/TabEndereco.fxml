@@ -61,6 +61,7 @@
                         <Button fx:id="btnBuscarDoc" layoutX="861.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnBuscarDocHab" text="Buscar" />
                         <Button fx:id="btnEndAtualizar" layoutX="730.0" layoutY="127.0" mnemonicParsing="false" onAction="#btnEndAtualizarHab" prefHeight="25.0" prefWidth="65.0" text="Atualizar" />
                         <Button fx:id="btnEndMaps" layoutX="841.0" layoutY="95.0" mnemonicParsing="false" onAction="#btnEndMapsHab" prefHeight="25.0" prefWidth="50.0" text="Mapa" />
+                        <Label fx:id="lblEndereco" layoutX="207.0" layoutY="38.0" prefHeight="17.0" prefWidth="252.0" />
                      </children>
                   </Pane>
                </children></AnchorPane>

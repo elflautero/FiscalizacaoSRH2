@@ -11,17 +11,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="tabInterferencia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabInterfController">
+<Pane fx:id="tabInterferencia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="739.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabInterfController">
    <children>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="711.0" prefWidth="1140.0">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="739.0" prefWidth="1140.0">
          <children>
-            <ScrollPane layoutY="1.0" prefHeight="750.0" prefWidth="1140.0">
+            <ScrollPane layoutY="1.0" prefHeight="865.0" prefWidth="1140.0">
               <content>
-                <AnchorPane fx:id="aPaneInt" minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="1140.0">
+                <AnchorPane fx:id="aPaneInt" minHeight="0.0" minWidth="0.0" prefHeight="737.0" prefWidth="1137.0">
                      <children>
-                        <Pane layoutX="74.0" layoutY="14.0" prefHeight="447.0" prefWidth="993.0">
+                        <Pane layoutX="69.0" layoutY="14.0" prefHeight="382.0" prefWidth="998.0">
                            <children>
-                              <Pane layoutX="77.0" layoutY="227.0" prefHeight="47.0" prefWidth="839.0">
+                              <Pane layoutX="78.0" layoutY="181.0" prefHeight="47.0" prefWidth="839.0">
                                  <children>
                                     <Button fx:id="btnIntNovo" layoutX="10.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnIntNovoHab" prefHeight="22.0" prefWidth="76.0" text="Novo" />
                                     <Button fx:id="btnIntSalvar" layoutX="97.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnIntSalvarHab" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
@@ -32,7 +32,7 @@
                                     <TextField fx:id="tfIntPesq" layoutX="445.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
                                  </children>
                               </Pane>
-                              <TableView fx:id="tvListaInt" layoutX="51.0" layoutY="284.0" prefHeight="113.0" prefWidth="890.0">
+                              <TableView fx:id="tvListaInt" layoutX="52.0" layoutY="246.0" prefHeight="113.0" prefWidth="890.0">
                                  <columns>
                                     <TableColumn fx:id="tcDescEndInt" prefWidth="363.0" text="Endereço da Interferência" />
                                     <TableColumn fx:id="tcIntCorpoHidrico" minWidth="0.0" prefWidth="250.0" text="Corpo Hídrico" />
@@ -46,7 +46,7 @@
                                  </font>
                               </Label>
                               <Label layoutX="54.0" layoutY="14.0" prefHeight="26.0" prefWidth="72.0" text="Endereço:" />
-                              <Button fx:id="btnBuscarInt" layoutX="850.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnBuscarIntHab" prefHeight="25.0" prefWidth="104.0" text="Buscar Endereço" />
+                              <Button fx:id="btnBuscarInt" layoutX="850.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnBuscarIntHab" prefHeight="25.0" prefWidth="104.0" text="Buscar" />
                               <Pane layoutX="40.0" layoutY="39.0" prefHeight="102.0" prefWidth="914.0">
                                  <children>
                                  	<Label layoutX="140.0" layoutY="16.0" text="Tipo de Interferência:" />
@@ -67,7 +67,7 @@
                                     
                                  </children>
                               </Pane>
-                              <Pane layoutX="76.0" layoutY="151.0" prefHeight="70.0" prefWidth="841.0">
+                              <Pane layoutX="76.0" layoutY="106.0" prefHeight="70.0" prefWidth="841.0">
                                  <children>
                                     <TextField fx:id="tfLinkInt" layoutX="14.0" layoutY="5.0" prefHeight="25.0" prefWidth="759.0" promptText="Inserir link do GoogleMaps..." />
                                     <TextField fx:id="tfIntLat" layoutX="170.0" layoutY="42.0" prefHeight="25.0" prefWidth="140.0" promptText="-15.7754084" />
@@ -81,6 +81,7 @@
                               </Pane>
                            </children>
                         </Pane>
+                        <Pane fx:id="paneTipoInterferencia" layoutX="70.0" layoutY="401.0" prefHeight="255.0" prefWidth="998.0" />
                      </children>
                   </AnchorPane>
               </content>

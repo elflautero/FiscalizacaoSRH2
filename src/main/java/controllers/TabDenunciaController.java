@@ -82,7 +82,7 @@ public class TabDenunciaController implements Initializable {
 	// -- Conexão e pesquisa de denúncias -- //
 	private DenunciaDao denunciaDao = new DenunciaDao();	//passar classe
 	private List<Denuncia> denunciaList = denunciaDao.listDenuncia(strPesquisa); //passar string de pesquisar
-	private ObservableList<DenunciaTabela> obsListDenunciaTabela= FXCollections.observableArrayList(); //chamar observable list e outra classe
+	private ObservableList<DenunciaTabela> obsListDenunciaTabela = FXCollections.observableArrayList(); //chamar observable list e outra classe
 	
 	// --- método listarDenuncias --- //
 	public void listarDenuncias () {

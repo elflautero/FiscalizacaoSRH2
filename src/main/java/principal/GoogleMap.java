@@ -1,5 +1,7 @@
 package principal;
 
+//import org.omg.IOP.TAG_INTERNET_IOP;
+
 import controllers.TabEnderecoController;
 import controllers.TabInterfController;
 import javafx.beans.value.ChangeListener;
@@ -79,10 +81,17 @@ public class GoogleMap extends Parent {
 	    
 	    
 	    private void invokeJS(final String str) {
+	    	System.out.println("invokeJs");
+	    	
+	    	System.out.println("invoke variável " + str);
+	    	
 	        if(ready) {
+	        	
 	            doc.eval(str);
+	            System.out.println("ready " + str);
 	        }
 	        else {
+	        	System.out.println("não ready " + str);
 	            webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
 	            {
 	                @Override
@@ -93,12 +102,14 @@ public class GoogleMap extends Parent {
 	                    if (newState == Worker.State.SUCCEEDED)
 	                    {
 	                        doc.eval(str);
+	                        
 	                    }
 	                    int countInv = 0; 
 		                countInv ++;
-	                    System.out.println(countInv  + " invokeJS funcionando");
+		                System.out.println(countInv  + " invokeJS funcionando");
 	                }
 	            });
+	            
 	        }
 	    }
 	    
@@ -124,18 +135,25 @@ public class GoogleMap extends Parent {
 	    // Tentar junto com o método pegar as doubles de coordenadas
 	
 	   
-	    public void handle(double lat, double lng) {
+	    public void handle(double lat, double lng, String endMap) {
 	    	
-	    	System.out.println("método handle chamado: " + lat + " e " + lng);
+	    	System.out.println("método handle chamado: " + lat + " e " + lng + "e endereço: " + endMap);
 	    	
+	    	TabEnderecoController.latDec = Double.toString(lat);
+			TabEnderecoController.lngDec = Double.toString(lng);
+			TabEnderecoController.endMap = endMap;
+			
+		    TabInterfController.latDec = Double.toString(lat);
+		    TabInterfController.lngDec = Double.toString(lng);
+	    	/*
 	    	TabEnderecoController tabEndCont = new TabEnderecoController();
 	    	
-	    	tabEndCont.setLatLng(lat, lng);
+	    	tabEndCont.setLatLng(lat, lng, address);
 	    	 
 	    	TabInterfController tabIntCont = new TabInterfController();
 	    	 
 	    	tabIntCont.setLatLng(lat, lng);
-	    	
+	    	*/
 	    	
 	    	//tabEndCont.clickButton();
 	    	
@@ -157,9 +175,16 @@ public class GoogleMap extends Parent {
 
 	    
 	    public void setMarkerPosition(double lat, double lng) {
+	    	
+	    	System.out.println("começo do setMarker " + lat + lng);
+	    	
 	        String sLat = Double.toString(lat);
 	        String sLng = Double.toString(lng);
+	        
+	        System.out.println(lat);
+	        
 	        invokeJS("setMarkerPosition(" + sLat + ", " + sLng + ")");
+	        System.out.println("String " + "setMarkerPosition(" + sLat + ", " + sLng + ")");
 	    }
 
 	    public void setMapCenter(double lat, double lng) {
