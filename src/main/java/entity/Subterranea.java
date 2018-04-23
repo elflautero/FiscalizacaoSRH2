@@ -2,7 +2,6 @@ package entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +27,7 @@ public class Subterranea implements Serializable {
 	@Column (columnDefinition="varchar (10)")
 	private String sub_Poco;
 
-	@Column (columnDefinition="varchar(1)")
+	@Column (columnDefinition="varchar(3)")
 	private String sub_Caesb;  // tem caesb () sim () não
 	
 	@Column (columnDefinition="varchar(10)")
@@ -59,11 +58,11 @@ public class Subterranea implements Serializable {
 		this.sub_Codigo = sub_Codigo;
 	}
 
-	public Interferencia getInterf_Sub() {
+	public Interferencia getInterf_SubFK() {
 		return interf_SubFK;
 	}
 
-	public void setInterf_Sub(Interferencia interf_SubFK) {
+	public void setInterf_SubFK(Interferencia interf_SubFK) {
 		this.interf_SubFK = interf_SubFK;
 	}
 

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Superficial implements Serializable{
@@ -16,6 +18,11 @@ public class Superficial implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column 
 	private int sup_Codigo;
+	
+	//-- OneToOne superficial e interferência --//
+			@OneToOne
+			@JoinColumn (name = "super_Interferencia_Codigo")
+			private Interferencia interf_SuperFK;
 	
 	@Column (columnDefinition="varchar(15)")
 	private String sup_Captacao; // gravidade, bombeamento, outro
@@ -35,11 +42,32 @@ public class Superficial implements Serializable{
 	@Column (columnDefinition="varchar(15)")
 	private String sup_Data;  // data de operação
 	
-	@Column (columnDefinition="varchar(1)")
+	@Column (columnDefinition="varchar(3)")
 	private String sup_Caesb;  // tem caesb () sim () não
+	
+	@Column (columnDefinition="varchar(4)")
+	private String sup_Tempo;  // tempo de captação (h/dia)
+	
+	
 	
 	
 	//-- getters and setters --//
+
+	public Interferencia getInterf_SuperFK() {
+		return interf_SuperFK;
+	}
+
+	public void setInterf_SuperFK(Interferencia interf_SuperFK) {
+		this.interf_SuperFK = interf_SuperFK;
+	}
+
+	public String getSup_Tempo() {
+		return sup_Tempo;
+	}
+
+	public void setSup_Tempo(String sup_Tempo) {
+		this.sup_Tempo = sup_Tempo;
+	}
 
 	public int getSup_Codigo() {
 		return sup_Codigo;

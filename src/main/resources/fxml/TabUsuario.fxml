@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <Pane fx:id="tabUsuario" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabUsuarioController">
    <children>
@@ -54,8 +55,11 @@
             <TextField fx:id="tfUsPesquisar" layoutX="426.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
          </children>
       </Pane>
-      <Label layoutX="83.0" layoutY="21.0" text="Endereço: " />
-      <Label fx:id="lblEndUsuario" layoutX="138.0" layoutY="17.0" prefHeight="25.0" prefWidth="521.0" />
+      <Label layoutX="83.0" layoutY="21.0" text="Endereço do Empreendimento: " />
+      <Label fx:id="lblEndUsuario" layoutX="255.0" layoutY="17.0" prefHeight="25.0" prefWidth="660.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
       <Button fx:id="btnBucarEnd" layoutX="926.0" layoutY="17.0" mnemonicParsing="false" text="Buscar" />
    </children>
 </Pane>

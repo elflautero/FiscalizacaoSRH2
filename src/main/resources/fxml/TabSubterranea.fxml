@@ -4,9 +4,12 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="998.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabSubterraneaController">
+<!-- fx:controller="controllers.TabSubterraneaController" -->
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="998.0" type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane layoutX="187.0" layoutY="28.0" prefHeight="159.0" prefWidth="786.0">
          <children>
@@ -29,5 +32,6 @@
             
          </children>
       </Pane>
+      <ImageView fx:id="iVewSubt" fitHeight="150.0" fitWidth="163.0" layoutX="14.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" />
    </children>
-</Pane>
+</fx:root>

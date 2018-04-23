@@ -1,8 +1,13 @@
 package controllers;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import dao.UsuarioDao;
+import entity.Endereco;
+import entity.Interferencia;
+import entity.Usuario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,10 +15,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import tabela.UsuarioTabela;
 
 public class TabUsuarioController implements Initializable {
+	
+	//-- Strings --//
+	
+	String strPesquisaUsuario = "";
 	
 	@FXML Pane tabUsuario = new Pane();
 	
@@ -36,6 +47,9 @@ public class TabUsuarioController implements Initializable {
 	@FXML Button btnUsCancelar;
 	@FXML TextField tfUsPesquisar;
 	@FXML Button btnUsPesq;
+	
+	// --- objeto para passar os valor pelo MainControoler para outro controller --- //
+	public Endereco eGeralUs;
 	
 	
 	public void btnUsNovoHab (ActionEvent event) {
@@ -112,6 +126,53 @@ public class TabUsuarioController implements Initializable {
 		ChoiceBox<String> cbUsUF = new ChoiceBox<String>();
 			ObservableList<String> olUsDF = FXCollections
 				.observableArrayList("DF" , "GO", "Outro"); // box - seleção pessoa físcia ou jurídica
+
+		//-- receber o endereço --//
+		public Label lblEndUsuario;
+		
+		public void listarUsuarios (String strPesquisaUsuario) {
+			
+			UsuarioDao usDao = new UsuarioDao();
+			
+			List<Usuario> usuarioList = usDao.listUsuario(strPesquisaUsuario);
+			
+			ObservableList<UsuarioTabela> olUsuarioTabela = FXCollections.observableArrayList();
+			
+			
+			if (!olUsuarioTabela.isEmpty()) {
+				olUsuarioTabela.clear();
+			}
+			
+				for (Usuario usuario :usuarioList) {
+					
+					UsuarioTabela usTab = new UsuarioTabela(
+							
+							usuario.getUs_Codigo(),
+							usuario.getUs_Nome(),
+							usuario.getUs_CPFCNPJ(),
+							usuario.getUs_Descricao_End(),
+							usuario.getUs_RA(),
+							usuario.getUs_Bairro(),
+							usuario.getUs_Cidade(),
+							usuario.getUs_Postal(),
+							usuario.getUs_Telefone(),
+							usuario.getUs_Celular(),
+							usuario.getUs_Email(),
+							
+							usuario.getUs_End_CodigoFK()
+							
+							);
+					{
+						
+						
+						
+					}
+					
+					
+				}
+					
+			
+		}
 			
 		
 		
@@ -130,3 +191,13 @@ public class TabUsuarioController implements Initializable {
 			
 		}
 }
+
+
+
+
+
+
+
+
+
+

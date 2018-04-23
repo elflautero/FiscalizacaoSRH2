@@ -40,7 +40,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import principal.GoogleMap;
 import tabela.EnderecoTabela;
 
@@ -257,18 +256,6 @@ public class TabEnderecoController implements Initializable {
 		
 	}
 	
-	/*
-	public static final class MyMapSearch {
-		
-	//-- obter as coordenadas do javascript --//
-	public void getEndCoord (String lat, String lon) {
-			
-			System.out.println("Classe MyMapSearch " + lat + " e " + lon);
-				
-		}
-	
-	}
-	*/
 	
 	// --  botão salvar -- //
 	public void btnEndSalvarHab (ActionEvent event) {
@@ -329,6 +316,9 @@ public class TabEnderecoController implements Initializable {
 			
 			//-- Modular botões --//
 			modularBotoesInicial ();
+			
+			// listar endereços --//
+			listarEnderecos (strPesquisaEnd);
 			
 		}
 			
@@ -508,8 +498,6 @@ public class TabEnderecoController implements Initializable {
 	//-- buscador de endereços e coordenadas --//
 		public void btnEndMapsHab (ActionEvent event) throws IOException {
 
-			
-			
 			GoogleMap google = new GoogleMap();
 			
 			Group group = new Group();
@@ -531,13 +519,15 @@ public class TabEnderecoController implements Initializable {
 	            }
 	        });
 		    
-			Stage stage = new Stage(StageStyle.UTILITY);
+			Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
 			stage.setWidth(1250);
 			stage.setHeight(750);
 	        stage.setScene(scene);
 	        stage.setMaximized(false);
 	        stage.setResizable(false);
-	        /*
+	        
+	        /* para fazer algo ao fechar a janela...
+	         
 	        stage.setOnCloseRequest(new EventHandler<javafx.stage.WindowEvent>() {
                 public void handle(javafx.stage.WindowEvent event) {
                     tfEndLat.setText(latDec);

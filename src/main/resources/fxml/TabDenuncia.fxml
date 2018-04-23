@@ -37,13 +37,13 @@
                   <Label layoutX="127.0" layoutY="368.0" text="Endereço:" />
                   <Pane layoutX="102.0" layoutY="27.0" prefHeight="108.0" prefWidth="924.0">
                      <children>
-                        <TextField fx:id="tfDocumento" layoutX="20.0" layoutY="27.0" prefHeight="25.0" prefWidth="591.0" />
-                        <TextField fx:id="tfDocSei" layoutX="621.0" layoutY="27.0" prefHeight="23.0" prefWidth="139.0" />
-                        <TextField fx:id="tfProcSei" layoutX="770.0" layoutY="27.0" prefHeight="25.0" prefWidth="139.0" />
+                        <TextField fx:id="tfDocumento" layoutX="20.0" layoutY="27.0" prefHeight="25.0" prefWidth="526.0" />
+                        <TextField fx:id="tfDocSei" layoutX="558.0" layoutY="27.0" prefHeight="25.0" prefWidth="170.0" />
+                        <TextField fx:id="tfProcSei" layoutX="739.0" layoutY="27.0" prefHeight="25.0" prefWidth="170.0" />
                         <TextField fx:id="tfResDen" layoutX="19.0" layoutY="77.0" prefHeight="25.0" prefWidth="889.0" />
                         <Label layoutX="20.0" layoutY="6.0" prefHeight="17.0" prefWidth="77.0" text="Documento:" />
-                        <Label layoutX="621.0" layoutY="6.0" prefHeight="17.0" prefWidth="71.0" text="Número SEI:" />
-                        <Label layoutX="770.0" layoutY="6.0" prefHeight="17.0" prefWidth="80.0" text="Processo SEI:" />
+                        <Label layoutX="558.0" layoutY="6.0" prefHeight="17.0" prefWidth="71.0" text="Número SEI:" />
+                        <Label layoutX="740.0" layoutY="6.0" prefHeight="17.0" prefWidth="80.0" text="Processo SEI:" />
                         <Label layoutX="19.0" layoutY="57.0" prefHeight="17.0" prefWidth="120.0" text="Resumo da Denúncia:" />
                      </children>
                   </Pane>

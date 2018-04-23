@@ -13,17 +13,20 @@ public class DenunciaTabela {
 	private final SimpleStringProperty Doc_SEI_Denuncia;
 	private final SimpleStringProperty Proc_SEI_Denuncia;
 	private final SimpleStringProperty Desc_Denuncia;
+	
 	private SimpleObjectProperty<Endereco> enderecoObjetoFK;
 	
-	// CONSTRUTOR 
+	//-- CONSTRUTOR --// 
 	
 	public DenunciaTabela (
 			
 			int Cod_Denuncia, 
+			
 			String Doc_Denuncia, 
 			String Doc_SEI_Denuncia, 
 			String Proc_SEI_Denuncia, 
 			String Desc_Denuncia, 
+			
 			Endereco enderecoObjetoFK) {
 		
 		super();
@@ -33,12 +36,13 @@ public class DenunciaTabela {
 		this.Doc_SEI_Denuncia = new SimpleStringProperty(Doc_SEI_Denuncia);
 		this.Proc_SEI_Denuncia = new SimpleStringProperty(Proc_SEI_Denuncia);
 		this.Desc_Denuncia = new SimpleStringProperty(Desc_Denuncia);
+		
 		this.enderecoObjetoFK = new SimpleObjectProperty<>(enderecoObjetoFK);
 		
 	}
 	
 	public int getCod_Denuncia () {
-		return Cod_Denuncia.get();// esse get é para pegar apenas o que queremos do dado, senão ele retornaria uma string longa... 
+		return Cod_Denuncia.get();  // esse get é para pegar apenas o que queremos do dado, senão ele retornaria uma string longa... 
 	}
 	public String getDoc_Denuncia () {
 		return Doc_Denuncia.get();

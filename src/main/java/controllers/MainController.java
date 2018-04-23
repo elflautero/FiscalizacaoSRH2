@@ -11,15 +11,18 @@ public class MainController {
 	    @FXML private TabUsuarioController tabUsuarioController;
 	    @FXML private TabEnderecoController tabEnderecoController;
 	    @FXML private TabNavegadorController tabNavegadorController;
+	   
 	    
 
 	    @FXML 
 	    private void initialize() {
 	    	
 	       System.out.println("Application Started!");
+	       
 	       tabDenunciaController.init(this);
 	       tabEnderecoController.init(this);
 	       tabInterferenciaController.init(this);
+	       
 	       
 	    }
 
@@ -34,5 +37,9 @@ public class MainController {
 			//tabInterferenciaController.lblEnd.setText("OK!!!");
 			tabInterferenciaController.lblEnd.setText(eGeral.getDesc_Endereco() + " |  RA: "  + eGeral.getRA_Endereco() );
 			tabInterferenciaController.eGeralInt = eGeral;
+			
+			tabUsuarioController.lblEndUsuario.setText(eGeral.getDesc_Endereco() + " |  RA: "  + eGeral.getRA_Endereco() );
+			tabUsuarioController.eGeralUs  = eGeral;
 		}
+		
 }

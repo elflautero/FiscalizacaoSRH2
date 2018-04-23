@@ -27,6 +27,9 @@ public class Interferencia implements Serializable {
 	
 		@OneToOne (cascade = CascadeType.ALL, mappedBy = "interf_SubFK")
 		private Subterranea sub_Interferencia_Codigo;
+		
+		@OneToOne (cascade = CascadeType.ALL, mappedBy = "interf_SuperFK")
+		private Superficial super_Interferencia_Codigo;
 	
 	@ManyToOne (fetch = FetchType.EAGER) 
 	@JoinColumn (name = "inter_End_Codigo")

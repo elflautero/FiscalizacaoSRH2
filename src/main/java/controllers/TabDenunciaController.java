@@ -81,7 +81,7 @@ public class TabDenunciaController implements Initializable {
 	
 	// -- Conexão e pesquisa de denúncias -- //
 	private DenunciaDao denunciaDao = new DenunciaDao();	//passar classe
-	private List<Denuncia> denunciaList = denunciaDao.listDenuncia(strPesquisa); //passar string de pesquisar
+	private List<Denuncia> denunciaList; // = denunciaDao.listDenuncia(strPesquisa); //passar string de pesquisar
 	private ObservableList<DenunciaTabela> obsListDenunciaTabela = FXCollections.observableArrayList(); //chamar observable list e outra classe
 	
 	// --- método listarDenuncias --- //
@@ -142,8 +142,6 @@ public class TabDenunciaController implements Initializable {
 				tfProcSei.setText(denTab.getProc_SEI_Denuncia());
 				tfResDen.setText(denTab.getDesc_Denuncia());
 				
-				
-				//PRECISA MELHORAR, ESTÁ DANDO NULLPOINTEXCEPTION...
 				
 				if (denTab.getenderecoObjetoTabelaFK() != null) {
 					
@@ -317,10 +315,10 @@ public class TabDenunciaController implements Initializable {
 		modularBotoesInicial();
 		
 		// --- Selecionar um documento pesquisado  --- //
-		selecionarDenuncia ();
+		//selecionarDenuncia ();
 		
 		// --- listar denuncias --- //
-		listarDenuncias();
+		//listarDenuncias();
 		
 	}
 		

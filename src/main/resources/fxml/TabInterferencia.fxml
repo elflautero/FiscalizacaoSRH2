@@ -17,7 +17,7 @@
          <children>
             <ScrollPane layoutY="1.0" prefHeight="865.0" prefWidth="1140.0">
               <content>
-                <AnchorPane fx:id="aPaneInt" minHeight="0.0" minWidth="0.0" prefHeight="737.0" prefWidth="1137.0">
+                <AnchorPane fx:id="aPaneInt" minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="1137.0">
                      <children>
                         <Pane layoutX="69.0" layoutY="14.0" prefHeight="382.0" prefWidth="998.0">
                            <children>
@@ -40,12 +40,12 @@
                                     
                                  </columns>
                               </TableView>
-                              <Label fx:id="lblEnd" layoutX="114.0" layoutY="15.0" prefHeight="25.0" prefWidth="726.0">
+                              <Label fx:id="lblEnd" layoutX="229.0" layoutY="15.0" prefHeight="25.0" prefWidth="611.0">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="54.0" layoutY="14.0" prefHeight="26.0" prefWidth="72.0" text="Endereço:" />
+                              <Label layoutX="54.0" layoutY="14.0" prefHeight="26.0" prefWidth="173.0" text="Endereço do Empreendimento:" />
                               <Button fx:id="btnBuscarInt" layoutX="850.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnBuscarIntHab" prefHeight="25.0" prefWidth="104.0" text="Buscar" />
                               <Pane layoutX="40.0" layoutY="39.0" prefHeight="102.0" prefWidth="914.0">
                                  <children>
