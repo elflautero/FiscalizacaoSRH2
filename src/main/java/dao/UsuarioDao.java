@@ -34,7 +34,7 @@ public void salvaUsuario (Interferencia usuario) {
 		s.beginTransaction();
 		
 		Criteria crit = s.createCriteria(Interferencia.class);
-		crit.add(Restrictions.like("us_Nome", '%' + strPesquisaUsuario + '%'));
+		crit.add(Restrictions.like("us_nome", '%' + strPesquisaUsuario + '%'));
 		list = crit.list();
 			
 		s.getTransaction().commit();

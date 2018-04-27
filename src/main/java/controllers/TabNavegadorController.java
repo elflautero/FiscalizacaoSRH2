@@ -1,11 +1,19 @@
 package controllers;
 
 import java.awt.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.swing.text.TableView;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,12 +25,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
@@ -44,6 +54,8 @@ public class TabNavegadorController implements Initializable{
 	//-- Array de Strings - Documentos Capturados --//
 	String[] docsSei; // = new String [contDocSei];
 	
+	String html;
+	
 	// array list para a captura de dados dos documentos --//
 	ArrayList<String> docsList = new ArrayList<String>();
 		
@@ -64,9 +76,6 @@ public class TabNavegadorController implements Initializable{
 	
 	WebView wv1;
 	
-	// botão no iframe --//
-	Button btnIframe = new Button("iframe");
-	
 	
 	// table view de documentos capturados do sei
 	
@@ -74,6 +83,7 @@ public class TabNavegadorController implements Initializable{
 	
 	TableView tv;
 	
+	WebView wv2;
 	
 	
 	//-- botão Google --//
@@ -82,6 +92,7 @@ public class TabNavegadorController implements Initializable{
 		link = "https://www.google.com.br/search?q=googlr&oq=googlr&aqs=chrome..69i57j0l5.2588j0j7&sourceid=chrome&ie=UTF-8";
 		navegarWeb();
 		System.out.println("btn google clicado");
+		
 	}
 	
 	//-- botão SEI --//
@@ -89,7 +100,8 @@ public class TabNavegadorController implements Initializable{
 		
 		link = "http://treinamento3.sei.df.gov.br/sip/login.php?sigla_orgao_sistema=GDF&sigla_sistema=SEI";
 		navegarWeb();
-		 System.out.println("btn sei treinamento clicado");
+		System.out.println("btn sei treinamento clicado");
+		
 	}
 	
 	
@@ -100,33 +112,33 @@ public class TabNavegadorController implements Initializable{
 		
 			wv1.getEngine().executeScript(
 					
-					"var doc;"
+			"var doc;"
 
-					+ 	"$(function() {"
+			+ 	"$(function() {"
 
-					+	"$( '#ifrArvore' ).load(function(){"
-					 
-					//+	"alert('iframe carregado');"
-					        
-					//+	"alert($(this).contents().find('span'));"
-					        
-					+	"$(this).contents().find( 'span' ).css( 'background-color', '#BADA55' );"
-						
-					+	"doc = ($(this).contents().find('span'));" 
-						
-					//+	"alert(doc);"
-					  
-					+	"for (var i = 0; i < doc.length; i++) {"
-					
-					//+	"alert (doc[i].textContent);"  
-						
-					+	"}"
-					  
-					+   "});"
+			+	"$( '#ifrArvore' ).load(function(){"
+			 
+			//+	"alert('iframe carregado');"
+			        
+			//+	"alert($(this).contents().find('span'));"
+			        
+			+	"$(this).contents().find( 'span' ).css( 'background-color', '#BADA55' );"
+				
+			+	"doc = ($(this).contents().find('span'));" 
+				
+			//+	"alert(doc);"
+			  
+			+	"for (var i = 0; i < doc.length; i++) {"
+			
+			//+	"alert (doc[i].textContent);"  
+				
+			+	"}"
+			  
+			+   "});"
 
-					+ 	"});"
-					
-					);
+			+ 	"});"
+			
+			);
 	}	
 		
 			
@@ -184,25 +196,21 @@ public class TabNavegadorController implements Initializable{
 			
 			 //--  https://docs.oracle.com/javafx/2/ui_controls/ListViewSample.java.html  --// 
 			listView.getSelectionModel().selectedItemProperty().addListener(
-	                new ChangeListener<String>() {
-	                    public void changed(ObservableValue<? extends String> 
-	                    ov, String old_val, String new_val) {
-	                          System.out.println(new_val);
-	                          
-	                         Clipboard clip = Clipboard.getSystemClipboard();
-	                         ClipboardContent conteudo = new ClipboardContent();
-	                         conteudo.putString(new_val);
-	                         clip.setContent(conteudo);
-	                    }
-	                });
+                new ChangeListener<String>() {
+                    public void changed(ObservableValue<? extends String> 
+                    ov, String old_val, String new_val) {
+                          System.out.println(new_val);
+                          
+                         Clipboard clip = Clipboard.getSystemClipboard();
+                         ClipboardContent conteudo = new ClipboardContent();
+                         conteudo.putString(new_val);
+                         clip.setContent(conteudo);
+                    }
+                });
 		
 			
 	}
 	
-	public void selecionarDocumento () {
-		
-	}
-			
 	
 	//-- botão Go - atualizar navegador --//
 	public void bntGoHab (ActionEvent event) {
@@ -216,6 +224,8 @@ public class TabNavegadorController implements Initializable{
 	}
 	
 	
+	
+	
 	//-- método navegar --//
 	public void navegarWeb() {
 		
@@ -227,12 +237,58 @@ public class TabNavegadorController implements Initializable{
 
 		    public WebEngine call(PopupFeatures p) {
 		    	
-		            Stage stage = new Stage(); // StageStyle.UTILITY
-		            WebView wv2 = new WebView();
+			    	wv2 = new WebView(); 
+					wv2.setPrefHeight(645.0); // wv2, 1140.0, 650.0
+		            wv2.setPrefWidth(1140.0);
+		            wv2.setLayoutY(35);
+		    	
+		    		Button btnIframe = new Button ("Incluir");
+		    	
+					btnIframe.setOnAction(new EventHandler<ActionEvent>() {
+			            @Override public void handle(ActionEvent e) {
+			            	
+			            	File file = new File("../FiscalizacaoSRH/src/main/resources/html/autodeinfracao.html");
+			    			
+			        		Document docHtml = null;
+			        		
+							try {
+								docHtml = Jsoup.parse(file, "UTF-8");  // retirei o  .clone()
+							} catch (IOException e1) {
+								System.out.println("Erro na leitura do documento e Jsoup!!!");
+								e1.printStackTrace();
+							}
+			        	
+			        		docHtml.select("nomeus").prepend("Fabrício José Barrozo");
+			        	
+							
+			        		String html = docHtml.toString();
+			        		
+			        		html = html.replace("\"", "'");
+			        		html = html.replace("\n", "");
+			        		
+			        		html =  "\"" + html + "\"";
+			        		
+								wv2.getEngine().executeScript(
+				            			"var x = document.getElementsByTagName('iframe')[2];"
+				            			+ "var y = x.contentDocument;" 
+										+ "y.body.innerHTML = " +html+ ";"
+				            			);
+								
+			            }
+			        });
+					
+					btnIframe.setLayoutY(8);
+					btnIframe.setLayoutX(502);
+			
+		            Group group = new Group();
+					group.getChildren().addAll(btnIframe, wv2);
 		            
-		            stage.setScene(new Scene(wv2, 1140.0, 650.0));
+					Stage stage = new Stage(); // StageStyle.UTILITY
+					
+		            stage.setScene(new Scene(group));
 		            
 		            stage.show();
+		            
 		            return wv2.getEngine();
 		      
 		        }
@@ -572,6 +628,88 @@ tvLista.setItems(obsListDenunciaTabela);
 			            		
 			            				*/
 			
+/*
+public String pegarBuf () {
+	
+	String FILENAME = "../FiscalizacaoSRH/src/main/resources/html/autodeinfracao.html";
+	
+		// "../FiscalizacaoSRH/src/main/resources/html/autodeinfracao.html"
+	
+		// "../json/src/main/resources/html/relatorio.html"
+
+	BufferedReader br = null;
+	FileReader fr = null;
+	String leitorRelatorio = null;
+
+	try {
+
+	fr = new FileReader(FILENAME);
+	br = new BufferedReader(fr);
+
+	while ((leitorRelatorio = br.readLine()) != null) {
+		System.out.println(leitorRelatorio);
+	
+	}
+
+	} catch (IOException e) {
+
+		e.printStackTrace();
+
+	} finally {
+
+			try {
+
+				if (br != null)
+					br.close();
+
+				if (fr != null)
+					fr.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+
+		}
+	
+	System.out.println(leitorRelatorio);
+	return leitorRelatorio;	
+	
+	}
+
+*/
+
+/*
+ String FILENAME = "../FiscalizacaoSRH/src/main/resources/html/autodeinfracao.html";
+			            	BufferedReader br = null;
+				    		FileReader fr = null;
+				    		String leitorRelatorio = null;
+				    		
+				    		StringBuilder strBuilder = new StringBuilder();
+			            	
+				    		try {
+
+				    			fr = new FileReader(FILENAME);
+				    			br = new BufferedReader(fr);
+				    			
+				    			
+				    			// passa linha por linha do relatorio e adiciona uma por uma na strBuilder
+				    			while ((leitorRelatorio = br.readLine()) != null) {
+				    				strBuilder.append(leitorRelatorio);
+				    			}
+
+				    			} catch (IOException eIO) {
+
+				    			eIO.printStackTrace();
+	
+				    			}
+				    		
+					    		leitorRelatorio = " \" " + strBuilder + " \" " ;  // adiciona aspas duplas no html final
+ 
+ 
+ 
+ */
 			
 	
 			

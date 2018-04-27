@@ -62,7 +62,7 @@ public class Endereco implements Serializable{
 		private List<Interferencia> interferencias = new ArrayList<Interferencia>();
 	
 	//-- Lista de usuários vinculados --//
-			@OneToMany (mappedBy = "us_End_CodigoFK", cascade = CascadeType.MERGE,
+			@OneToMany (mappedBy = "us_end_codigoFK", cascade = CascadeType.MERGE,
 					fetch = FetchType.EAGER, targetEntity = Usuario.class)
 			@Fetch(FetchMode.SUBSELECT) 
 			private List<Usuario> usuarios = new ArrayList<Usuario>();

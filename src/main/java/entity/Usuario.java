@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import tabela.UsuarioTabela;
+
 @Entity
 public class Usuario implements Serializable {
 
@@ -18,145 +20,179 @@ public class Usuario implements Serializable {
 	
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column 
-	private int us_Codigo;
+	@Column (name = "us_codigo")
+	private int usCodigo;
 	
 	@ManyToOne (fetch = FetchType.EAGER) 
-	@JoinColumn (name = "us_End_CodigoFK")
-	private Endereco us_End_CodigoFK;
+	@JoinColumn (name = "us_end_codigoFK")
+	private Endereco usEndCodigoFK;
 	
-	@Column (columnDefinition="varchar(80)")
-	private String us_Nome;
+	@Column (name = "us_tipo", columnDefinition="varchar(8)")
+	private String usTipo;
 	
-	@Column (columnDefinition="varchar(5)")
-	private String us_CPFCNPJ;
+	@Column (name = "us_nome", columnDefinition="varchar(80)")
+	private String usNome;
 	
-	@Column (columnDefinition="varchar (80)")
-	private String us_Descricao_End;
+	@Column (name = "us_cpfcnpj", columnDefinition="varchar(5)")
+	private String usCPFCNPJ;
 	
-	@Column (columnDefinition="varchar (20)")
-	private String us_RA;
+	@Column (name = "us_descricao_end", columnDefinition="varchar (80)")
+	private String usDecricaoEnd;
 	
-	@Column (columnDefinition="varchar (20)")
-	private String us_Bairro;
+	@Column (name = "us_ra", columnDefinition="varchar (20)")
+	private String usRA;
+	
+	@Column (name = "us_bairro", columnDefinition="varchar (20)")
+	private String usBairro;
 
-	@Column (columnDefinition="varchar (20)")
-	private String us_Cidade;
+	@Column (name = "us_cidade", columnDefinition="varchar (20)")
+	private String usCidade;
 	
-	@Column (columnDefinition="varchar (20)")
-	private String us_Postal;
+	@Column (name = "us_postal", columnDefinition="varchar (20)")
+	private String usPostal;
 	
-	@Column (columnDefinition="varchar (20)")
-	private String us_Telefone;
+	@Column (name = "us_telefone", columnDefinition="varchar (20)")
+	private String usTelefone;
 	
-	@Column (columnDefinition="varchar (20)")
-	private String us_Celular;
+	@Column (name = "us_celular", columnDefinition="varchar (20)")
+	private String usCelular;
 	
-	@Column (columnDefinition="varchar (70)")
-	private String us_Email;
+	@Column (name = "us_email", columnDefinition="varchar (70)")
+	private String usEmail;
 	
 	//-- construtor padrão --//
+	
 	public Usuario () {
 		
 	}
-
 	
+	//-- Construtor --//
+	
+	public Usuario (UsuarioTabela usTab) {
+		
+		this.usCodigo = usTab.getUsCodigo();
+		this.usTipo = usTab.getUsTipo();
+		this.usNome = usTab.getUsNome();
+		this.usCPFCNPJ = usTab.getUsCPFCNPJ();
+		this.usDecricaoEnd = usTab.getUsDescricaoEnd();
+		this.usRA = usTab.getUsRA();
+		this.usBairro = usTab.getUsBairro();
+		this.usCidade = usTab.getUsCidade();
+		this.usPostal = usTab.getUsPostal();
+		this.usTelefone = usTab.getUsTelefone();
+		this.usCelular = usTab.getUsCelular();
+		this.usEmail = usTab.getUsEmail();
+		
+		this.usEndCodigoFK = usTab.getEnderecoUsObjetoTabelaFK();
+		
+		
+	}
 	
 	//-- getters and setters --//
-	
-	public int getUs_Codigo() {
-		return us_Codigo;
+
+	public int getUsCodigo() {
+		return usCodigo;
 	}
 
-	public void setUs_Codigo(int us_Codigo) {
-		this.us_Codigo = us_Codigo;
+	public void setUsCodigo(int usCodigo) {
+		this.usCodigo = usCodigo;
 	}
 
-	public Endereco getUs_End_CodigoFK() {
-		return us_End_CodigoFK;
+	public Endereco getUsEndCodigoFK() {
+		return usEndCodigoFK;
 	}
 
-	public void setUs_End_CodigoFK(Endereco us_End_Codigo) {
-		this.us_End_CodigoFK = us_End_Codigo;
+	public void setUsEndCodigoFK(Endereco usEndCodigoFK) {
+		this.usEndCodigoFK = usEndCodigoFK;
 	}
 
-	public String getUs_Nome() {
-		return us_Nome;
+	public String getUsTipo() {
+		return usTipo;
 	}
 
-	public void setUs_Nome(String us_Nome) {
-		this.us_Nome = us_Nome;
+	public void setUsTipo(String usTipo) {
+		this.usTipo = usTipo;
 	}
 
-	public String getUs_CPFCNPJ() {
-		return us_CPFCNPJ;
+	public String getUsNome() {
+		return usNome;
 	}
 
-	public void setUs_CPFCNPJ(String us_CPFCNPJ) {
-		this.us_CPFCNPJ = us_CPFCNPJ;
+	public void setUsNome(String usNome) {
+		this.usNome = usNome;
 	}
 
-	public String getUs_Descricao_End() {
-		return us_Descricao_End;
+	public String getUsCPFCNPJ() {
+		return usCPFCNPJ;
 	}
 
-	public void setUs_Descricao_End(String us_Descricao_End) {
-		this.us_Descricao_End = us_Descricao_End;
+	public void setUsCPFCNPJ(String usCPFCNPJ) {
+		this.usCPFCNPJ = usCPFCNPJ;
 	}
 
-	public String getUs_RA() {
-		return us_RA;
+	public String getUsDecricaoEnd() {
+		return usDecricaoEnd;
 	}
 
-	public void setUs_RA(String us_RA) {
-		this.us_RA = us_RA;
+	public void setUsDecricaoEnd(String usDecricaoEnd) {
+		this.usDecricaoEnd = usDecricaoEnd;
 	}
 
-	public String getUs_Bairro() {
-		return us_Bairro;
+	public String getUsRA() {
+		return usRA;
 	}
 
-	public void setUs_Bairro(String us_Bairro) {
-		this.us_Bairro = us_Bairro;
+	public void setUsRA(String usRA) {
+		this.usRA = usRA;
 	}
 
-	public String getUs_Cidade() {
-		return us_Cidade;
+	public String getUsBairro() {
+		return usBairro;
 	}
 
-	public void setUs_Cidade(String us_Cidade) {
-		this.us_Cidade = us_Cidade;
+	public void setUsBairro(String usBairro) {
+		this.usBairro = usBairro;
 	}
 
-	public String getUs_Postal() {
-		return us_Postal;
+	public String getUsCidade() {
+		return usCidade;
 	}
 
-	public void setUs_Postal(String us_Postal) {
-		this.us_Postal = us_Postal;
+	public void setUsCidade(String usCidade) {
+		this.usCidade = usCidade;
 	}
 
-	public String getUs_Telefone() {
-		return us_Telefone;
+	public String getUsPostal() {
+		return usPostal;
 	}
 
-	public void setUs_Telefone(String us_Telefone) {
-		this.us_Telefone = us_Telefone;
+	public void setUsPostal(String usPostal) {
+		this.usPostal = usPostal;
 	}
 
-	public String getUs_Celular() {
-		return us_Celular;
+	public String getUsTelefone() {
+		return usTelefone;
 	}
 
-	public void setUs_Celular(String us_Celular) {
-		this.us_Celular = us_Celular;
+	public void setUsTelefone(String usTelefone) {
+		this.usTelefone = usTelefone;
 	}
 
-	public String getUs_Email() {
-		return us_Email;
+	public String getUsCelular() {
+		return usCelular;
 	}
 
-	public void setUs_Email(String us_Email) {
-		this.us_Email = us_Email;
+	public void setUsCelular(String usCelular) {
+		this.usCelular = usCelular;
 	}
+
+	public String getUsEmail() {
+		return usEmail;
+	}
+
+	public void setUsEmail(String usEmail) {
+		this.usEmail = usEmail;
+	}
+
+
 }

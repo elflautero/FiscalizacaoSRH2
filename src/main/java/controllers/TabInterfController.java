@@ -119,6 +119,8 @@ public class TabInterfController implements Initializable {
 		@FXML TableColumn<InterferenciaTabela, String> tcIntCorpoHidrico;
 		@FXML TableColumn<InterferenciaTabela, String> tcIntUH;
 	
+		
+		
 		//-- combobox - tipo interferência --//
 		@FXML
 		ChoiceBox<String> cbTipoInt = new ChoiceBox<String>();
@@ -368,7 +370,7 @@ public class TabInterfController implements Initializable {
 				
 			sDao.mergeSubterranea(sub);
 			
-		} // if subterrânea
+		} // fim subterrânea
 		
 		
 		if (tipoCaptacao == 2) {
@@ -412,7 +414,7 @@ public class TabInterfController implements Initializable {
 			supDao.mergeSuperficial(sup);
 			
 				
-			} // if superficial //
+			} // fim superficial //
 		
 			
 			//-- Alerta de endereço salvo --//

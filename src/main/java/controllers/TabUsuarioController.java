@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 
 import dao.UsuarioDao;
 import entity.Endereco;
-import entity.Interferencia;
 import entity.Usuario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,8 +15,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import tabela.InterferenciaTabela;
 import tabela.UsuarioTabela;
 
 public class TabUsuarioController implements Initializable {
@@ -47,9 +49,18 @@ public class TabUsuarioController implements Initializable {
 	@FXML Button btnUsCancelar;
 	@FXML TextField tfUsPesquisar;
 	@FXML Button btnUsPesq;
+	@FXML Button btnBucarEnd;
 	
 	// --- objeto para passar os valor pelo MainControoler para outro controller --- //
 	public Endereco eGeralUs;
+	
+	
+	//-- TableView Endereço --//
+			@FXML private javafx.scene.control.TableView<UsuarioTabela> tvListaUs;
+			
+			@FXML TableColumn<InterferenciaTabela, String> tcUsNome;
+			@FXML TableColumn<InterferenciaTabela, String> tcUsCPFCNPJ;
+			@FXML TableColumn<InterferenciaTabela, String> tcUsEndereco;
 	
 	
 	public void btnUsNovoHab (ActionEvent event) {
@@ -57,6 +68,10 @@ public class TabUsuarioController implements Initializable {
 	}
 	
 	public void btnUsSalvarHab (ActionEvent event) {
+		
+		Usuario usuario = new  Usuario ();
+		
+			// usuario.get)
 			
 	}
 	
@@ -130,6 +145,8 @@ public class TabUsuarioController implements Initializable {
 		//-- receber o endereço --//
 		public Label lblEndUsuario;
 		
+		
+		//-- método listar usuários --//
 		public void listarUsuarios (String strPesquisaUsuario) {
 			
 			UsuarioDao usDao = new UsuarioDao();
@@ -143,37 +160,40 @@ public class TabUsuarioController implements Initializable {
 				olUsuarioTabela.clear();
 			}
 			
-				for (Usuario usuario :usuarioList) {
+				for (Usuario usuario : usuarioList) {
 					
 					UsuarioTabela usTab = new UsuarioTabela(
 							
-							usuario.getUs_Codigo(),
-							usuario.getUs_Nome(),
-							usuario.getUs_CPFCNPJ(),
-							usuario.getUs_Descricao_End(),
-							usuario.getUs_RA(),
-							usuario.getUs_Bairro(),
-							usuario.getUs_Cidade(),
-							usuario.getUs_Postal(),
-							usuario.getUs_Telefone(),
-							usuario.getUs_Celular(),
-							usuario.getUs_Email(),
+							usuario.getUsCodigo(),
+							usuario.getUsTipo(),
+							usuario.getUsNome(),
+							usuario.getUsCPFCNPJ(),
+							usuario.getUsDecricaoEnd(),
+							usuario.getUsRA(),
+							usuario.getUsBairro(),
+							usuario.getUsCidade(),
+							usuario.getUsPostal(),
+							usuario.getUsTelefone(),
+							usuario.getUsCelular(),
+							usuario.getUsEmail(),
 							
-							usuario.getUs_End_CodigoFK()
+							usuario.getUsEndCodigoFK()
 							
 							);
-					{
-						
-						
+					
+					olUsuarioTabela.add(usTab);
 						
 					}
 					
+					tcUsNome.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("us_nome"));
+					tcUsCPFCNPJ.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("us_CPFCNPJ"));
+					tcUsEndereco.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("us_descricao_end"));
 					
-				}
-					
-			
+					tvListaUs.setItems(olUsuarioTabela);
 		}
-			
+		
+		
+
 		
 		
 		//-- INITIALIZE --//
