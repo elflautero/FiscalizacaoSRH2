@@ -25,15 +25,38 @@ public class Interferencia implements Serializable {
 	@Column 
 	private int inter_Codigo;
 	
+		//-- RELACIONAMENTO SUBTERRÂNEA --//
 		@OneToOne (cascade = CascadeType.ALL, mappedBy = "interf_SubFK")
 		private Subterranea sub_Interferencia_Codigo;
 		
+		
+		public Subterranea getSub_Interferencia_Codigo() {
+			return sub_Interferencia_Codigo;
+		}
+
+		public void setSub_Interferencia_Codigo(Subterranea sub_Interferencia_Codigo) {
+			this.sub_Interferencia_Codigo = sub_Interferencia_Codigo;
+		}
+
+		
+		//-- RELACIONAMENTO SUPERFICIAL --//
 		@OneToOne (cascade = CascadeType.ALL, mappedBy = "interf_SuperFK")
 		private Superficial super_Interferencia_Codigo;
 	
+	public Superficial getSuper_Interferencia_Codigo() {
+			return super_Interferencia_Codigo;
+		}
+
+		public void setSuper_Interferencia_Codigo(Superficial super_Interferencia_Codigo) {
+			this.super_Interferencia_Codigo = super_Interferencia_Codigo;
+		}
+
+
+		//-- RELACIONAMENTO ENDEREÇO --//
 	@ManyToOne (fetch = FetchType.EAGER) 
 	@JoinColumn (name = "inter_End_Codigo")
 	private Endereco inter_End_CodigoFK;
+	
 	
 	@Column (columnDefinition="varchar(30)")
 	private String inter_Tipo;

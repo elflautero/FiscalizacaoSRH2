@@ -24,7 +24,8 @@ public void salvaSubterranea (Subterranea subterranea) {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Subterranea> listSubterranea(String strSubPesquisa) {
+	public List<Subterranea> listSubterranea(int i) {
+		
 		List<Subterranea> list = new ArrayList<Subterranea>();
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
@@ -32,7 +33,7 @@ public void salvaSubterranea (Subterranea subterranea) {
 		s.beginTransaction();
 		
 		Criteria crit = s.createCriteria(Denuncia.class);
-		crit.add(Restrictions.like("sub_Codigo", '%' + strSubPesquisa + '%'));
+		crit.add(Restrictions.like("sub_Interferencia_Codigo", i));
 		list = crit.list();
 		
 		s.getTransaction().commit();
@@ -72,5 +73,5 @@ public void salvaSubterranea (Subterranea subterranea) {
 		s.getTransaction().commit();
 		s.close();
 	}
-
+	
 }

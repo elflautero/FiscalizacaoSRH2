@@ -34,6 +34,23 @@ public class TabSubterraneaController implements Initializable {
 	}
 	
 	
+	public void imprimirSubterranea (Subterranea sub) {
+		
+		cbTipoCaptacao.setValue(sub.getSub_Poco());
+		cbSubSis.setValue(sub.getSub_Sistema());
+		
+		tfVazao.setText(sub.getSub_Vazao());
+		tfEstatico.setText(sub.getSub_Estatico());
+		tfDinamico.setText(sub.getSub_Dinamico());
+		tfProfundidade.setText(sub.getSub_Profundidade());
+		
+		cbSubCaesb.setValue(sub.getSub_Caesb());
+		
+		// falta a data
+		
+	}
+	
+	
     
 	@FXML private MainController main;
 	
@@ -91,6 +108,7 @@ public class TabSubterraneaController implements Initializable {
 	TextField tfDinamico = new TextField();
 	@FXML
 	TextField tfProfundidade = new TextField();
+	
 	
 	@FXML DatePicker dpDataSubterranea = new DatePicker();
 	

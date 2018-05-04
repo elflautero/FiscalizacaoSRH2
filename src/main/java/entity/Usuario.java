@@ -33,23 +33,24 @@ public class Usuario implements Serializable {
 	@Column (name = "us_nome", columnDefinition="varchar(80)")
 	private String usNome;
 	
-	@Column (name = "us_cpfcnpj", columnDefinition="varchar(5)")
+	@Column (name = "us_cpfcnpj", columnDefinition="varchar(20)")
 	private String usCPFCNPJ;
 	
 	@Column (name = "us_descricao_end", columnDefinition="varchar (80)")
-	private String usDecricaoEnd;
+	private String usDescricaoEnd;
 	
 	@Column (name = "us_ra", columnDefinition="varchar (20)")
 	private String usRA;
 	
-	@Column (name = "us_bairro", columnDefinition="varchar (20)")
-	private String usBairro;
-
 	@Column (name = "us_cidade", columnDefinition="varchar (20)")
 	private String usCidade;
 	
-	@Column (name = "us_postal", columnDefinition="varchar (20)")
-	private String usPostal;
+	@Column (name = "us_estado", columnDefinition="varchar (2)")
+	private String usEstado;
+	
+
+	@Column (name = "us_cep", columnDefinition="varchar (20)")
+	private String usCEP;
 	
 	@Column (name = "us_telefone", columnDefinition="varchar (20)")
 	private String usTelefone;
@@ -74,17 +75,15 @@ public class Usuario implements Serializable {
 		this.usTipo = usTab.getUsTipo();
 		this.usNome = usTab.getUsNome();
 		this.usCPFCNPJ = usTab.getUsCPFCNPJ();
-		this.usDecricaoEnd = usTab.getUsDescricaoEnd();
+		this.usDescricaoEnd = usTab.getUsDescricaoEnd();
 		this.usRA = usTab.getUsRA();
-		this.usBairro = usTab.getUsBairro();
 		this.usCidade = usTab.getUsCidade();
-		this.usPostal = usTab.getUsPostal();
+		this.usCEP = usTab.getUsCEP();
 		this.usTelefone = usTab.getUsTelefone();
 		this.usCelular = usTab.getUsCelular();
 		this.usEmail = usTab.getUsEmail();
 		
 		this.usEndCodigoFK = usTab.getEnderecoUsObjetoTabelaFK();
-		
 		
 	}
 	
@@ -130,12 +129,12 @@ public class Usuario implements Serializable {
 		this.usCPFCNPJ = usCPFCNPJ;
 	}
 
-	public String getUsDecricaoEnd() {
-		return usDecricaoEnd;
+	public String getUsDescricaoEnd() {
+		return usDescricaoEnd;
 	}
 
-	public void setUsDecricaoEnd(String usDecricaoEnd) {
-		this.usDecricaoEnd = usDecricaoEnd;
+	public void setUsDescricaoEnd(String usDecricaoEnd) {
+		this.usDescricaoEnd = usDecricaoEnd;
 	}
 
 	public String getUsRA() {
@@ -146,14 +145,6 @@ public class Usuario implements Serializable {
 		this.usRA = usRA;
 	}
 
-	public String getUsBairro() {
-		return usBairro;
-	}
-
-	public void setUsBairro(String usBairro) {
-		this.usBairro = usBairro;
-	}
-
 	public String getUsCidade() {
 		return usCidade;
 	}
@@ -161,13 +152,22 @@ public class Usuario implements Serializable {
 	public void setUsCidade(String usCidade) {
 		this.usCidade = usCidade;
 	}
-
-	public String getUsPostal() {
-		return usPostal;
+	
+	//Estado
+	public String getUsEstado() {
+		return usEstado;
 	}
 
-	public void setUsPostal(String usPostal) {
-		this.usPostal = usPostal;
+	public void setUsEstado(String usEstado) {
+		this.usEstado = usEstado;
+	}
+
+	public String getUsCEP() {
+		return usCEP;
+	}
+
+	public void setUsCEP(String usCEP) {
+		this.usCEP = usCEP;
 	}
 
 	public String getUsTelefone() {

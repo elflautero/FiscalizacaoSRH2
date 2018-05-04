@@ -51,6 +51,8 @@ public class TabInterfController implements Initializable {
 	//-- String de pesquisa de endereços --//
 	String strPesquisaInterferencia = "";
 	
+	InterferenciaTabela intTab;
+	
 	/*
 	  vazão litros dia tem que mudar, no superficial é litros por segundo/dia.
 	  
@@ -166,7 +168,7 @@ public class TabInterfController implements Initializable {
 								
 	// --- método para listar interferencias --- //
  	public void listarInterferencias (String strPesquisaInterferencia) {
- 		
+ 	
  	// --- conexão - listar endereços --- //
 	InterferenciaDao interferenciaDao = new InterferenciaDao();
 	List<Interferencia> interferenciaList = interferenciaDao.listInterferencia(strPesquisaInterferencia);
@@ -192,7 +194,11 @@ public class TabInterfController implements Initializable {
 				interferencia.getInter_Desc_Endereco(),
 				
 				//-- foreign key --//
-				interferencia.getInter_End_CodigoFK()
+				interferencia.getInter_End_CodigoFK(),
+				
+				interferencia.getSub_Interferencia_Codigo(),
+				
+				interferencia.getSuper_Interferencia_Codigo()
 				
 				
 				);
@@ -216,18 +222,10 @@ public class TabInterfController implements Initializable {
 		tvListaInt.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
 			
-			InterferenciaTabela intTab = (InterferenciaTabela) newValue;
+			intTab = (InterferenciaTabela) newValue;
 			
 			if (intTab == null) {
-				/*
-				tfEnd.setText("");
-				tfEndRA.setText("");
-				tfEndCep.setText("");
-				tfEndCid.setText("");
-				tfEndUF.setText("");
-				tfEndLat.setText("");
-				tfEndLon.setText("");
-				*/
+				
 				btnIntNovo.setDisable(true);
 				btnIntSalvar.setDisable(true);
 				btnIntEdit.setDisable(false);
@@ -247,7 +245,19 @@ public class TabInterfController implements Initializable {
 				tfIntLat.setText(intTab.getInter_Lat().toString());
 				tfIntLon.setText(intTab.getInter_Lng().toString());
 				
+				String tipoInt = intTab.getInter_Tipo();
 				
+				if (tipoInt.equals("Subterrânea")) {
+					
+					tabSubCon.imprimirSubterranea(intTab.getInterSub());
+					
+				}
+				
+				if (tipoInt.equals("Superficial") || tipoInt.equals("Canal")) {
+					
+					tabSupCon.imprimirSuperficial(intTab.getInterSup());
+					
+				}
 				
 				btnIntNovo.setDisable(true);
 				btnIntSalvar.setDisable(true);
@@ -255,7 +265,7 @@ public class TabInterfController implements Initializable {
 				btnIntExc.setDisable(false);
 				btnIntCan.setDisable(false);
 				
-			}
+				}
 			}
 		});
 	}
@@ -276,7 +286,6 @@ public class TabInterfController implements Initializable {
 		
 		
 		cbTipoInt.setDisable(false);
-		
 		
 		cbBacia.setDisable(false);
 		
@@ -325,8 +334,6 @@ public class TabInterfController implements Initializable {
 		
 	}
 	
-	
-	
 	//-- botão salvar --//
 	public void btnIntSalvarHab (ActionEvent event) {
 		
@@ -346,9 +353,12 @@ public class TabInterfController implements Initializable {
 			Endereco endereco = new Endereco();
 				
 				endereco = eGeralInt;
+				
 				endereco.getListInterferencias().add(interferencia);
+				
 				interferencia.setInter_End_CodigoFK(endereco);
-				InterferenciaDao interferenciaDao = new InterferenciaDao ();
+				
+			InterferenciaDao interferenciaDao = new InterferenciaDao ();
 				
 				interferenciaDao.salvaInterferencia(interferencia);
 				interferenciaDao.mergeInterferencia(interferencia);
@@ -430,12 +440,138 @@ public class TabInterfController implements Initializable {
 	
 	public void btnIntEditHab (ActionEvent event) {
 		
+		// ver exceção de querer editar sem esconlher o endereço da interferência...
+		
+		if (cbTipoInt.isDisable()) {
+			
+			cbTipoInt.setDisable(false);
+			cbBacia.setDisable(false);
+			
+			tfUH.setDisable(false);
+			tfCorpoHid.setDisable(false);
+			
+			cbSituacao.setDisable(false);
+			
+			tfLinkInt.setDisable(false);
+			
+			tfIntLat.setDisable(false);
+			tfIntLon.setDisable(false);
+			btnIntLatLon.setDisable(false);
+			btnIntAtualizar.setDisable(false);
+			
+		}
+		
+		else {
+			
+			String strEditar = intTab.getInter_Tipo();
+			
+			if (strEditar.equals("Subterrânea")) {
+				
+				InterferenciaTabela intTabEditar = tvListaInt.getSelectionModel().getSelectedItem();
+				
+				Interferencia intEditar = new Interferencia(intTabEditar);
+				
+					intEditar.setInter_Tipo(cbTipoInt.getValue().toString());
+					intEditar.setInter_Bacia(cbBacia.getValue().toString());
+					intEditar.setInter_UH(tfUH.getText());
+					intEditar.setInter_Corpo_Hidrico(tfCorpoHid.getText());
+					intEditar.setInter_Situacao(cbSituacao.getValue().toString());
+					
+					intEditar.setInter_Desc_Endereco(eGeralInt.getDesc_Endereco());  // ?????? como assim ????
+					
+					intEditar.setInter_Lat(Double.parseDouble(tfIntLat.getText()));
+					intEditar.setInter_Lng(Double.parseDouble(tfIntLon.getText()));
+				
+				InterferenciaDao interferenciaDao = new InterferenciaDao ();
+				
+				interferenciaDao.mergeInterferencia(intEditar);
+				
+				Subterranea sub = new Subterranea ();
+				
+					sub.setInterf_SubFK(intEditar);
+				
+					sub.setSub_Codigo(intTab.getInterSub().getSub_Codigo()); // para vir a chave primaria da subterranea
+					
+					System.out.println("valor do código da subterrânea: " + intTab.getInterSub().getSub_Codigo());
+					
+					sub.setSub_Poco(tabSubCon.obterSubterranea().getSub_Poco());
+					sub.setSub_Caesb(tabSubCon.obterSubterranea().getSub_Caesb());
+					sub.setSub_Sistema(tabSubCon.obterSubterranea().getSub_Sistema());
+					sub.setSub_Estatico(tabSubCon.obterSubterranea().getSub_Estatico());
+					sub.setSub_Dinamico(tabSubCon.obterSubterranea().getSub_Dinamico());
+					sub.setSub_Vazao(tabSubCon.obterSubterranea().getSub_Vazao());
+					sub.setSub_Profundidade(tabSubCon.obterSubterranea().getSub_Profundidade());
+					
+				SubterraneaDao sDao = new SubterraneaDao();
+					
+				sDao.mergeSubterranea(sub);
+				
+				System.out.println("Interferência e subterranea editado");
+			}
+			
+			
+		}
+		
 	}
 	public void btnIntExcHab (ActionEvent event) {
 		
+		String strExc = intTab.getInter_Tipo();
+		
+		if (strExc.equals("Subterrânea")) {
+			
+			InterferenciaTabela intTabEditar = tvListaInt.getSelectionModel().getSelectedItem();
+			
+			InterferenciaDao interferenciaDao = new InterferenciaDao ();
+			
+			interferenciaDao.removeInterferencia(intTabEditar.getInter_Codigo());
+			
+			listarInterferencias(strPesquisaInterferencia);
+		
+			/*
+			Subterranea sub = new Subterranea ();
+			
+				sub.setInterf_SubFK(intEditar);
+			
+				sub.setSub_Codigo(intTab.getInterSub().getSub_Codigo()); // para vir a chave primaria da subterranea
+				
+				System.out.println("valor do código da subterrânea: " + intTab.getInterSub().getSub_Codigo());
+				
+				sub.setSub_Poco(tabSubCon.obterSubterranea().getSub_Poco());
+				sub.setSub_Caesb(tabSubCon.obterSubterranea().getSub_Caesb());
+				sub.setSub_Sistema(tabSubCon.obterSubterranea().getSub_Sistema());
+				sub.setSub_Estatico(tabSubCon.obterSubterranea().getSub_Estatico());
+				sub.setSub_Dinamico(tabSubCon.obterSubterranea().getSub_Dinamico());
+				sub.setSub_Vazao(tabSubCon.obterSubterranea().getSub_Vazao());
+				sub.setSub_Profundidade(tabSubCon.obterSubterranea().getSub_Profundidade());
+				
+			SubterraneaDao sDao = new SubterraneaDao();
+				
+			sDao.mergeSubterranea(sub);
+			*/
+			
+			System.out.println("Interferência e subterranea editado");
+		}
+		else {
+			System.out.println("Não é subterrânea");
+		}
+		
 	}
 	public void btnIntCanHab (ActionEvent event) {
+		
 		modularBotoes ();
+		
+		cbTipoInt.setValue(null);
+		cbBacia.setValue(null);
+		tfUH.setText("");
+		tfCorpoHid.setText("");
+		cbSituacao.setValue("inativa");
+		tfLinkInt.setText("");
+		tfIntLat.setText("");
+		tfIntLon.setText("");
+	
+		
+		
+		
 	}
 	public void btnIntPesqHab (ActionEvent event) {
 		
@@ -578,9 +714,9 @@ public class TabInterfController implements Initializable {
 		btnIntEdit.setDisable(true);
 		btnIntExc.setDisable(true);
 		
-		tfIntPesq.setDisable(true);
+		//tfIntPesq.setDisable(true);
 		
-		btnIntPesq.setDisable(true);
+		//btnIntPesq.setDisable(true); // acho que não precisa entrar desabilitado
 		
 		btnIntNovo.setDisable(false);
 	}
@@ -654,6 +790,13 @@ public class TabInterfController implements Initializable {
 			
 			
 		
+		}
+		
+		if (newString == null) {
+			
+			paneTipoInterferencia.getChildren().clear();
+			
+			System.out.println("valor null");
 		}
 		
 	}

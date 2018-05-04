@@ -20,7 +20,7 @@ public class Subterranea implements Serializable {
 	private int sub_Codigo;
 	
 		//-- OneToOne subterrâneo e interferência --//
-		@OneToOne
+		@OneToOne 
 		@JoinColumn (name = "sub_Interferencia_Codigo")
 		private Interferencia interf_SubFK;
 	
@@ -50,6 +50,11 @@ public class Subterranea implements Serializable {
 
 	//-- getters and setters --//
 	
+	public Subterranea () {
+		
+	}
+	
+
 	public int getSub_Codigo() {
 		return sub_Codigo;
 	}

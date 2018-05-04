@@ -7,8 +7,10 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import entity.Denuncia;
 import entity.HibernateUtil;
 import entity.Interferencia;
+import entity.Subterranea;
 
 public class InterferenciaDao {
 
@@ -72,6 +74,27 @@ public void salvaInterferencia (Interferencia interferencia) {
 		s.persist(interferencia);
 		s.getTransaction().commit();
 		s.close();
+	}
+	
+	
+	// listar subterranea
+	
+	@SuppressWarnings("unchecked")
+	public List<Subterranea> listSubterranea(String strSubPesquisa) {
+		
+		List<Subterranea> list = new ArrayList<Subterranea>();
+		
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		
+		s.beginTransaction();
+		
+		Criteria crit = s.createCriteria(Denuncia.class);
+		crit.add(Restrictions.like("sub_Interferencia_Codigo", strSubPesquisa));
+		list = crit.list();
+		
+		s.getTransaction().commit();
+		s.close();
+		return list;
 	}
 	
 }

@@ -27,6 +27,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -54,11 +55,11 @@ public class TabEnderecoController implements Initializable {
 	@FXML Button btnBuscarDoc = new Button();
 	
 	@FXML TextField tfEnd = new TextField();
-	@FXML TextField tfEndRA = new TextField();
+	
 	
 	@FXML TextField tfEndCep = new TextField();
 	@FXML TextField  tfEndCid = new TextField();
-	@FXML TextField tfEndUF = new TextField();
+	
 	
 	@FXML public Label lblDoc; // público para receber valor do MainController, método pegarDoc()
 
@@ -103,6 +104,50 @@ public class TabEnderecoController implements Initializable {
 	public static String endMap;
 	
 	
+	//-- combobox - Região Administrativa --//	
+		@FXML
+		ChoiceBox<String> cbEndRA = new ChoiceBox<String>();
+			ObservableList<String> olEndRA = FXCollections
+				.observableArrayList(
+						
+						"Brasília",
+						"Gama",
+						"Taguatinga",
+						"Brazlândia",
+						"Sobradinho",
+						"Planaltina",
+						"Paranoá",
+						"Núcleo Bandeirante",
+						"Ceilândia",
+						"Guará",
+						"Cruzeiro",
+						"Samambaia",
+						"Santa Maria",
+						"São Sebastião",
+						"Recanto das Emas",
+						"Lago Sul",
+						"Riacho Fundo",
+						"Lago Norte",
+						"Candangolândia",
+						"Águas Claras",
+						"Riacho Fundo II",
+						"Sudoeste/Octogonal",
+						"Varjão",
+						"Park Way",
+						"SCIA",
+						"Sobradinho II",
+						"Jardim Botânico",
+						"Itapoã",
+						"SIA",
+						"Vicente Pires",
+						"Fercal"); 	
+	
+			//-- combobox - unidade federal --//
+			@FXML
+			ChoiceBox<String> cbEndUF = new ChoiceBox<String>();
+				ObservableList<String> olEndUF = FXCollections
+					.observableArrayList("DF" , "GO", "Outro"); // box - seleção pessoa físcia ou jurídica
+
 	
 	@FXML Label lblEndereco = new Label();
 	
@@ -165,10 +210,10 @@ public class TabEnderecoController implements Initializable {
 			if (endTab == null) {
 				
 				tfEnd.setText("");
-				tfEndRA.setText("");
+				
 				tfEndCep.setText("");
 				tfEndCid.setText("");
-				tfEndUF.setText("");
+				//tfEndUF.setText("");
 				tfEndLat.setText("");
 				tfEndLon.setText("");
 				
@@ -182,10 +227,10 @@ public class TabEnderecoController implements Initializable {
 
 				// -- preencher os campos -- //
 				tfEnd.setText(endTab.getDesc_Endereco());
-				tfEndRA.setText(endTab.getRA_Endereco());
+				cbEndRA.setValue(endTab.getRA_Endereco());  //tfEndRA.setText(endTab.getRA_Endereco());
 				tfEndCep.setText(endTab.getCEP_Endereco());
 				tfEndCid.setText(endTab.getCid_Endereco());
-				tfEndUF.setText(endTab.getUF_Endereco());
+				cbEndUF.setValue(endTab.getUF_Endereco());  //tfEndUF.setText(endTab.getUF_Endereco());
 				tfEndLat.setText(endTab.getLat_Endereco().toString());
 				tfEndLon.setText(endTab.getLon_Endereco().toString());
 				
@@ -195,6 +240,8 @@ public class TabEnderecoController implements Initializable {
 				btnEndEditar.setDisable(false);
 				btnEndExc.setDisable(false);
 				btnEndCan.setDisable(false);
+				
+				// mudar também o número do documento ao selecionar um endereço
 				
 				
 				//PRECISA MELHORAR, ESTÁ DANDO NULLPOINTEXCEPTION...
@@ -221,6 +268,7 @@ public class TabEnderecoController implements Initializable {
 				System.out.println(eGeral.getLat_Endereco());
 				System.out.println(eGeral.getLon_Endereco());
 				System.out.println(eGeral.getListDenuncias());
+				
 				main.pegarEnd(eGeral);
 			}
 			}
@@ -231,20 +279,22 @@ public class TabEnderecoController implements Initializable {
 	public void btnEndNovoHab (ActionEvent event) {
 		
 		tfEnd.setText("");
-		tfEndRA.setText("");
+		//tfEndRA.setText("");
 		tfEndCep.setText("");
-		tfEndCid.setText("");
-		tfEndUF.setText("");
+		tfEndCid.setText("Brasília");
+		//tfEndUF.setText("");
 		tfLinkEnd.setText("");
 		tfEndLat.setText("");
 		tfEndLon.setText("");
 		
 		
 		tfEnd.setDisable(false);
-		tfEndRA.setDisable(false);
+		cbEndRA.setDisable(false);
+		cbEndRA.setValue(null);
+		
 		tfEndCep.setDisable(false);
 		tfEndCid.setDisable(false);
-		tfEndUF.setDisable(false);
+		cbEndUF.setDisable(false);  //tfEndUF.setDisable(false);
 		tfEndLat.setDisable(false);
 		tfEndLon.setDisable(false);
 		tfLinkEnd.setDisable(false);
@@ -273,10 +323,10 @@ public class TabEnderecoController implements Initializable {
 		Endereco endereco = new Endereco();
 			
 			endereco.setDesc_Endereco(tfEnd.getText());
-			endereco.setRA_Endereco(tfEndRA.getText());
+			endereco.setRA_Endereco(cbEndRA.getValue());    //endereco.setRA_Endereco(tfEndRA.getText());
 			endereco.setCEP_Endereco(tfEndCep.getText());
 			endereco.setCid_Endereco(tfEndCid.getText());
-			endereco.setUF_Endereco(tfEndUF.getText());
+			endereco.setUF_Endereco(cbEndUF.getValue());  //endereco.setUF_Endereco(tfEndUF.getText());
 			endereco.setLat_Endereco(Double.parseDouble(tfEndLat.getText()));
 			endereco.setLon_Endereco(Double.parseDouble(tfEndLon.getText()));
 		
@@ -327,13 +377,17 @@ public class TabEnderecoController implements Initializable {
 	// -- botão editar -- //
 	public void btnEndEditarHab (ActionEvent event) {
 		
+		
+		// não deixar editar sem um  documento cadastrado... colocar... primeiro puxar um documento
+		
+		
 		if (tfEnd.isDisable()) {
 			
 			tfEnd.setDisable(false);
-			tfEndRA.setDisable(false);
+			cbEndRA.setDisable(false);  //tfEndRA.setDisable(false);
 			tfEndCep.setDisable(false);
 			tfEndCid.setDisable(false);
-			tfEndUF.setDisable(false);
+			cbEndUF.setDisable(false);  //tfEndUF.setDisable(false);
 			tfEndLat.setDisable(false);
 			tfEndLon.setDisable(false);
 			tfLinkEnd.setDisable(false);
@@ -344,10 +398,10 @@ public class TabEnderecoController implements Initializable {
 		Endereco endereco = new Endereco(enderecoTabelaEditar);
 		
 		endereco.setDesc_Endereco(tfEnd.getText());
-		endereco.setRA_Endereco(tfEndRA.getText());
+		endereco.setRA_Endereco(cbEndRA.getValue());   //endereco.setRA_Endereco(tfEndRA.getText());
 		endereco.setCEP_Endereco(tfEndCep.getText());
 		endereco.setCid_Endereco(tfEndCid.getText());
-		endereco.setUF_Endereco(tfEndUF.getText());
+		endereco.setUF_Endereco(cbEndUF.getValue());  //endereco.setUF_Endereco(tfEndUF.getText());
 		endereco.setLat_Endereco(Double.parseDouble(tfEndLat.getText()));
 		endereco.setLon_Endereco(Double.parseDouble(tfEndLon.getText()));
 	
@@ -370,7 +424,6 @@ public class TabEnderecoController implements Initializable {
 		// pegar o valor, levar para o MainController  e depois para o label lblEnd no InterfController
 		eGeral = endereco;
 		main.pegarEnd(eGeral);
-					
 					
 		listarEnderecos(strPesquisaEnd);
 		
@@ -547,6 +600,17 @@ public class TabEnderecoController implements Initializable {
             });
             */
 		}
+		
+		
+		// não está funcionando, não preenche o textfield...
+	public void printCoord (Double lat, Double lon, String end) {
+		
+		tfEndLat = new TextField();
+				tfEndLat.setText(lat.toString());
+		tfEndLon.setText(lon.toString());
+		
+		System.out.println("método printCoord chamado");
+	}
 	
 	//-- INITIALIZE --//
 	@Override
@@ -569,16 +633,25 @@ public class TabEnderecoController implements Initializable {
 		    tfEndLat.setText(latDec);
 		});
 		*/
+		
+		
+		//cbEndRA.setValue("Brasília");
+		cbEndRA.setItems(olEndRA);
+		
+		cbEndUF.setValue("DF");
+		cbEndUF.setItems(olEndUF);
+		
+		
 	}
 
 	//-- Modular os botões na iniciação do programa --//
 	private void modularBotoesInicial () {
 		
 		tfEnd.setDisable(true);
-		tfEndRA.setDisable(true);
+		cbEndRA.setDisable(true);  //tfEndRA.setDisable(true);
 		tfEndCep.setDisable(true);
 		tfEndCid.setDisable(true);
-		tfEndUF.setDisable(true);
+		cbEndUF.setDisable(true);  //tfEndUF.setDisable(true);
 		tfEndLat.setDisable(true);
 		tfEndLon.setDisable(true);
 		tfLinkEnd.setDisable(true);

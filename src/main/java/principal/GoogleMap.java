@@ -15,6 +15,7 @@ import netscape.javascript.JSObject;
 public class GoogleMap extends Parent {
 	
 	
+	TabEnderecoController tabEnd = new TabEnderecoController();
 	
 	// --- Controller Principal - MainController --- //
 	//@FXML private MainController main;
@@ -81,6 +82,7 @@ public class GoogleMap extends Parent {
 	    
 	    
 	    private void invokeJS(final String str) {
+	    	
 	    	System.out.println("invokeJs");
 	    	
 	    	System.out.println("invoke variável " + str);
@@ -145,6 +147,8 @@ public class GoogleMap extends Parent {
 			
 		    TabInterfController.latDec = Double.toString(lat);
 		    TabInterfController.lngDec = Double.toString(lng);
+		    
+		    tabEnd.printCoord(lat, lng, endMap);
 	    	/*
 	    	TabEnderecoController tabEndCont = new TabEnderecoController();
 	    	
@@ -185,6 +189,7 @@ public class GoogleMap extends Parent {
 	        
 	        invokeJS("setMarkerPosition(" + sLat + ", " + sLng + ")");
 	        System.out.println("String " + "setMarkerPosition(" + sLat + ", " + sLng + ")");
+	        
 	    }
 
 	    public void setMapCenter(double lat, double lng) {

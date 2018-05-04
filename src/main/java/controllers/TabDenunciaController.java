@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.io.EOFException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -190,44 +191,52 @@ public class TabDenunciaController implements Initializable {
 	// -- botão salvar -- //
 	public void btnSalvarSalvar (ActionEvent event) {
 		
-		Denuncia denuncia = new Denuncia();
-		
-		denuncia.setDoc_Denuncia(tfDocumento.getText()); 
-		denuncia.setProc_SEI_Denuncia(tfProcSei.getText());
-		denuncia.setDoc_SEI_Denuncia(tfDocSei.getText()); 
-		denuncia.setDesc_Denuncia(tfResDen.getText());
-		
-		DenunciaDao dao = new DenunciaDao();
-		
-		System.out.println("antes de salvar: " + denuncia.getCod_Denuncia());
-		
-		dao.salvaDenuncia(denuncia);
-		
-		System.out.println("depois de salvar: " + denuncia.getCod_Denuncia());
-		
-		//-- atualizar as denúncias  e listar --//
-		denunciaList = denunciaDao.listDenuncia(strPesquisa);
-		
-		// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
-		dGeral = denuncia;
-		main.pegarDoc(dGeral);
-		
-		listarDenuncias();
-	
-		modularBotoesInicial ();
-		
-		System.out.println("DenunciaControoler, botão salvar, dGEral: " + dGeral.getCod_Denuncia());
-		
-		System.out.println(denuncia.getCod_Denuncia());
-		
-		//-- Alerta de denúncia salva --//
-		Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
-		aSalvo.setTitle("Parabéns!");
-		aSalvo.setContentText("A denúncia salva com sucesso!");
-		aSalvo.setHeaderText(null);
-		aSalvo.show();
+		try {
 			
+			Denuncia denuncia = new Denuncia();
+			
+			denuncia.setDoc_Denuncia(tfDocumento.getText()); 
+			denuncia.setProc_SEI_Denuncia(tfProcSei.getText());
+			denuncia.setDoc_SEI_Denuncia(tfDocSei.getText()); 
+			denuncia.setDesc_Denuncia(tfResDen.getText());
+			
+			DenunciaDao dao = new DenunciaDao();
+			
+			dao.salvaDenuncia(denuncia);
+			
+			//-- atualizar as denúncias  e listar --//
+			denunciaList = denunciaDao.listDenuncia(strPesquisa);
+			
+			// pegar o valor, levar para o MainController  e depois para o label lblDoc no EnderecoController
+			dGeral = denuncia;
+			main.pegarDoc(dGeral);
+			
+			listarDenuncias();
+		
+			modularBotoesInicial ();
+			
+			//-- Alerta de denúncia salva --//
+			Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
+			aSalvo.setTitle("Parabéns!");
+			aSalvo.setContentText("A denúncia salva com sucesso!");
+			aSalvo.setHeaderText(null);
+			aSalvo.show();
+				
+			
+		} catch (Exception ex) {
+			
+			System.out.println("Erro:" + ex);
+			ex.printStackTrace();
+			
+			//-- Alerta de denúncia salva --//
+			Alert aMy = new Alert (Alert.AlertType.ERROR);
+			aMy.setTitle("Alerta!!!");
+			aMy.setContentText("erro na conexão, tente novamente!");
+			aMy.setHeaderText(null);
+			aMy.show();
 		}
+		
+	}
 
 	// -- botão editar -- //
 	public void btnEditarHabilitar (ActionEvent event) {
@@ -243,6 +252,7 @@ public class TabDenunciaController implements Initializable {
 		} else {
 			
 			DenunciaTabela denunciaTabelaEditar = tvLista.getSelectionModel().getSelectedItem();
+			
 			Denuncia denunciaEditar = new Denuncia(denunciaTabelaEditar);
 			
 			denunciaEditar.setDoc_Denuncia(tfDocumento.getText());
@@ -315,7 +325,7 @@ public class TabDenunciaController implements Initializable {
 		modularBotoesInicial();
 		
 		// --- Selecionar um documento pesquisado  --- //
-		//selecionarDenuncia ();
+		selecionarDenuncia ();
 		
 		// --- listar denuncias --- //
 		//listarDenuncias();

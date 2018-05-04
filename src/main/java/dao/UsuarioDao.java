@@ -14,7 +14,7 @@ import entity.Usuario;
 public class UsuarioDao {
 	
 	
-public void salvaUsuario (Interferencia usuario) {
+public void salvaUsuario (Usuario usuario) {
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();

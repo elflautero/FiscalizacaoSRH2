@@ -30,10 +30,26 @@ public class TabSuperficialController implements Initializable{
 		superGeral.setSup_Caesb(cbCaesb.getValue()); // caesb
 		
 		
-	
 	return superGeral;
 	
 	};
+	
+	public void imprimirSuperficial (Superficial sup) {
+		
+		 cbCaptacao.setValue(sup.getSup_Local());
+		 cbFormaCaptacao.setValue(sup.getSup_Captacao());
+		 
+		 tfMarcaBomba.setText(sup.getSup_Bomba());
+		 tfPotenciaBomba.setText(sup.getSup_Potencia());
+		 tfTempoBomba.setText(sup.getSup_Tempo());
+		 
+		 tfArea.setText(sup.getSup_Area());
+		 
+		 cbCaesb.setValue(sup.getSup_Caesb());
+		 
+		 // falta data
+		 
+	}
 	
 	@FXML TextField tfMarcaBomba = new TextField();
 	@FXML TextField tfPotenciaBomba = new TextField();

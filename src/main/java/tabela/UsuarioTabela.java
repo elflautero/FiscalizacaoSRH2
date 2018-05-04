@@ -13,9 +13,9 @@ public class UsuarioTabela {
 	private final SimpleStringProperty usCPFCNPJ;
 	private final SimpleStringProperty usDescricaoEnd;
 	private final SimpleStringProperty usRA;
-	private final SimpleStringProperty usBairro;
 	private final SimpleStringProperty usCidade;
-	private final SimpleStringProperty usPostal;
+	private final SimpleStringProperty usEstado;
+	private final SimpleStringProperty usCEP;
 	private final SimpleStringProperty usTelefone;
 	private final SimpleStringProperty usCelular;
 	private final SimpleStringProperty usEmail;
@@ -31,9 +31,9 @@ public class UsuarioTabela {
 		String usCPFCNPJ,
 		String usDescricaoEnd,
 		String usRA,
-		String usBairro,
 		String usCidade,
-		String usPostal,
+		String usEstado,
+		String usCEP,
 		String usTelefone,
 		String usCelular,
 		String usEmail,
@@ -48,9 +48,9 @@ public class UsuarioTabela {
 		this.usCPFCNPJ= new SimpleStringProperty(usCPFCNPJ);
 		this.usDescricaoEnd = new SimpleStringProperty(usDescricaoEnd);
 		this.usRA = new SimpleStringProperty(usRA);
-		this.usBairro = new SimpleStringProperty(usBairro);
 		this.usCidade = new SimpleStringProperty(usCidade);
-		this.usPostal = new SimpleStringProperty(usPostal);
+		this.usEstado = new SimpleStringProperty(usEstado);
+		this.usCEP = new SimpleStringProperty(usCEP);
 		this.usTelefone = new SimpleStringProperty(usTelefone);
 		this.usCelular = new SimpleStringProperty(usCelular);
 		this.usEmail = new SimpleStringProperty(usEmail);
@@ -85,16 +85,16 @@ public class UsuarioTabela {
 		return usRA.get();
 	}
 	
-	public String getUsBairro () {
-		return usBairro.get();
-	}
-	
 	public String getUsCidade () {
 		return usCidade.get();
 	}
 	
-	public String getUsPostal () {
-		return usPostal.get();
+	public String getUsEstado () {
+		return usEstado.get();
+	}
+	
+	public String getUsCEP () {
+		return usCEP.get();
 	}
 	
 	public String getUsTelefone () {

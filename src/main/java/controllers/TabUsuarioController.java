@@ -25,7 +25,6 @@ import tabela.UsuarioTabela;
 public class TabUsuarioController implements Initializable {
 	
 	//-- Strings --//
-	
 	String strPesquisaUsuario = "";
 	
 	@FXML Pane tabUsuario = new Pane();
@@ -65,13 +64,42 @@ public class TabUsuarioController implements Initializable {
 	
 	public void btnUsNovoHab (ActionEvent event) {
 		
+		
+		tfUsCidade.setText("Brasília");
+		
 	}
 	
 	public void btnUsSalvarHab (ActionEvent event) {
 		
 		Usuario usuario = new  Usuario ();
 		
-			// usuario.get)
+			usuario.setUsTipo(cbTipoPessoa.getValue());
+			usuario.setUsNome(tfUsNome.getText());
+			usuario.setUsCPFCNPJ(tfUsCPFCNPJ.getText()); // end ra bai cidad post tele cel emai
+			usuario.setUsDescricaoEnd(tfUsEnd.getText());
+			usuario.setUsRA(cbUsRA.getValue());
+			usuario.setUsCidade(tfUsCidade.getText());
+			usuario.setUsEstado(cbUsUF.getValue());
+			usuario.setUsCEP(tfUsCEP.getText());
+			usuario.setUsTelefone(tfUsTel.getText());
+			usuario.setUsCelular(tfUsCel.getText());
+			usuario.setUsEmail(tfUsEmail.getText());
+			
+		
+		Endereco endereco = new Endereco();
+		
+			endereco = eGeralUs;
+			
+			endereco.getListUsuarios().add(usuario);
+			
+			usuario.setUsEndCodigoFK(endereco);
+			
+		UsuarioDao  usDao = new UsuarioDao();
+		
+			usDao.salvaUsuario(usuario);
+			usDao.mergeUsuario(usuario);
+		
+			
 			
 	}
 	
@@ -168,11 +196,11 @@ public class TabUsuarioController implements Initializable {
 							usuario.getUsTipo(),
 							usuario.getUsNome(),
 							usuario.getUsCPFCNPJ(),
-							usuario.getUsDecricaoEnd(),
+							usuario.getUsDescricaoEnd(),
 							usuario.getUsRA(),
-							usuario.getUsBairro(),
 							usuario.getUsCidade(),
-							usuario.getUsPostal(),
+							usuario.getUsEstado(),
+							usuario.getUsCEP(),
 							usuario.getUsTelefone(),
 							usuario.getUsCelular(),
 							usuario.getUsEmail(),
@@ -203,11 +231,13 @@ public class TabUsuarioController implements Initializable {
 			cbTipoPessoa.setValue("Física");
 			cbTipoPessoa.setItems(olTipoPessoa);
 			
-			cbUsRA.setValue("Brasília");
+			//cbUsRA.setValue("Brasília");
 			cbUsRA.setItems(olUsRA);
 			
 			cbUsUF.setValue("DF");
 			cbUsUF.setItems(olUsDF);
+			
+			
 			
 		}
 }

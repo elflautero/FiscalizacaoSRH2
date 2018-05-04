@@ -1,6 +1,8 @@
 package tabela;
 
 import entity.Endereco;
+import entity.Subterranea;
+import entity.Superficial;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -22,6 +24,10 @@ public class InterferenciaTabela {
 	
 	private SimpleObjectProperty<Endereco> enderecoInterferenciaObjetoFK;
 	
+	private SimpleObjectProperty<Subterranea> interSub;
+	
+	private SimpleObjectProperty<Superficial> interSup;
+	
 	public InterferenciaTabela (
 			
 			int inter_Codigo, 
@@ -33,7 +39,13 @@ public class InterferenciaTabela {
 			Double inter_Lng,
 			String inter_Situacao, 
 			String inter_Desc_Endereco,
-			Endereco enderecoInterferenciaObjetoFK ) {
+			
+			Endereco enderecoInterferenciaObjetoFK,
+			
+			Subterranea interSub,
+			
+			Superficial interSup
+													) {
 		
 		super();
 		
@@ -49,6 +61,11 @@ public class InterferenciaTabela {
 		this.inter_Desc_Endereco = new SimpleStringProperty(inter_Desc_Endereco);
 		
 		this.enderecoInterferenciaObjetoFK = new SimpleObjectProperty<>(enderecoInterferenciaObjetoFK);
+		
+		this.interSub = new SimpleObjectProperty<>(interSub);
+		
+		this.interSup = new SimpleObjectProperty<>(interSup);
+		
 	}
 	
 	public int getInter_Codigo () {
@@ -88,6 +105,14 @@ public class InterferenciaTabela {
 	
 	public Endereco getEnderecoInterferenciaObjetoTabelaFK () {
 		return enderecoInterferenciaObjetoFK.get();
+	}
+	
+	public Subterranea getInterSub () { 
+		return interSub.get();
+	}
+	
+	public Superficial getInterSup () { 
+		return interSup.get();
 	}
 	
 }

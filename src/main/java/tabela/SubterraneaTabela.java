@@ -1,6 +1,9 @@
 package tabela;
 
+import entity.Endereco;
+import entity.Interferencia;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class SubterraneaTabela {
@@ -15,6 +18,10 @@ public class SubterraneaTabela {
 	private final SimpleStringProperty sub_Profundidade;
 	private final SimpleStringProperty sub_Data;
 	
+	private SimpleObjectProperty<Interferencia> intSubterraneaObjetoFK;
+	
+	
+	
 	public SubterraneaTabela (
 			
 			int sub_Codigo,
@@ -25,7 +32,8 @@ public class SubterraneaTabela {
 			String sub_Dinamico,
 			String sub_Vazao,
 			String sub_Profundidade,
-			String sub_Data
+			String sub_Data,
+			Interferencia intSubterraneaObjetoFK
 			
 			) {
 		
@@ -40,6 +48,7 @@ public class SubterraneaTabela {
 		this.sub_Vazao = new SimpleStringProperty(sub_Vazao);
 		this.sub_Profundidade = new SimpleStringProperty(sub_Profundidade);
 		this.sub_Data = new SimpleStringProperty(sub_Data);
+		this.intSubterraneaObjetoFK = new SimpleObjectProperty<>(intSubterraneaObjetoFK);
 		
 		
 		
@@ -81,6 +90,8 @@ public class SubterraneaTabela {
 		return sub_Data.get();
 	}
 	
-	
+	public Interferencia getIntSubterraneaObjetoFK () {
+		return intSubterraneaObjetoFK.get();
+	}
 
 }
