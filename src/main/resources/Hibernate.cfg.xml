@@ -11,7 +11,7 @@
     		
 		<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-		<!-- <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>  -->
+		<!-- <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>   -->
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 		
 		<property name="connection.url">jdbc:mysql://br234.hostgator.com.br:3306/somde078_srh2</property>
@@ -43,6 +43,7 @@
 		<mapping class="entity.Ato"/>
 		<mapping class="entity.Superficial"/>
 		<mapping class="entity.Subterranea"/>
+		<mapping class="entity.Vistoria"/>
 		
 	
     </session-factory>

@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import dao.UsuarioDao;
 import entity.Endereco;
 import entity.Usuario;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,7 +48,7 @@ public class TabUsuarioController implements Initializable {
 	@FXML Button btnUsEditar;
 	@FXML Button btnUsExcluir;
 	@FXML Button btnUsCancelar;
-	@FXML TextField tfUsPesquisar;
+	@FXML TextField tfUsPesquisar = new TextField();
 	@FXML Button btnUsPesq;
 	@FXML Button btnBucarEnd;
 	
@@ -64,8 +66,40 @@ public class TabUsuarioController implements Initializable {
 	
 	public void btnUsNovoHab (ActionEvent event) {
 		
+		cbTipoPessoa.setValue(null);
 		
+		tfUsNome.setText("");
+		tfUsCPFCNPJ.setText("");
+		tfUsEnd.setText("");
+		
+		cbUsRA.setValue(null);
+		
+		tfUsCEP.setText("");
 		tfUsCidade.setText("Brasília");
+		
+		cbUsUF.setValue("DF");
+		
+		tfUsTel.setText("");
+		tfUsCel.setText("");
+		tfUsEmail.setText("");
+		
+		cbTipoPessoa.setDisable(false);
+		tfUsNome.setDisable(false);
+		tfUsCPFCNPJ.setDisable(false);  //tfEndUF.setDisable(false);
+		tfUsEnd.setDisable(false);
+		cbUsRA.setDisable(false);
+		tfUsCEP.setDisable(false);
+		tfUsCidade.setDisable(false);
+		cbUsUF.setDisable(false);
+		tfUsTel.setDisable(false);
+		tfUsCel.setDisable(false);
+		tfUsEmail.setDisable(false);
+		
+		btnUsSalvar.setDisable(false);
+		btnUsEditar.setDisable(true);
+		btnUsExcluir.setDisable(true);
+		btnUsEditar.setDisable(true);
+		
 		
 	}
 	
@@ -75,7 +109,7 @@ public class TabUsuarioController implements Initializable {
 		
 			usuario.setUsTipo(cbTipoPessoa.getValue());
 			usuario.setUsNome(tfUsNome.getText());
-			usuario.setUsCPFCNPJ(tfUsCPFCNPJ.getText()); // end ra bai cidad post tele cel emai
+			usuario.setUsCPFCNPJ(tfUsCPFCNPJ.getText()); 
 			usuario.setUsDescricaoEnd(tfUsEnd.getText());
 			usuario.setUsRA(cbUsRA.getValue());
 			usuario.setUsCidade(tfUsCidade.getText());
@@ -99,23 +133,130 @@ public class TabUsuarioController implements Initializable {
 			usDao.salvaUsuario(usuario);
 			usDao.mergeUsuario(usuario);
 		
-			
+		//-- listar --//
+		listarUsuarios(strPesquisaUsuario);
+		//-- selecionar --//
+		selecionarUsuario();
+		
+		modularBotoesInicial();
 			
 	}
 	
 	public void btnUsEditarHab (ActionEvent event) {
 		
+		if (cbTipoPessoa.isDisable()) {
+			
+			cbTipoPessoa.setDisable(false);
+			tfUsNome.setDisable(false);
+			tfUsCPFCNPJ.setDisable(false);
+			tfUsEnd.setDisable(false);
+			cbUsRA.setDisable(false);
+			tfUsCEP.setDisable(false);
+			tfUsCidade.setDisable(false);
+			cbUsUF.setDisable(false);
+			tfUsTel.setDisable(false);
+			tfUsCel.setDisable(false);
+			tfUsEmail.setDisable(false);
+			
+			btnUsSalvar.setDisable(true);
+			btnUsEditar.setDisable(false);
+			btnUsExcluir.setDisable(true);
+			btnUsCancelar.setDisable(false);
+			
+		}
+		
+		else {
+			//*  //eGeralUs
+			UsuarioTabela usTabEditar = tvListaUs.getSelectionModel().getSelectedItem(); 
+			
+			Usuario us = new Usuario(usTabEditar);
+			
+			// -- preencher os campos -- //
+			us.setUsTipo(cbTipoPessoa.getValue()); 
+			us.setUsNome(tfUsNome.getText());
+			us.setUsCPFCNPJ(tfUsCPFCNPJ.getText());
+			us.setUsDescricaoEnd(tfUsEnd.getText()); 
+			
+			us.setUsRA(cbUsRA.getValue()); 
+			
+			us.setUsCEP(tfUsCEP.getText()); 
+			us.setUsCidade(tfUsCidade.getText()); 
+			
+			us.setUsEstado(cbUsUF.getValue()); 
+			
+			us.setUsTelefone(tfUsTel.getText());
+			us.setUsCelular(tfUsCel.getText());
+			us.setUsEmail(tfUsEmail.getText());
+			
+			us.setUsEndCodigoFK(eGeralUs);
+			
+			UsuarioDao usDao = new UsuarioDao();
+			
+			usDao.mergeUsuario(us);
+			
+			//-- listar --//
+			listarUsuarios(strPesquisaUsuario);
+			//-- selecionar --//
+			selecionarUsuario();
+			
+			modularBotoesInicial();
+			
+			
+		}
+		
 	}
 	
 	public void btnUsExcluirHab (ActionEvent event) {
+		
+		//-- capturar usuário selecionado --//
+		UsuarioTabela usExTab = tvListaUs.getSelectionModel().getSelectedItem(); 
+		//-- prencher tabela usuario --//
+		Usuario usEx = new Usuario(usExTab);
+		
+		UsuarioDao usExDao = new UsuarioDao();
+		
+		usExDao.removeUsuario(usEx.getUsCodigo());
+		
+		//-- listar --//
+		listarUsuarios(strPesquisaUsuario);
+		//-- selecionar --//
+		selecionarUsuario();
 		
 	}
 	
 	public void btnUsCancelarHab (ActionEvent event) {
 		
+		modularBotoesInicial ();
+		
+		cbTipoPessoa.setValue(null);
+		
+		tfUsNome.setText("");
+		tfUsCPFCNPJ.setText("");
+		tfUsEnd.setText("");
+		
+		cbUsRA.setValue(null);
+		
+		tfUsCEP.setText("");
+		tfUsCidade.setText("");
+		
+		cbUsUF.setValue(null);
+		
+		tfUsTel.setText("");
+		tfUsCel.setText("");
+		tfUsEmail.setText("");
+		
 	}
 	
+	//-- botão pesquisar usuário --//
 	public void btnUsPesqHab (ActionEvent event) {
+		
+		strPesquisaUsuario = tfUsPesquisar.getText();
+		
+		listarUsuarios (strPesquisaUsuario);
+		
+		selecionarUsuario ();
+		
+		modularBotoesInicial();
 		
 	}
 
@@ -175,12 +316,10 @@ public class TabUsuarioController implements Initializable {
 		
 		
 		//-- método listar usuários --//
-		public void listarUsuarios (String strPesquisaUsuario) {
+		public void listarUsuarios (String strPesquisa) {
 			
 			UsuarioDao usDao = new UsuarioDao();
-			
 			List<Usuario> usuarioList = usDao.listUsuario(strPesquisaUsuario);
-			
 			ObservableList<UsuarioTabela> olUsuarioTabela = FXCollections.observableArrayList();
 			
 			
@@ -213,16 +352,83 @@ public class TabUsuarioController implements Initializable {
 						
 					}
 					
-					tcUsNome.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("us_nome"));
-					tcUsCPFCNPJ.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("us_CPFCNPJ"));
-					tcUsEndereco.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("us_descricao_end"));
+					tcUsNome.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usNome"));
+					tcUsCPFCNPJ.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usCPFCNPJ"));
+					tcUsEndereco.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usDescricaoEnd"));
 					
 					tvListaUs.setItems(olUsuarioTabela);
 		}
 		
 		
+		public void selecionarUsuario () {
+			
+			tvListaUs.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+				public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
+					
+					UsuarioTabela usTab = (UsuarioTabela) newValue;
+					
+					if (usTab == null) {
+						
+						cbTipoPessoa.setValue(null);
+						
+						tfUsNome.setText("");
+						tfUsCPFCNPJ.setText("");
+						tfUsEnd.setText("");
+						
+						cbUsRA.setValue(null);
+						
+						tfUsCEP.setText("");
+						tfUsCidade.setText("");
+						
+						cbUsUF.setValue(null);
+						
+						tfUsTel.setText("");
+						tfUsCel.setText("");
+						tfUsEmail.setText("");
+						
+						btnUsNovo.setDisable(true);
+						btnUsSalvar.setDisable(true);
+						btnUsEditar.setDisable(false);
+						btnUsExcluir.setDisable(false);
+						btnUsCancelar.setDisable(false);
+						
+					} else {
 
-		
+						// -- preencher os campos -- //
+						cbTipoPessoa.setValue(usTab.getUsTipo());
+						
+						tfUsNome.setText(usTab.getUsNome());
+						tfUsCPFCNPJ.setText(usTab.getUsCPFCNPJ());
+						tfUsEnd.setText(usTab.getUsDescricaoEnd());
+						
+						cbUsRA.setValue(usTab.getUsRA());
+						
+						tfUsCEP.setText(usTab.getUsCEP());
+						tfUsCidade.setText(usTab.getUsCidade());
+						
+						cbUsUF.setValue(usTab.getUsEstado());
+						
+						tfUsTel.setText(usTab.getUsTelefone());
+						tfUsCel.setText(usTab.getUsCelular());
+						tfUsEmail.setText(usTab.getUsEmail());
+						
+						//-- mudar endereço relacionado à denúncia --//
+						eGeralUs = usTab.getEnderecoUsObjetoTabelaFK();
+						lblEndUsuario.setText(eGeralUs.getDesc_Endereco()  + " |  RA: "  +  eGeralUs.getRA_Endereco());
+						
+						
+						// -- habilitar e desabilitar botões -- //
+						btnUsNovo.setDisable(true);
+						btnUsSalvar.setDisable(true);
+						btnUsEditar.setDisable(false);
+						btnUsExcluir.setDisable(false);
+						btnUsCancelar.setDisable(false);
+						
+						
+					}
+					}
+				});
+		}
 		
 		//-- INITIALIZE --//
 		public void initialize(URL url, ResourceBundle rb) {
@@ -237,7 +443,34 @@ public class TabUsuarioController implements Initializable {
 			cbUsUF.setValue("DF");
 			cbUsUF.setItems(olUsDF);
 			
+			modularBotoesInicial ();
 			
+		}
+		
+		//-- Modular os botões na iniciação do programa --//
+		private void modularBotoesInicial () {
+			
+			cbTipoPessoa.setDisable(true);
+			tfUsNome.setDisable(true); 
+			tfUsCPFCNPJ.setDisable(true);
+			tfUsEnd.setDisable(true);
+			
+			cbUsRA.setDisable(true); 
+			
+			tfUsCEP.setDisable(true);
+			tfUsCidade.setDisable(true);
+			
+			cbUsUF.setDisable(true);
+			
+			tfUsTel.setDisable(true);
+			tfUsCel.setDisable(true);
+			tfUsEmail.setDisable(true);
+			
+			
+			btnUsSalvar.setDisable(true);
+			btnUsEditar.setDisable(true);
+			btnUsExcluir.setDisable(true);
+			btnUsNovo.setDisable(false);
 			
 		}
 }

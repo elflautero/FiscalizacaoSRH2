@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import javax.script.ScriptException;
 
@@ -14,6 +15,7 @@ import org.jsoup.nodes.Document;
 import dao.EnderecoDao;
 import entity.Denuncia;
 import entity.Endereco;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,18 +31,23 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import principal.GoogleMap;
 import tabela.EnderecoTabela;
 
@@ -241,35 +248,10 @@ public class TabEnderecoController implements Initializable {
 				btnEndExc.setDisable(false);
 				btnEndCan.setDisable(false);
 				
-				// mudar também o número do documento ao selecionar um endereço
-				
-				
-				//PRECISA MELHORAR, ESTÁ DANDO NULLPOINTEXCEPTION...
-				
-				/*
-				if (endTab.getenderecoObjetoTabelaFK() != null) {
-					
-					lblDenEnd.setText(denTab.getenderecoObjetoTabelaFK().getDesc_Endereco() + ", " + denTab.getenderecoObjetoTabelaFK().getRA_Endereco());
-					lblDenEnd.setTextFill(Color.BLACK);
-				} else {
-					lblDenEnd.setText("Sem endereço cadastrado!");
-					lblDenEnd.setTextFill(Color.RED);
-					
-				}
-				*/
-				
 				Endereco eGeral = new Endereco(endTab);
-				System.out.println(eGeral.getCEP_Endereco());
-				System.out.println(eGeral.getCid_Endereco());
-				System.out.println(eGeral.getCod_Endereco());
-				System.out.println(eGeral.getDesc_Endereco());
-				System.out.println(eGeral.getRA_Endereco());
-				System.out.println(eGeral.getUF_Endereco());
-				System.out.println(eGeral.getLat_Endereco());
-				System.out.println(eGeral.getLon_Endereco());
-				System.out.println(eGeral.getListDenuncias());
-				
+			
 				main.pegarEnd(eGeral);
+				
 			}
 			}
 		});
@@ -279,10 +261,14 @@ public class TabEnderecoController implements Initializable {
 	public void btnEndNovoHab (ActionEvent event) {
 		
 		tfEnd.setText("");
-		//tfEndRA.setText("");
+		
+		cbEndRA.setValue(null);
+		
 		tfEndCep.setText("");
 		tfEndCid.setText("Brasília");
-		//tfEndUF.setText("");
+		
+		cbEndUF.setValue("DF");
+		
 		tfLinkEnd.setText("");
 		tfEndLat.setText("");
 		tfEndLon.setText("");
@@ -290,11 +276,11 @@ public class TabEnderecoController implements Initializable {
 		
 		tfEnd.setDisable(false);
 		cbEndRA.setDisable(false);
-		cbEndRA.setValue(null);
+		
 		
 		tfEndCep.setDisable(false);
 		tfEndCid.setDisable(false);
-		cbEndUF.setDisable(false);  //tfEndUF.setDisable(false);
+		cbEndUF.setDisable(false);
 		tfEndLat.setDisable(false);
 		tfEndLon.setDisable(false);
 		tfLinkEnd.setDisable(false);
@@ -344,13 +330,8 @@ public class TabEnderecoController implements Initializable {
 		
 		EnderecoDao enderecoDao = new EnderecoDao();
 		
-				System.out.println("endereço antes do merge: " + endereco.getCod_Endereco());
-		
-			//enderecoDao.mergeEnd(endereco);
-				enderecoDao.salvaEndereco(endereco);
-				enderecoDao.mergeEnd(endereco);
-			
-				System.out.println("endereço depois do merge: " + endereco.getCod_Endereco());
+			enderecoDao.salvaEndereco(endereco);
+			enderecoDao.mergeEnd(endereco);
 			
 			//-- Alerta de endereço salvo --//
 			Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
@@ -379,6 +360,10 @@ public class TabEnderecoController implements Initializable {
 		
 		
 		// não deixar editar sem um  documento cadastrado... colocar... primeiro puxar um documento
+		
+		// ou pedir para confirmar o documento relacionado  ao endereço
+		
+		// exigir denuncia -  é preciso escolher uma denúncia antes de editar um endereço
 		
 		
 		if (tfEnd.isDisable()) {
@@ -468,7 +453,20 @@ public class TabEnderecoController implements Initializable {
 	//-- botão cancelar --//
 	public void btnEndCanHab (ActionEvent event) {
 
-		modularBotoesInicial (); 
+		modularBotoesInicial ();
+		
+		tfEnd.setText("");
+		
+		cbEndRA.setValue(null);
+		
+		tfEndCep.setText("");
+		tfEndCid.setText("Brasília");
+		
+		cbEndUF.setValue(null);
+		
+		tfLinkEnd.setText("");
+		tfEndLat.setText("");
+		tfEndLon.setText("");
 		
 	}
 	
@@ -567,7 +565,48 @@ public class TabEnderecoController implements Initializable {
 	            	
 	            	tfEndLat.setText(latDec);
 	        		tfEndLon.setText(lngDec);
-	        		lblEndereco.setText(endMap);
+	        		
+	        		//-- sugestão de endereço, cep etc --//
+	        		String end[] = endMap.split(Pattern.quote(","));
+	        		
+	        		ObservableList<String> documentos = FXCollections.observableArrayList(end);
+	    			ListView<String> listView = new ListView<String>(documentos);
+	    			TableColumn<List, String> tc = new TableColumn<List, String> ("Documentos");
+	    			
+	    			tc.setCellValueFactory(new Callback<CellDataFeatures<List, String>, ObservableValue<String>>() {
+	    				
+	    			     public ObservableValue<String> call(CellDataFeatures<List, String> p) {
+	    			 
+	    			         return new SimpleStringProperty(p.getValue().toString());
+	    			     }
+	    			 });
+
+	    				Scene scene = new Scene(listView);
+	    				Stage stage = new Stage(); // StageStyle.UTILITY - tirei para ver como fica, se aparece o minimizar
+	    				stage.setWidth(400);
+	    				stage.setHeight(300);
+	    			    stage.setScene(scene);
+	    			    stage.setMaximized(false);
+	    			    stage.setResizable(false);
+	    			    stage.setX(1030.0);
+	    			    stage.setY(550.0);
+	    			   
+	    			    stage.setAlwaysOnTop(true); 
+	    			    stage.show();
+	    			
+	    			    //--  https://docs.oracle.com/javafx/2/ui_controls/ListViewSample.java.html  --// 
+	    			    listView.getSelectionModel().selectedItemProperty().addListener(
+	                    new ChangeListener<String>() {
+	                        public void changed(ObservableValue<? extends String> 
+	                        ov, String old_val, String new_val) {
+	                      
+	                             Clipboard clip = Clipboard.getSystemClipboard();
+	                             ClipboardContent conteudo = new ClipboardContent();
+	                             conteudo.putString(new_val);
+	                             clip.setContent(conteudo);
+	                        }
+	                    });
+	    			    //-- fim - sugestão de endereço, cep etc --//
 	        		
 	            }
 	        });
@@ -609,7 +648,6 @@ public class TabEnderecoController implements Initializable {
 				tfEndLat.setText(lat.toString());
 		tfEndLon.setText(lon.toString());
 		
-		System.out.println("método printCoord chamado");
 	}
 	
 	//-- INITIALIZE --//
@@ -698,7 +736,7 @@ public class TabEnderecoController implements Initializable {
 		lngDec = Double.toString(lng);
 		
 		try {
-			//lblEndereco = new Label(address);
+			
 			lblEndereco.setText(address.toString());
 		}
 		
@@ -706,9 +744,6 @@ public class TabEnderecoController implements Initializable {
 			 e.printStackTrace();
 			 System.out.println("o erro no label foi: " + e);
 		 }
-		
-		
-		System.out.printf("método setLatLng, no endereço controler " + lat + ", " + lng + ", e endereço; " + address);
 			
 			
 	}

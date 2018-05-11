@@ -7,33 +7,32 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import entity.Ato;
 import entity.HibernateUtil;
-import entity.Usuario;
 
-public class UsuarioDao {
+public class AtoDao {
 	
-	
-public void salvaUsuario (Usuario usuario) {
+public void salvarAto (Ato ato) {
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.save(usuario);
+		s.save(ato);
 		s.getTransaction().commit();
 		s.close();
 		
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Usuario> listUsuario(String strPesquisaUsuario) {
+	public List<Ato> listAto(String strPesquisaAto) {
 		
-		List<Usuario> list = new ArrayList<Usuario>();
+		List<Ato> list = new ArrayList<Ato>();
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		
 		s.beginTransaction();
 		
-		Criteria crit = s.createCriteria(Usuario.class);
-		crit.add(Restrictions.like("usNome", '%' + strPesquisaUsuario + '%'));
+		Criteria crit = s.createCriteria(Ato.class);
+		crit.add(Restrictions.like("atoSEI", '%' + strPesquisaAto + '%'));
 		list = crit.list();
 			
 		s.getTransaction().commit();
@@ -41,37 +40,37 @@ public void salvaUsuario (Usuario usuario) {
 		return list;
 	}
 	
-	public void removeUsuario(Integer id) {
+	public void removerAto(Integer id) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		Usuario u = (Usuario) s.load(Usuario.class, id);
-		s.delete(u);
+		Ato i = (Ato) s.load(Ato.class, id);
+		s.delete(i);
 		s.getTransaction().commit();
 		s.close();
 	}
 
-	public void editarUsurario(Usuario usuario) {
+	public void editarAto(Ato ato) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.update(usuario);
+		s.update(ato);
 		s.getTransaction().commit();
 		s.close();
 	}
 	
-	public void mergeUsuario(Usuario usuario) {
+	public void mergeAto(Ato ato) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.merge(usuario);
+		s.merge(ato);
 		s.getTransaction().commit();
 		s.close();
 	}
 	
-	public void persistUsuario(Usuario usuario) {
+	public void persistAto(Ato ato) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		s.persist(usuario);
+		s.persist(ato);
 		s.getTransaction().commit();
 		s.close();
 	}
-
+	
 }

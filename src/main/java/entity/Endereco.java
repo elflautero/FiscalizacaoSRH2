@@ -61,23 +61,23 @@ public class Endereco implements Serializable{
 		@Fetch(FetchMode.SUBSELECT) 
 		private List<Interferencia> interferencias = new ArrayList<Interferencia>();
 	
-	//-- Lista de usuários vinculados --//
-			@OneToMany (mappedBy = "usEndCodigoFK", cascade = CascadeType.MERGE,
-					fetch = FetchType.EAGER, targetEntity = Usuario.class)
-			@Fetch(FetchMode.SUBSELECT) 
-			private List<Usuario> usuarios = new ArrayList<Usuario>();
-	
-	//-- Lista de fiscais vinculados --//
-				@OneToMany (mappedBy = "fis_End_Codigo", cascade = CascadeType.MERGE,
-						fetch = FetchType.EAGER, targetEntity = Fiscal.class)
+		//-- Lista de usuários vinculados --//
+				@OneToMany (mappedBy = "usEndCodigoFK", cascade = CascadeType.MERGE,
+						fetch = FetchType.EAGER, targetEntity = Usuario.class)
 				@Fetch(FetchMode.SUBSELECT) 
-				private List<Fiscal> fiscais = new ArrayList<Fiscal>();
+				private List<Usuario> usuarios = new ArrayList<Usuario>();
+		
+			//-- Lista de fiscais vinculados --//
+						@OneToMany (mappedBy = "fis_End_Codigo", cascade = CascadeType.MERGE,
+								fetch = FetchType.EAGER, targetEntity = Fiscal.class)
+						@Fetch(FetchMode.SUBSELECT) 
+						private List<Fiscal> fiscais = new ArrayList<Fiscal>();
 				
-	//-- Lista de atos vinculados --//
-					@OneToMany (mappedBy = "ato_End_Codigo", cascade = CascadeType.MERGE,
-							fetch = FetchType.EAGER, targetEntity = Ato.class)
-					@Fetch(FetchMode.SUBSELECT) 
-					private List<Ato> atos = new ArrayList<Ato>();
+				//-- Lista de atos vinculados --//
+								@OneToMany (mappedBy = "atoEndCodigo", cascade = CascadeType.MERGE,
+										fetch = FetchType.EAGER, targetEntity = Ato.class)
+								@Fetch(FetchMode.SUBSELECT) 
+								private List<Ato> atos = new ArrayList<Ato>();
 		
 				
 	

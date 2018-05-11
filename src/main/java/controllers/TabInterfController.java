@@ -42,7 +42,7 @@ import tabela.InterferenciaTabela;
 
 public class TabInterfController implements Initializable {
 	
-	int tipoCaptacao;
+	int tipoCaptacao = 3;
 			
 	TabSubterraneaController tabSubCon;
 	
@@ -234,16 +234,21 @@ public class TabInterfController implements Initializable {
 				
 			} else {
 
-				
 				// -- preencher os campos -- //
 				cbTipoInt.setValue(intTab.getInter_Tipo());
 				cbBacia.setValue(intTab.getInter_Bacia());
 				tfUH.setText(intTab.getInter_UH());
 				tfCorpoHid.setText(intTab.getInter_Corpo_Hidrico());
 				cbSituacao.setValue(intTab.getInter_Situacao());
-					// latitude e longitude
+				
+				// latitude e longitude
 				tfIntLat.setText(intTab.getInter_Lat().toString());
 				tfIntLon.setText(intTab.getInter_Lng().toString());
+				
+				// mudar o endereço da interfência de acordo com a seleção do usuário
+				eGeralInt = intTab.getEnderecoInterferenciaObjetoTabelaFK();
+				
+				lblEnd.setText(eGeralInt.getDesc_Endereco()  + " |  RA: "  + eGeralInt.getRA_Endereco());
 				
 				String tipoInt = intTab.getInter_Tipo();
 				
@@ -380,6 +385,12 @@ public class TabInterfController implements Initializable {
 				
 			sDao.mergeSubterranea(sub);
 			
+			listarInterferencias (strPesquisaInterferencia);
+			
+			selecionarInterferencia ();
+			
+			modularBotoes ();
+			
 		} // fim subterrânea
 		
 		
@@ -423,6 +434,44 @@ public class TabInterfController implements Initializable {
 			
 			supDao.mergeSuperficial(sup);
 			
+			listarInterferencias (strPesquisaInterferencia);
+			
+			selecionarInterferencia ();
+			
+			modularBotoes ();
+			
+				
+			} // fim superficial //
+		
+			if (tipoCaptacao == 3) {  // salvar outras interferências que não superficial ou subterrânea
+			
+			Interferencia interferencia = new Interferencia();
+			
+				interferencia.setInter_Tipo(cbTipoInt.getValue().toString());
+				interferencia.setInter_Bacia(cbBacia.getValue().toString());
+				interferencia.setInter_UH(tfUH.getText());
+				interferencia.setInter_Corpo_Hidrico(tfCorpoHid.getText());
+				interferencia.setInter_Situacao(cbSituacao.getValue().toString());
+				interferencia.setInter_Desc_Endereco(eGeralInt.getDesc_Endereco());
+				interferencia.setInter_Lat(Double.parseDouble(tfIntLat.getText()));
+				interferencia.setInter_Lng(Double.parseDouble(tfIntLon.getText()));
+			
+			Endereco endereco = new Endereco();
+				
+				endereco = eGeralInt;
+				endereco.getListInterferencias().add(interferencia);
+				interferencia.setInter_End_CodigoFK(endereco);
+				InterferenciaDao interferenciaDao = new InterferenciaDao ();
+				
+				interferenciaDao.salvaInterferencia(interferencia);
+				interferenciaDao.mergeInterferencia(interferencia);
+				
+			listarInterferencias (strPesquisaInterferencia);
+			
+			selecionarInterferencia ();
+			
+			modularBotoes ();
+			
 				
 			} // fim superficial //
 		
@@ -438,6 +487,7 @@ public class TabInterfController implements Initializable {
 		
 	}
 	
+	//-- botão editar --//
 	public void btnIntEditHab (ActionEvent event) {
 		
 		// ver exceção de querer editar sem esconlher o endereço da interferência...
@@ -467,7 +517,7 @@ public class TabInterfController implements Initializable {
 			
 			if (strEditar.equals("Subterrânea")) {
 				
-				InterferenciaTabela intTabEditar = tvListaInt.getSelectionModel().getSelectedItem();
+				InterferenciaTabela intTabEditar = tvListaInt.getSelectionModel().getSelectedItem(); //será que precisa desse código?, verificar... Sim por causa do construtor da interferencia
 				
 				Interferencia intEditar = new Interferencia(intTabEditar);
 				
@@ -477,11 +527,14 @@ public class TabInterfController implements Initializable {
 					intEditar.setInter_Corpo_Hidrico(tfCorpoHid.getText());
 					intEditar.setInter_Situacao(cbSituacao.getValue().toString());
 					
-					intEditar.setInter_Desc_Endereco(eGeralInt.getDesc_Endereco());  // ?????? como assim ????
-					
 					intEditar.setInter_Lat(Double.parseDouble(tfIntLat.getText()));
 					intEditar.setInter_Lng(Double.parseDouble(tfIntLon.getText()));
+					
+					intEditar.setInter_Desc_Endereco(eGeralInt.getDesc_Endereco());  // trazer a descrição do endereço de acordo com o endereço selecionado
+					intEditar.setInter_End_CodigoFK(eGeralInt);  // trazer a foreing key do endereço selecionado na tableview ou escolhido na tab endereço
 				
+					System.out.println("ao editar, valor do intEditar código do endereço: " + intEditar.getInter_End_CodigoFK().getCod_Endereco());
+					
 				InterferenciaDao interferenciaDao = new InterferenciaDao ();
 				
 				interferenciaDao.mergeInterferencia(intEditar);
@@ -491,8 +544,6 @@ public class TabInterfController implements Initializable {
 					sub.setInterf_SubFK(intEditar);
 				
 					sub.setSub_Codigo(intTab.getInterSub().getSub_Codigo()); // para vir a chave primaria da subterranea
-					
-					System.out.println("valor do código da subterrânea: " + intTab.getInterSub().getSub_Codigo());
 					
 					sub.setSub_Poco(tabSubCon.obterSubterranea().getSub_Poco());
 					sub.setSub_Caesb(tabSubCon.obterSubterranea().getSub_Caesb());
@@ -506,19 +557,117 @@ public class TabInterfController implements Initializable {
 					
 				sDao.mergeSubterranea(sub);
 				
-				System.out.println("Interferência e subterranea editado");
+				listarInterferencias (strPesquisaInterferencia);
+				selecionarInterferencia ();
+				
+				modularBotoes ();
+				
+				
+				//-- Alerta de interferência editada --//
+				Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
+				aSalvo.setTitle("Parabéns!");
+				aSalvo.setContentText("Interferência editada!");
+				aSalvo.setHeaderText(null);
+				aSalvo.show();
+			
 			}
 			
+			if (strEditar.equals("Superficial")) {
+				
+				InterferenciaTabela intTabEditar = tvListaInt.getSelectionModel().getSelectedItem(); //será que precisa desse código?, verificar... Sim por causa do construtor da interferencia
+				
+				Interferencia intEditar = new Interferencia(intTabEditar);
+				
+				intEditar.setInter_Tipo(cbTipoInt.getValue().toString());
+				intEditar.setInter_Bacia(cbBacia.getValue().toString());
+				intEditar.setInter_UH(tfUH.getText());
+				intEditar.setInter_Corpo_Hidrico(tfCorpoHid.getText());
+				intEditar.setInter_Situacao(cbSituacao.getValue().toString());
+				
+				intEditar.setInter_Lat(Double.parseDouble(tfIntLat.getText()));
+				intEditar.setInter_Lng(Double.parseDouble(tfIntLon.getText()));
+				
+				intEditar.setInter_Desc_Endereco(eGeralInt.getDesc_Endereco());  // trazer a descrição do endereço de acordo com o endereço selecionado
+				intEditar.setInter_End_CodigoFK(eGeralInt);  // trazer a foreing key do endereço selecionado na tableview ou escolhido na tab endereço
 			
+				System.out.println("ao editar, valor do intEditar código do endereço: " + intEditar.getInter_End_CodigoFK().getCod_Endereco());
+				
+				InterferenciaDao interferenciaDao = new InterferenciaDao ();
+				
+				interferenciaDao.mergeInterferencia(intEditar);
+			
+				Superficial sup = new Superficial();
+				
+				sup.setInterf_SuperFK(intEditar);
+				
+				sup.setSup_Codigo(intTab.getInterSup().getSup_Codigo()); // obter a chave primária
+				
+				sup.setSup_Local(tabSupCon.obterSuperficial().getSup_Local());
+				sup.setSup_Captacao(tabSupCon.obterSuperficial().getSup_Captacao());
+				sup.setSup_Bomba(tabSupCon.obterSuperficial().getSup_Bomba());
+				sup.setSup_Potencia(tabSupCon.obterSuperficial().getSup_Potencia());
+				sup.setSup_Tempo(tabSupCon.obterSuperficial().getSup_Tempo());
+				
+				sup.setSup_Area(tabSupCon.obterSuperficial().getSup_Area());
+				sup.setSup_Caesb(tabSupCon.obterSuperficial().getSup_Caesb());
+				
+				//falta data
+				
+				SuperficialDao supDao = new SuperficialDao();
+				
+				supDao.mergeSuperficial(sup);
+				
+				listarInterferencias (strPesquisaInterferencia);
+				selecionarInterferencia ();
+				
+				modularBotoes ();
+				
+				
+			
+			}
+			
+			if (strEditar.equals("Caminhão Pipa") 					|| 
+					strEditar.equals("Lançamento de Águas Pluviais")	|| 
+						strEditar.equals("Lançamento de Efluentes")			|| 
+							strEditar.equals("Barragem")						||
+								strEditar.equals("Outros")	)	
+			{
+			
+				InterferenciaTabela intTabEditar = tvListaInt.getSelectionModel().getSelectedItem(); //será que precisa desse código?, verificar... Sim por causa do construtor da interferencia
+				
+				Interferencia intEditar = new Interferencia(intTabEditar);
+				
+				intEditar.setInter_Tipo(cbTipoInt.getValue().toString());
+				intEditar.setInter_Bacia(cbBacia.getValue().toString());
+				intEditar.setInter_UH(tfUH.getText());
+				intEditar.setInter_Corpo_Hidrico(tfCorpoHid.getText());
+				intEditar.setInter_Situacao(cbSituacao.getValue().toString());
+				
+				intEditar.setInter_Lat(Double.parseDouble(tfIntLat.getText()));
+				intEditar.setInter_Lng(Double.parseDouble(tfIntLon.getText()));
+				
+				intEditar.setInter_Desc_Endereco(eGeralInt.getDesc_Endereco());  // trazer a descrição do endereço de acordo com o endereço selecionado
+				intEditar.setInter_End_CodigoFK(eGeralInt);  // trazer a foreing key do endereço selecionado na tableview ou escolhido na tab endereço
+			
+				InterferenciaDao interferenciaDao = new InterferenciaDao ();
+				
+				interferenciaDao.mergeInterferencia(intEditar);
+				
+				listarInterferencias (strPesquisaInterferencia);
+				selecionarInterferencia ();
+				
+				modularBotoes ();
+				
+			}
+
 		}
 		
 	}
+	
+	
+	//-- botão excluir --//
 	public void btnIntExcHab (ActionEvent event) {
 		
-		String strExc = intTab.getInter_Tipo();
-		
-		if (strExc.equals("Subterrânea")) {
-			
 			InterferenciaTabela intTabEditar = tvListaInt.getSelectionModel().getSelectedItem();
 			
 			InterferenciaDao interferenciaDao = new InterferenciaDao ();
@@ -526,36 +675,20 @@ public class TabInterfController implements Initializable {
 			interferenciaDao.removeInterferencia(intTabEditar.getInter_Codigo());
 			
 			listarInterferencias(strPesquisaInterferencia);
-		
-			/*
-			Subterranea sub = new Subterranea ();
+			selecionarInterferencia ();
 			
-				sub.setInterf_SubFK(intEditar);
+			modularBotoes ();
 			
-				sub.setSub_Codigo(intTab.getInterSub().getSub_Codigo()); // para vir a chave primaria da subterranea
-				
-				System.out.println("valor do código da subterrânea: " + intTab.getInterSub().getSub_Codigo());
-				
-				sub.setSub_Poco(tabSubCon.obterSubterranea().getSub_Poco());
-				sub.setSub_Caesb(tabSubCon.obterSubterranea().getSub_Caesb());
-				sub.setSub_Sistema(tabSubCon.obterSubterranea().getSub_Sistema());
-				sub.setSub_Estatico(tabSubCon.obterSubterranea().getSub_Estatico());
-				sub.setSub_Dinamico(tabSubCon.obterSubterranea().getSub_Dinamico());
-				sub.setSub_Vazao(tabSubCon.obterSubterranea().getSub_Vazao());
-				sub.setSub_Profundidade(tabSubCon.obterSubterranea().getSub_Profundidade());
-				
-			SubterraneaDao sDao = new SubterraneaDao();
-				
-			sDao.mergeSubterranea(sub);
-			*/
-			
-			System.out.println("Interferência e subterranea editado");
-		}
-		else {
-			System.out.println("Não é subterrânea");
-		}
+			//-- Alerta de endereço salvo --//
+			Alert aSalvo = new Alert (Alert.AlertType.CONFIRMATION);
+			aSalvo.setTitle("Parabéns!");
+			aSalvo.setContentText("Interferência excluída!");
+			aSalvo.setHeaderText(null);
+			aSalvo.show();
 		
 	}
+	
+	//-- botão cancelar --//
 	public void btnIntCanHab (ActionEvent event) {
 		
 		modularBotoes ();
@@ -569,19 +702,29 @@ public class TabInterfController implements Initializable {
 		tfIntLat.setText("");
 		tfIntLon.setText("");
 	
-		
-		
-		
 	}
+	
+	
+	//-- botão pesquisar interferência --//
 	public void btnIntPesqHab (ActionEvent event) {
 		
 		strPesquisaInterferencia = tfIntPesq.getText();
 		
 		listarInterferencias(strPesquisaInterferencia);
 		
-		//modularBotoesInicial (); 
-		
 		selecionarInterferencia ();
+		
+		modularBotoes ();
+		
+		cbTipoInt.setValue(null);
+		cbBacia.setValue(null);
+		tfUH.setText("");
+		tfCorpoHid.setText("");
+		cbSituacao.setValue("inativa");
+		tfLinkInt.setText("");
+		tfIntLat.setText("");
+		tfIntLon.setText("");
+		
 	}
 
 	public void btnCapturarCroqui (ActionEvent event) {
@@ -799,265 +942,19 @@ public class TabInterfController implements Initializable {
 			System.out.println("valor null");
 		}
 		
+		if (newString.equals("Caminhão Pipa") 					|| 
+				newString.equals("Lançamento de Águas Pluviais")	|| 
+					newString.equals("Lançamento de Efluentes")			|| 
+						newString.equals("Barragem")						||
+							newString.equals("Outros")	)	
+		{
+			paneTipoInterferencia.getChildren().clear();
+		}
+		
 	}
 	
 }
 
-
-
-
-/*
-paneTipoInterferencia.getChildren().clear(); // limpar o pane
-
-Pane tabSuperficial = new Pane();
-
-tabSuperficial = FXMLLoader.load(getClass().getResource("/fxml/TabSuperficial.fxml"));
-
-iVewSup = new ImageView();
-iVewSup.setImage(imSup);
-
-Group groupSup = new Group(tabSuperficial, iVewSup);
-
-//paneTipoInterferencia = FXMLLoader.load(getClass().getResource("/fxml/TabInterferencia.fxml"));
-paneTipoInterferencia.getChildren().add(groupSup);
-*/
-
-
-
-
-//paneTipoInterferencia.getChildren().add(getNode("/fxml/TabSubterranea.fxml"));
-
-//paneTipoInterferencia = new Pane();
-
-
-/*
-
-TabSubterraneaController tSubCon = new TabSubterraneaController();
-
-FXMLLoader loader = new FXMLLoader(
-        getClass().getResource("/fxml/TabSubterranea.fxml"));
-
-loader.setController(tSubCon);
-
-paneTipoInterferencia.getChildren().add(Pane tabSubterranea = new Pane());
-*/
-
-/*
-paneTipoInterferencia.getChildren().add(getNode("/fxml/TabSubterranea.fxml"));
-
-*/
-
-/*
-FXMLLoader fxmlLoader = new FXMLLoader(
-        getClass().getResource("/fxml/TabSubterranea.fxml"));
-        
-TabSubterraneaController tsCon = new TabSubterraneaController(); 
-tsCon = fxmlLoader.getController();
-
-*/
-
-
-
-
-
-/*
-
-//paneTipoInterferencia.getChildren().clear(); // limpar o pane
-
-FXMLLoader fxmlLoader = new FXMLLoader(
-        getClass().getResource("/fxml/TabSubterranea.fxml"));
-
-
-
-paneTipoInterferencia = fxmlLoader.load();   //  FXMLLoader.load(getClass().getResource("/fxml/TabSubterranea.fxml"));
-
-//TabSubterraneaController tabSubCon = (TabSubterraneaController) fxmlLoader.getController();
-
-Scene tabSubCen = new Scene(paneTipoInterferencia);
-
-//paneTipoInterferencia.getChildren(tabSubCen);
-
-Stage stage = new Stage();
-stage.setX(70);
-stage.setY(401); // layoutX="70.0" layoutY="401.0"
-
-//tabSubCon.setStage(stage);
-
-//tabSubCen.
-stage.setScene(tabSubCen);
-
-stage.show();
-
-*/
-
-
-//paneTipoInterferencia.getChildren().add(tabSubCena);
-
-//paneTipoInterferencia.getChildren().addAll(tabSub);
-
-/*
-Pane tabSubterranea = new Pane();
-
-tabSubterranea = FXMLLoader.load(getClass().getResource("/fxml/TabSubterranea.fxml"));
-
-ChoiceBox<String> cbTipoCaptacao = new ChoiceBox<String>();
-
-*/
-
-/*
-tfVazao = new TextField();
-
-iVewSubt = new ImageView();
-iVewSubt.setImage(imSubt);
-
-Group groupSubt = new Group(tabSubterranea, iVewSubt, cbTipoCaptacao, tfVazao);
-   */                                  
-//paneTipoInterferencia.getChildren().add(groupSubt);
-
-
-/*
-File output = new File("‪C:\\Users\\fabricio\\Documents\\croqui.png");
-
-try {
-	//ImageIO.write(i, "png", output); 
-	ImageIO.write(SwingFXUtils.fromFXImage(i, null), "png", output);
-} catch (IOException e){
-	e.printStackTrace();
-}
-*/
-
-
-
-/*
-tabSuperficial = new Pane ();
-tabSuperficial.setLayoutX(176.0);
-tabSuperficial.setLayoutY(419.0);
-
-paneTipoInterferencia.getChildren().add(tabSuperficial);
-
-
-Label label = new Label("Área atendida pela Caesb: ");
-tabSuperficial.getChildren().add(label);
-
-*/
-
-
-
-/*
-Pane tabSuperficial = new Pane();
-
-Label lblCaesb = new Label("Área atendida pela Caesb: ");
-Label lblLocal = new Label ("Local de Captação: ");
-Label lblForma = new Label ("Forma de captação: ");
-Label lblMarca = new Label ("Marca da Bomba: ");
-Label lblPotencia = new Label ("Potência da Bomba (cv): ");
-Label lblTempo = new Label ("Tempo (h/dia): ");
-Label lblAreaPro = new Label ("Tamanho da Porpriedade (ha): ");
-Label lblOperacao = new Label ("Em operação desde: ");
-
-ChoiceBox<String> cbCaesb = new ChoiceBox<String>();
-	ObservableList<String> olCaesb = FXCollections
-		.observableArrayList(
-				"Sim" , 
-				"Não"
-				); 
-
-	ChoiceBox<String> cbCaptacao = new ChoiceBox<String>();
-		ObservableList<String> olCaptacao = FXCollections
-			.observableArrayList(
-					"Canal" , 
-					"Rio",
-					"Reservatório",
-					"Lago Natural",
-					"Nascente",
-					"Outro"
-					
-					); 
-
-		ChoiceBox<String> cbFormaCaptacao = new ChoiceBox<String>();
-			ObservableList<String> olFormaCaptacao = FXCollections
-				.observableArrayList(
-						"Gravidade" , 
-						"Bombeamento",
-						"Outro"
-						); 
-			
-		TextField tfMarcaBomba = new TextField();
-		TextField tfPotenciaBomba = new TextField();
-		TextField tfTempoBomba = new TextField();
-			
-tabSuperficial.setPrefHeight(306);
-tabSuperficial.setPrefWidth(768);
-
-Group group = new Group();
-
-group.getChildren().addAll(
-		
-		tabSuperficial,
-		lblCaesb,
-		cbCaesb,
-		cbCaptacao,
-		cbFormaCaptacao,
-		tfMarcaBomba,
-		tfPotenciaBomba,
-		tfTempoBomba
-		);
-
-paneTipoInterferencia.getChildren().add(group);
-
-lblCaesb.setLayoutY(17);
-lblCaesb.setLayoutX(57);
-
-cbCaesb.setLayoutX(166);
-cbCaesb.setLayoutY(53);
-cbCaesb.setItems(olCaesb);
-
-
-*/
-
-
-
-/*
-Parent root = FXMLLoader.load(getClass().getResource("/fxml/TabSuperficial.fxml"));
-Stage stage = (Stage) paneTipoInterferencia.getScene().getWindow();
-Scene scene = new Scene(root);
-stage.setScene(scene);
-stage.show();
-*/
-
-//paneTipoInterferencia.getScene().setRoot(FXMLLoader.load(getClass().getResource("/fxml/TabSuperficial.fxml")));
-
-//paneTipoInterferencia.getChildren().add(tabSuperficial);
-
-
-
-
-/*
- Scene scene = new Scene(group);
- 
- Stage stage = new Stage(StageStyle.UTILITY);
-	stage.setWidth(1250);
-	stage.setHeight(750);
-    stage.setScene(scene);
-    
-    stage.show();
- 
- //--  <Pane fx:id="paneTipoInterferencia" layoutX="176.0" layoutY="419.0" prefHeight="310.0" prefWidth="807.0" /> --//
- */
-
-
-/*
- //-- controlar as telas de subterraneo, superficial etc --//
-	public Node getNode(String node){
-        Node no = null;
-        try {
-            no = FXMLLoader.load(getClass().getResource(node));
-        } catch (Exception e) {
-        }
-        return no;
-        
-    }
- */
 
 
 	

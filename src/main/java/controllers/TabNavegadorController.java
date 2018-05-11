@@ -143,11 +143,10 @@ public class TabNavegadorController implements Initializable{
 
 		// adicionar execeção https://github.com/Microsoft/ClearScript/issues/16
 		
-		contDocSei = (int) wv1.getEngine().executeScript("doc.length");
+		contDocSei = (int) wv1.getEngine().executeScript("doc.length"); // quantidade de docs capturados
 		
-		docsSei = new String [contDocSei];
+		docsSei = new String [contDocSei]; // para limitar a quantidade de strings na array
 		
-		System.out.println("Quantidade de documentos capturados: " + contDocSei);
 		
 			for (int i = 0; i < contDocSei; i++ ) {
 				
@@ -158,7 +157,7 @@ public class TabNavegadorController implements Initializable{
 			}
 			
 				for (int z = 0; z < contDocSei; z++) {
-					docsList.add(docsSei[z]);
+					docsList.add(docsSei[z]); 
 				}
 	
 	
@@ -169,8 +168,7 @@ public class TabNavegadorController implements Initializable{
 			tc.setCellValueFactory(new Callback<CellDataFeatures<List, String>, ObservableValue<String>>() {
 				
 			     public ObservableValue<String> call(CellDataFeatures<List, String> p) {
-			         //p.getValue(); //returns the Person instance for a particular TableView row
-			        
+			 
 			         return new SimpleStringProperty(p.getValue().toString());
 			     }
 			 });
@@ -190,13 +188,12 @@ public class TabNavegadorController implements Initializable{
 			    stage.setAlwaysOnTop(true); 
 			    stage.show();
 			
-			 //--  https://docs.oracle.com/javafx/2/ui_controls/ListViewSample.java.html  --// 
-			listView.getSelectionModel().selectedItemProperty().addListener(
+			    //--  https://docs.oracle.com/javafx/2/ui_controls/ListViewSample.java.html  --// 
+			    listView.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<String>() {
                     public void changed(ObservableValue<? extends String> 
                     ov, String old_val, String new_val) {
-                          System.out.println(new_val);
-                          
+                  
                          Clipboard clip = Clipboard.getSystemClipboard();
                          ClipboardContent conteudo = new ClipboardContent();
                          conteudo.putString(new_val);

@@ -1,6 +1,5 @@
 package tabela;
 
-import entity.Endereco;
 import entity.Interferencia;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;

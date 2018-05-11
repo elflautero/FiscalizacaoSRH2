@@ -43,7 +43,7 @@ public class Interferencia implements Serializable {
 		@OneToOne (cascade = CascadeType.ALL, mappedBy = "interf_SuperFK")
 		private Superficial super_Interferencia_Codigo;
 	
-	public Superficial getSuper_Interferencia_Codigo() {
+		public Superficial getSuper_Interferencia_Codigo() {
 			return super_Interferencia_Codigo;
 		}
 

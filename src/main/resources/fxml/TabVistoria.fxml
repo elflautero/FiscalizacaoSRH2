@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.Pane?>
+
+<!--  fx:controller="controllers.TabVistoriaController"  -->
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1040.0" type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="92.0" layoutY="14.0" text="OBJETO " />
+      <Label layoutX="93.0" layoutY="194.0" text="RELATO" />
+      <Label layoutX="94.0" layoutY="104.0" text="APRESENTAÇÃO" />
+      <TextArea fx:id="taObjeto" layoutX="92.0" layoutY="33.0" prefHeight="67.0" prefWidth="800.0" />
+      <TextArea fx:id="taApresentacao" layoutX="93.0" layoutY="124.0" prefHeight="67.0" prefWidth="800.0" />
+      <Button fx:id="btnPesquisarObjeto" layoutX="903.0" layoutY="52.0" mnemonicParsing="false" onAction="#btnPesqObjHab" text="?" />
+      <Button fx:id="btnPesquisarApresentacao" layoutX="903.0" layoutY="143.0" mnemonicParsing="false" onAction="#btnPesApHab" text="?" />
+      <TextArea fx:id="taRelato" layoutX="93.0" layoutY="214.0" prefHeight="494.0" prefWidth="800.0" />
+      <Button fx:id="btnPesquisarRelato" layoutX="903.0" layoutY="414.0" mnemonicParsing="false" onAction="#btnPesqRelHab" text="?" />
+      <TextArea layoutX="92.0" layoutY="736.0" prefHeight="94.0" prefWidth="800.0" />
+      <Label layoutX="93.0" layoutY="715.0" prefHeight="17.0" prefWidth="107.0" text="RECOMENDAÇÕES" />
+      <Button layoutX="903.0" layoutY="771.0" mnemonicParsing="false" text="?" />
+   </children>
+</fx:root>

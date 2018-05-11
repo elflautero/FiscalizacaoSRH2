@@ -15,19 +15,19 @@
         
         <tabs>
         
-          <Tab text="Navegador">
+          <Tab text="  Navegador  ">
                <content>
                   <fx:include fx:id="tabNavegador" source="TabNavegador.fxml" />
                </content>
           </Tab>
         	
-          <Tab text="Denúncia">
+          <Tab text="  Denúncia  ">
                <content>
                   <fx:include fx:id="tabDenuncia" source="TabDenuncia.fxml" />
                </content>
           </Tab>
           
-          <Tab text="Endereço">
+          <Tab text="  Endereço  ">
            	 <content>
                  <fx:include fx:id="tabEndereco" source="TabEndereco.fxml" />
              </content>
@@ -38,13 +38,13 @@
                   <fx:include fx:id="tabInterferencia" source="TabInterferencia.fxml" />
                </content>
           </Tab>
-          <Tab text="Usuário">
+          <Tab text="    Usuário    ">
                <content>
                   <fx:include fx:id="tabUsuario" source="TabUsuario.fxml" />
                </content>
           </Tab>
-               
-           <Tab text="Ato">
+                
+           <Tab text="      Ato      ">
                <content>
                   <fx:include fx:id="tabAto" source="TabAto.fxml" />
                </content>
