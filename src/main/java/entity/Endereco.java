@@ -61,23 +61,23 @@ public class Endereco implements Serializable{
 		@Fetch(FetchMode.SUBSELECT) 
 		private List<Interferencia> interferencias = new ArrayList<Interferencia>();
 	
-		//-- Lista de usuários vinculados --//
+				//-- Lista de usuários vinculados --//
 				@OneToMany (mappedBy = "usEndCodigoFK", cascade = CascadeType.MERGE,
 						fetch = FetchType.EAGER, targetEntity = Usuario.class)
 				@Fetch(FetchMode.SUBSELECT) 
 				private List<Usuario> usuarios = new ArrayList<Usuario>();
 		
-			//-- Lista de fiscais vinculados --//
+						//-- Lista de fiscais vinculados --//
 						@OneToMany (mappedBy = "fis_End_Codigo", cascade = CascadeType.MERGE,
 								fetch = FetchType.EAGER, targetEntity = Fiscal.class)
 						@Fetch(FetchMode.SUBSELECT) 
 						private List<Fiscal> fiscais = new ArrayList<Fiscal>();
 				
-				//-- Lista de atos vinculados --//
-								@OneToMany (mappedBy = "atoEndCodigo", cascade = CascadeType.MERGE,
-										fetch = FetchType.EAGER, targetEntity = Ato.class)
+								//-- Lista de vistorias vinculados --//
+								@OneToMany (mappedBy = "visEndCodigoFK", cascade = CascadeType.MERGE,
+										fetch = FetchType.EAGER, targetEntity = Vistoria.class)
 								@Fetch(FetchMode.SUBSELECT) 
-								private List<Ato> atos = new ArrayList<Ato>();
+								private List<Vistoria> vistorias = new ArrayList<Vistoria>();
 		
 				
 	
@@ -146,8 +146,26 @@ public class Endereco implements Serializable{
 				public void setListUsuarios(List<Usuario> usuarios) {
 					this.usuarios = usuarios;
 				}
-	
-    
+				
+					//-- get e set OneToMany List Fiscais --//
+					public List<Fiscal> getListFiscais() {
+						return fiscais;
+					}
+					
+					public void setListFiscais(List<Fiscal> fiscais) {
+						this.fiscais = fiscais;
+					}
+					
+						//-- get e set OneToMany List Vistorias --//
+						public List<Vistoria> getListVistorias() {
+							return vistorias;
+						}
+						
+						public void setListVistorias(List<Vistoria> vistorias) {
+							this.vistorias = vistorias;
+						}
+				
+		
 	public int getCod_Endereco() {
 		return Cod_Endereco;
 	}

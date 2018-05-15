@@ -33,7 +33,6 @@ public class TabSubterraneaController implements Initializable {
 	
 	}
 	
-	
 	public void imprimirSubterranea (Subterranea sub) {
 		
 		cbTipoCaptacao.setValue(sub.getSub_Poco());
@@ -50,8 +49,6 @@ public class TabSubterraneaController implements Initializable {
 		
 	}
 	
-	
-    
 	@FXML private MainController main;
 	
 	@FXML Pane tabSubterranea = new Pane ();

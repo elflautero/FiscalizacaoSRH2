@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 import dao.AtoDao;
 import entity.Ato;
 import entity.Endereco;
+import entity.Vistoria;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,9 +19,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
@@ -27,7 +31,9 @@ import tabela.AtoTabela;
 
 public class TabAtoController implements Initializable{
 	
-	String strPesquisaAto = "";
+	String strPesquisa = "";
+	
+	AtoTabela atoTab;
 	
 	@FXML	Pane tabAto = new Pane ();
 	
@@ -38,49 +44,91 @@ public class TabAtoController implements Initializable{
 	@FXML Button btnCancelar;
 	@FXML Button btnPesquisar;
 	
+	@FXML TextField tfAto;
+	@FXML TextField tfAtoSEI;
 	
+	@FXML TextArea taCaracterizacao;
 	
-	//-- TableView Endereço --//
+	@FXML DatePicker dpDataFiscalizacao;
+	@FXML DatePicker dpDataCriacaoAto;
+	
+			// TableView Endereço //
 			@FXML private TableView <AtoTabela> tvAto;
 			
 			@FXML TableColumn<AtoTabela, String> tcTipo;
 			@FXML TableColumn<AtoTabela, String> tcNumero;
 			@FXML TableColumn<AtoTabela, String> tcSEI;
 		
-			
-			
-	
+		
 	@FXML TextField tfPesquisar;
 	
 	@FXML
 	ChoiceBox<String> cbAtoTipo = new ChoiceBox<String>();
 		ObservableList<String> olAtoTipo = FXCollections
 			.observableArrayList(
-					"Relatório de Vistoria" , 
 					"Termo de Notificação", 
 					"Auto de Infração de Advertência",
 					"Auto de Infração de Multa");
 	
-	@FXML public Label lblUsEnd; // público para receber valor do MainController, método pegarEnd()
+	@FXML public Label lblVisAto; // público para receber valor do MainController, método pegarEnd()
 	
-	// --- objeto para passar os valor pelo MainControoler para outro controller --- //
-	public Endereco eGeralUs;
+	//  objeto para passar os valor pelo MainControoler para outro controller //
+	public Vistoria visGeral;
 	
-	// --- Controller Principal - MainController --- //
+	
+	
+	//  Controller Principal - MainController  //
 	@FXML private MainController main;
 	
-	//-- MAIN CONTROLLER --//
+	// MAIN CONTROLLER //
 	public void init(MainController mainController) {
 			main = mainController;
 	}
 	
+	
+	
 	public void btnNovoHab (ActionEvent event) {
+		
+		cbAtoTipo.setDisable(false);
+		tfAto.setDisable(false);
+		tfAtoSEI.setDisable(false);
+		dpDataFiscalizacao.setDisable(false);
+		dpDataCriacaoAto.setDisable(false);
+		taCaracterizacao.setDisable(false);
+		
+		cbAtoTipo.setValue(null);
+		tfAto.setText("");
+		tfAtoSEI.setText("");
+		dpDataFiscalizacao.setValue(null);
+		dpDataCriacaoAto.setValue(null);
+		taCaracterizacao.setText("");
 		
 	}
 
 	public void btnSalvarHab (ActionEvent event) {
 		
-	}
+		
+			Ato ato = new Ato();
+			
+			ato.setAtoTipo(cbAtoTipo.getValue());
+			ato.setAtoIdentificacao(tfAto.getText());
+			ato.setAtoSEI(tfAtoSEI.getText());
+			//datas//
+			ato.setAtoDataFiscalizacao(dpDataFiscalizacao.getValue().toString()); // DATA
+			ato.setAtoDataCriacao(dpDataCriacaoAto.getValue().toString()); // DATA
+			
+			ato.setAtoVisCodigoFK(visGeral);
+			
+			AtoDao atoDao = new  AtoDao();
+			
+			atoDao.mergeAto(ato);
+			
+			listarAtos (strPesquisa);
+			selecionarAto();
+			
+			// modular botões
+		}
+	
 
 	public void btnEditarHab (ActionEvent event) {
 		
@@ -96,7 +144,8 @@ public class TabAtoController implements Initializable{
 
 	public void btnPesquisarHab (ActionEvent event) {
 		
-		listarAtos (strPesquisaAto);
+		listarAtos (strPesquisa);
+		selecionarAto ();
 	
 	}
 	
@@ -113,7 +162,7 @@ public class TabAtoController implements Initializable{
 							try {
 								abrirTabs(newString);
 							} catch (IOException e) {
-								System.out.println("erro na chamada do método abrirTabSuperficial: " + e);
+								System.out.println("erro na chamada do método abrir tab: " + e);
 								e.printStackTrace();
 							}
 						} 
@@ -126,9 +175,10 @@ public class TabAtoController implements Initializable{
 	
 	@FXML Pane paneTipoAto;
 	
+	// método abrir tab Vistoria, Termo etc //
 	public void abrirTabs (String newString) throws IOException {
 		
-		if (newString == "Relatório de Vistoria") {
+		if (newString.equals("Relatório de Vistoria")) {
 			
 			paneTipoAto.getChildren().clear();
 			
@@ -142,12 +192,25 @@ public class TabAtoController implements Initializable{
 			loader.load();
 			
 			paneTipoAto.getChildren().add(paneVistoria);
+			//tipoAto = 1;
 			
+		}
+		
+		if (newString.equals( "Termo de Notificação") 					|| 
+				newString.equals("Auto de Infração de Advertência")	|| 
+					newString.equals("Auto de Infração de Multa")	
+						)	
+		{
+			paneTipoAto.getChildren().clear();
+		}
+		
+		if (newString.equals(null)) {
+			paneTipoAto.getChildren().clear();
 		}
 		
 	}
 	
-	// --- método para listar interferencias --- //
+	//  método para listar interferencias  //
  	public void listarAtos (String strPesquisaAto) {
  	
 	 	// --- conexão - listar endereços --- //
@@ -162,26 +225,25 @@ public class TabAtoController implements Initializable{
 		
 			for (Ato ato : atoList) {
 				
+				/*
 				AtoTabela atoTab = new AtoTabela(
 					
 				ato.getAtoCodigo(),
-				ato.getAtoEndCodigo(),
-				ato.getAtoVistoriaFK(),  // tipo identificacao sei cara infr atenu agrav datafis datacri
+				//ato.getAtoEndCodigo(),
+				
+				//ato.getAtoVistoriaFK(),  // tipo identificacao sei cara infr atenu agrav datafis datacri
 				ato.getAtoTipo(),
 				ato.getAtoIdentificacao(),
 				ato.getAtoSEI(),
 				ato.getAtoCaracterizacao(),
-				ato.getAtoInfracao(),
-				ato.getAtoAtenuante(),
-				ato.getAtoAgravante(),
 				ato.getAtoDataFiscalizacao(),
 				ato.getAtoDataCriacao()
 				
 				);
+				*/
 			
 			olAto.add(atoTab);
 			
- 					
 		}
 		
 		tcTipo.setCellValueFactory(new PropertyValueFactory<AtoTabela, String>("atoTipo")); 
@@ -191,68 +253,50 @@ public class TabAtoController implements Initializable{
 		tvAto.setItems(olAto);
 		
  	}
-	 	
-	 	/*
-	 	// método selecionar interferência -- //
-	 	public void selecionarInterferencia () {
-		
-			tvListaInt.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
-				public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
-				
-				intTab = (InterferenciaTabela) newValue;
-				
-				if (intTab == null) {
-					
-					btnIntNovo.setDisable(true);
-					btnIntSalvar.setDisable(true);
-					btnIntEdit.setDisable(false);
-					btnIntExc.setDisable(false);
-					btnIntCan.setDisable(false);
-					
-				} else {
+ 	
+ 	// método selecionar interferência //
+  	public void selecionarAto () {
+ 	
+ 		tvAto.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+ 			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
+ 			
+ 			atoTab = (AtoTabela) newValue;
+ 			
+ 			if (atoTab == null) {
+ 				
+ 				/*
+ 				btnIntNovo.setDisable(true);
+ 				btnIntSalvar.setDisable(true);
+ 				btnIntEdit.setDisable(false);
+ 				btnIntExc.setDisable(false);
+ 				btnIntCan.setDisable(false);
+ 				*/
+ 				System.out.println("valor nulo!");
+ 				
+ 			} else {
 
-					// -- preencher os campos -- //
-					cbTipoInt.setValue(intTab.getInter_Tipo());
-					cbBacia.setValue(intTab.getInter_Bacia());
-					tfUH.setText(intTab.getInter_UH());
-					tfCorpoHid.setText(intTab.getInter_Corpo_Hidrico());
-					cbSituacao.setValue(intTab.getInter_Situacao());
-					
-					// latitude e longitude
-					tfIntLat.setText(intTab.getInter_Lat().toString());
-					tfIntLon.setText(intTab.getInter_Lng().toString());
-					
-					// mudar o endereço da interfência de acordo com a seleção do usuário
-					eGeralInt = intTab.getEnderecoInterferenciaObjetoTabelaFK();
-					
-					lblEnd.setText(eGeralInt.getDesc_Endereco()  + " |  RA: "  + eGeralInt.getRA_Endereco());
-					
-					String tipoInt = intTab.getInter_Tipo();
-					
-					if (tipoInt.equals("Subterrânea")) {
-						
-						tabSubCon.imprimirSubterranea(intTab.getInterSub());
-						
-					}
-					
-					if (tipoInt.equals("Superficial") || tipoInt.equals("Canal")) {
-						
-						tabSupCon.imprimirSuperficial(intTab.getInterSup());
-						
-					}
-					
-					btnIntNovo.setDisable(true);
-					btnIntSalvar.setDisable(true);
-					btnIntEdit.setDisable(false);
-					btnIntExc.setDisable(false);
-					btnIntCan.setDisable(false);
-					
-					}
-				}
-			});
-		}
-		
-		*/
-	
+ 				// -- preencher os campos -- //
+ 				cbAtoTipo.setValue(atoTab.getAtoTipo());
+ 				tfAto.setText(atoTab.getAtoIdentificacao());
+ 				tfAtoSEI.setText(atoTab.getAtoSEI());
+ 				//data
+ 				//infrações
+ 				
+ 				
+ 				//eGeralUs = atoTab.getAtoEndCodigo();
+ 				//System.out.println("endereço do ato: " + atoTab.getAtoEndCodigo());
+ 				
+ 				// label  - imprimir  o endereço relacionado //
+ 				//lblUsEnd.setText(eGeralUs.getDesc_Endereco() + " |  RA: "  + eGeralUs.getRA_Endereco() );
+ 				
+ 				//String tipoInt = intTab.getInter_Tipo();  // saber o tipo de interferência
+ 				
+ 				}
+ 			}
+ 		});
+  	}
+  	
+
 
 }
+

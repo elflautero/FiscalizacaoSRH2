@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="tabInterferencia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="739.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabInterfController">
+<Pane fx:id="tabInterferencia" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="679.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabInterfController">
    <children>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="739.0" prefWidth="1140.0">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="679.0" prefWidth="1140.0">
          <children>
-            <ScrollPane layoutY="1.0" prefHeight="865.0" prefWidth="1140.0">
+            <ScrollPane layoutY="1.0" prefHeight="680.0" prefWidth="1140.0">
               <content>
-                <AnchorPane fx:id="aPaneInt" minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="1137.0">
+                <AnchorPane fx:id="aPaneInt" minHeight="0.0" minWidth="0.0" prefHeight="770.0" prefWidth="1137.0">
                      <children>
                         <Pane layoutX="69.0" layoutY="14.0" prefHeight="382.0" prefWidth="998.0">
                            <children>

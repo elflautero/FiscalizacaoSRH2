@@ -312,167 +312,167 @@ public class TabUsuarioController implements Initializable {
 				.observableArrayList("DF" , "GO", "Outro"); // box - seleção pessoa físcia ou jurídica
 
 		//-- receber o endereço --//
-		public Label lblEndUsuario;
+	public Label lblEndUsuario;
+	
+	
+	//-- método listar usuários --//
+	public void listarUsuarios (String strPesquisa) {
+		
+		UsuarioDao usDao = new UsuarioDao();
+		List<Usuario> usuarioList = usDao.listUsuario(strPesquisaUsuario);
+		ObservableList<UsuarioTabela> olUsuarioTabela = FXCollections.observableArrayList();
 		
 		
-		//-- método listar usuários --//
-		public void listarUsuarios (String strPesquisa) {
-			
-			UsuarioDao usDao = new UsuarioDao();
-			List<Usuario> usuarioList = usDao.listUsuario(strPesquisaUsuario);
-			ObservableList<UsuarioTabela> olUsuarioTabela = FXCollections.observableArrayList();
-			
-			
-			if (!olUsuarioTabela.isEmpty()) {
-				olUsuarioTabela.clear();
-			}
-			
-				for (Usuario usuario : usuarioList) {
-					
-					UsuarioTabela usTab = new UsuarioTabela(
-							
-							usuario.getUsCodigo(),
-							usuario.getUsTipo(),
-							usuario.getUsNome(),
-							usuario.getUsCPFCNPJ(),
-							usuario.getUsDescricaoEnd(),
-							usuario.getUsRA(),
-							usuario.getUsCidade(),
-							usuario.getUsEstado(),
-							usuario.getUsCEP(),
-							usuario.getUsTelefone(),
-							usuario.getUsCelular(),
-							usuario.getUsEmail(),
-							
-							usuario.getUsEndCodigoFK()
-							
-							);
-					
-					olUsuarioTabela.add(usTab);
-						
-					}
-					
-					tcUsNome.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usNome"));
-					tcUsCPFCNPJ.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usCPFCNPJ"));
-					tcUsEndereco.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usDescricaoEnd"));
-					
-					tvListaUs.setItems(olUsuarioTabela);
+		if (!olUsuarioTabela.isEmpty()) {
+			olUsuarioTabela.clear();
 		}
 		
+			for (Usuario usuario : usuarioList) {
+				
+				UsuarioTabela usTab = new UsuarioTabela(
+						
+						usuario.getUsCodigo(),
+						usuario.getUsTipo(),
+						usuario.getUsNome(),
+						usuario.getUsCPFCNPJ(),
+						usuario.getUsDescricaoEnd(),
+						usuario.getUsRA(),
+						usuario.getUsCidade(),
+						usuario.getUsEstado(),
+						usuario.getUsCEP(),
+						usuario.getUsTelefone(),
+						usuario.getUsCelular(),
+						usuario.getUsEmail(),
+						
+						usuario.getUsEndCodigoFK()
+						
+						);
+				
+				olUsuarioTabela.add(usTab);
+					
+				}
+				
+				tcUsNome.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usNome"));
+				tcUsCPFCNPJ.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usCPFCNPJ"));
+				tcUsEndereco.setCellValueFactory(new PropertyValueFactory<InterferenciaTabela, String>("usDescricaoEnd"));
+				
+				tvListaUs.setItems(olUsuarioTabela);
+	}
 		
-		public void selecionarUsuario () {
-			
-			tvListaUs.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
-				public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
+		
+	public void selecionarUsuario () {
+		
+		tvListaUs.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+			public void changed(ObservableValue<?> observable , Object oldValue, Object newValue) {
+				
+				UsuarioTabela usTab = (UsuarioTabela) newValue;
+				
+				if (usTab == null) {
 					
-					UsuarioTabela usTab = (UsuarioTabela) newValue;
+					cbTipoPessoa.setValue(null);
 					
-					if (usTab == null) {
-						
-						cbTipoPessoa.setValue(null);
-						
-						tfUsNome.setText("");
-						tfUsCPFCNPJ.setText("");
-						tfUsEnd.setText("");
-						
-						cbUsRA.setValue(null);
-						
-						tfUsCEP.setText("");
-						tfUsCidade.setText("");
-						
-						cbUsUF.setValue(null);
-						
-						tfUsTel.setText("");
-						tfUsCel.setText("");
-						tfUsEmail.setText("");
-						
-						btnUsNovo.setDisable(true);
-						btnUsSalvar.setDisable(true);
-						btnUsEditar.setDisable(false);
-						btnUsExcluir.setDisable(false);
-						btnUsCancelar.setDisable(false);
-						
-					} else {
+					tfUsNome.setText("");
+					tfUsCPFCNPJ.setText("");
+					tfUsEnd.setText("");
+					
+					cbUsRA.setValue(null);
+					
+					tfUsCEP.setText("");
+					tfUsCidade.setText("");
+					
+					cbUsUF.setValue(null);
+					
+					tfUsTel.setText("");
+					tfUsCel.setText("");
+					tfUsEmail.setText("");
+					
+					btnUsNovo.setDisable(true);
+					btnUsSalvar.setDisable(true);
+					btnUsEditar.setDisable(false);
+					btnUsExcluir.setDisable(false);
+					btnUsCancelar.setDisable(false);
+					
+				} else {
 
-						// -- preencher os campos -- //
-						cbTipoPessoa.setValue(usTab.getUsTipo());
-						
-						tfUsNome.setText(usTab.getUsNome());
-						tfUsCPFCNPJ.setText(usTab.getUsCPFCNPJ());
-						tfUsEnd.setText(usTab.getUsDescricaoEnd());
-						
-						cbUsRA.setValue(usTab.getUsRA());
-						
-						tfUsCEP.setText(usTab.getUsCEP());
-						tfUsCidade.setText(usTab.getUsCidade());
-						
-						cbUsUF.setValue(usTab.getUsEstado());
-						
-						tfUsTel.setText(usTab.getUsTelefone());
-						tfUsCel.setText(usTab.getUsCelular());
-						tfUsEmail.setText(usTab.getUsEmail());
-						
-						//-- mudar endereço relacionado à denúncia --//
-						eGeralUs = usTab.getEnderecoUsObjetoTabelaFK();
-						lblEndUsuario.setText(eGeralUs.getDesc_Endereco()  + " |  RA: "  +  eGeralUs.getRA_Endereco());
-						
-						
-						// -- habilitar e desabilitar botões -- //
-						btnUsNovo.setDisable(true);
-						btnUsSalvar.setDisable(true);
-						btnUsEditar.setDisable(false);
-						btnUsExcluir.setDisable(false);
-						btnUsCancelar.setDisable(false);
-						
-						
-					}
-					}
-				});
-		}
+					// -- preencher os campos -- //
+					cbTipoPessoa.setValue(usTab.getUsTipo());
+					
+					tfUsNome.setText(usTab.getUsNome());
+					tfUsCPFCNPJ.setText(usTab.getUsCPFCNPJ());
+					tfUsEnd.setText(usTab.getUsDescricaoEnd());
+					
+					cbUsRA.setValue(usTab.getUsRA());
+					
+					tfUsCEP.setText(usTab.getUsCEP());
+					tfUsCidade.setText(usTab.getUsCidade());
+					
+					cbUsUF.setValue(usTab.getUsEstado());
+					
+					tfUsTel.setText(usTab.getUsTelefone());
+					tfUsCel.setText(usTab.getUsCelular());
+					tfUsEmail.setText(usTab.getUsEmail());
+					
+					//-- mudar endereço relacionado à denúncia --//
+					eGeralUs = usTab.getEnderecoUsObjetoTabelaFK();
+					lblEndUsuario.setText(eGeralUs.getDesc_Endereco()  + " |  RA: "  +  eGeralUs.getRA_Endereco());
+					
+					
+					// -- habilitar e desabilitar botões -- //
+					btnUsNovo.setDisable(true);
+					btnUsSalvar.setDisable(true);
+					btnUsEditar.setDisable(false);
+					btnUsExcluir.setDisable(false);
+					btnUsCancelar.setDisable(false);
+					
+					
+				}
+				}
+			});
+	}
 		
-		//-- INITIALIZE --//
-		public void initialize(URL url, ResourceBundle rb) {
-			
+	//-- INITIALIZE --//
+	public void initialize(URL url, ResourceBundle rb) {
+		
 
-			cbTipoPessoa.setValue("Física");
-			cbTipoPessoa.setItems(olTipoPessoa);
-			
-			//cbUsRA.setValue("Brasília");
-			cbUsRA.setItems(olUsRA);
-			
-			cbUsUF.setValue("DF");
-			cbUsUF.setItems(olUsDF);
-			
-			modularBotoesInicial ();
-			
-		}
+		cbTipoPessoa.setValue("Física");
+		cbTipoPessoa.setItems(olTipoPessoa);
 		
-		//-- Modular os botões na iniciação do programa --//
-		private void modularBotoesInicial () {
-			
-			cbTipoPessoa.setDisable(true);
-			tfUsNome.setDisable(true); 
-			tfUsCPFCNPJ.setDisable(true);
-			tfUsEnd.setDisable(true);
-			
-			cbUsRA.setDisable(true); 
-			
-			tfUsCEP.setDisable(true);
-			tfUsCidade.setDisable(true);
-			
-			cbUsUF.setDisable(true);
-			
-			tfUsTel.setDisable(true);
-			tfUsCel.setDisable(true);
-			tfUsEmail.setDisable(true);
-			
-			
-			btnUsSalvar.setDisable(true);
-			btnUsEditar.setDisable(true);
-			btnUsExcluir.setDisable(true);
-			btnUsNovo.setDisable(false);
-			
-		}
+		//cbUsRA.setValue("Brasília");
+		cbUsRA.setItems(olUsRA);
+		
+		cbUsUF.setValue("DF");
+		cbUsUF.setItems(olUsDF);
+		
+		modularBotoesInicial ();
+		
+	}
+	
+	//-- Modular os botões na iniciação do programa --//
+	private void modularBotoesInicial () {
+		
+		cbTipoPessoa.setDisable(true);
+		tfUsNome.setDisable(true); 
+		tfUsCPFCNPJ.setDisable(true);
+		tfUsEnd.setDisable(true);
+		
+		cbUsRA.setDisable(true); 
+		
+		tfUsCEP.setDisable(true);
+		tfUsCidade.setDisable(true);
+		
+		cbUsUF.setDisable(true);
+		
+		tfUsTel.setDisable(true);
+		tfUsCel.setDisable(true);
+		tfUsEmail.setDisable(true);
+		
+		
+		btnUsSalvar.setDisable(true);
+		btnUsEditar.setDisable(true);
+		btnUsExcluir.setDisable(true);
+		btnUsNovo.setDisable(false);
+		
+	}
 }
 
 

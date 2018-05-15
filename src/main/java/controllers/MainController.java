@@ -2,6 +2,7 @@ package controllers;
 
 import entity.Denuncia;
 import entity.Endereco;
+import entity.Vistoria;
 import javafx.fxml.FXML;
 
 public class MainController {
@@ -12,6 +13,7 @@ public class MainController {
 	    @FXML private TabEnderecoController tabEnderecoController;
 	    @FXML private TabNavegadorController tabNavegadorController;
 	    @FXML private TabAtoController tabAtoController;
+	    @FXML private TabVistoriaController tabVistoriaController;
 	   
 	    
 
@@ -24,6 +26,8 @@ public class MainController {
 	       tabEnderecoController.init(this);
 	       tabInterferenciaController.init(this);
 	       tabAtoController.init(this);
+	       tabVistoriaController.init(this);
+	       
 	       
 	       
 	       
@@ -48,8 +52,14 @@ public class MainController {
 			tabUsuarioController.eGeralUs  = eGeral;
 			
 			//-- para tab ato --//
-			tabAtoController.lblUsEnd.setText(eGeral.getDesc_Endereco() + " |  RA: "  + eGeral.getRA_Endereco() );
-			tabAtoController.eGeralUs = eGeral;
+			tabVistoriaController.lblVisEnd.setText(eGeral.getDesc_Endereco() + " |  RA: "  + eGeral.getRA_Endereco() );
+			tabVistoriaController.eGeralVis = eGeral;
+		}
+		
+		public void pegarVistoria (Vistoria vGeral) {
+			
+			tabAtoController.lblVisAto.setText(vGeral.getVisIdentificacao() + " |  SEI:  "  + vGeral.getVisSEI());
+			tabAtoController.visGeral = vGeral;
 		}
 		
 }

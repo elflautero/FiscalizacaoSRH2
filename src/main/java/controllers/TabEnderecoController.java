@@ -194,9 +194,12 @@ public class TabEnderecoController implements Initializable {
 				endereco.getListDenuncias()
 				);
 			
+			
 			obsListEnderecoTabela.add(endTab);
+			System.out.println("Lista de denúncias vinculadas ao endereço: " + endereco.getListDenuncias());
  					
 	}
+		
 		
 		tcDesEnd.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("Desc_Endereco")); 
 		tcEndRA.setCellValueFactory(new PropertyValueFactory<EnderecoTabela, String>("RA_Endereco")); 

@@ -1,14 +1,12 @@
 package controllers;
 
 
-import java.io.EOFException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import dao.DenunciaDao;
 import entity.Denuncia;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

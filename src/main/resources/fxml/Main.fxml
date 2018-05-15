@@ -44,11 +44,18 @@
                </content>
           </Tab>
                 
-           <Tab text="      Ato      ">
+          <Tab text="   Vistoria   ">
+               <content>
+                  <fx:include fx:id="tabVistoria" source="TabVistoria.fxml" />
+               </content>
+          </Tab>
+           
+            <Tab text="     Ato     ">
                <content>
                   <fx:include fx:id="tabAto" source="TabAto.fxml" />
                </content>
            </Tab>
+           
         </tabs>
    
       </TabPane>

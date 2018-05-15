@@ -355,11 +355,11 @@ public class TabInterfController implements Initializable {
 				interferencia.setInter_Lat(Double.parseDouble(tfIntLat.getText()));
 				interferencia.setInter_Lng(Double.parseDouble(tfIntLon.getText()));
 			
-			Endereco endereco = new Endereco();
+			Endereco endereco = new Endereco(); // ?
 				
-				endereco = eGeralInt;
+				endereco = eGeralInt;// ??
 				
-				endereco.getListInterferencias().add(interferencia);
+				endereco.getListInterferencias().add(interferencia);  // precisa disso?
 				
 				interferencia.setInter_End_CodigoFK(endereco);
 				
@@ -693,7 +693,7 @@ public class TabInterfController implements Initializable {
 		
 		modularBotoes ();
 		
-		cbTipoInt.setValue(null);
+		cbTipoInt.setValue(null);  // DEU NULL POINT AO CANCELAR E TENTAR SALVAR NOVA  INTERFERENCIA
 		cbBacia.setValue(null);
 		tfUH.setText("");
 		tfCorpoHid.setText("");
@@ -823,7 +823,7 @@ public class TabInterfController implements Initializable {
 				
 				{
 					try {
-						abrirTabs(newString);
+						abrirTabs(newString); 
 					} catch (IOException e) {
 						System.out.println("erro na chamada do método abrirTabSuperficial: " + e);
 						e.printStackTrace();
@@ -939,7 +939,7 @@ public class TabInterfController implements Initializable {
 			
 			paneTipoInterferencia.getChildren().clear();
 			
-			System.out.println("valor null");
+			System.out.println("valor null");  // MELHORAR, ESTÁ DANDO ERRO NULL POINT  EXCEPTIONS
 		}
 		
 		if (newString.equals("Caminhão Pipa") 					|| 

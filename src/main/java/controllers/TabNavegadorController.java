@@ -32,6 +32,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.PopupFeatures;
 import javafx.scene.web.WebEngine;
@@ -55,7 +56,8 @@ public class TabNavegadorController implements Initializable{
 	// array list para a captura de dados dos documentos --//
 	ArrayList<String> docsList = new ArrayList<String>();
 		
-		
+	@FXML Pane pBrowser;
+	
 	@FXML AnchorPane tabNavegador = new AnchorPane();
 	
 	@FXML
@@ -208,8 +210,6 @@ public class TabNavegadorController implements Initializable{
 	//-- botão Go - atualizar navegador --//
 	public void bntGoHab (ActionEvent event) {
 		
-		
-		
 		link = "https://www.google.com.br/search?q=googlr&oq=googlr&aqs=chrome..69i57j0l5.2588j0j7&sourceid=chrome&ie=UTF-8";
 		navegarWeb();
 		
@@ -223,8 +223,9 @@ public class TabNavegadorController implements Initializable{
 	public void navegarWeb() {
 		
 		wv1 = new WebView();
-		wv1.setPrefSize(1140.0,650.0);
-		wv1.setLayoutY(78);
+		wv1.setPrefSize(1117.0,571.0);
+		//wv1.setLayoutY(78);
+		
 		
 		wv1.getEngine().setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
 
@@ -234,7 +235,7 @@ public class TabNavegadorController implements Initializable{
 					wv2.setPrefHeight(645.0); // wv2, 1140.0, 650.0
 		            wv2.setPrefWidth(1140.0);
 		            wv2.setLayoutY(35);
-		    	
+		            
 		    		Button btnIframe = new Button ("Incluir");
 		    	
 					btnIframe.setOnAction(new EventHandler<ActionEvent>() {
@@ -314,8 +315,8 @@ public class TabNavegadorController implements Initializable{
 		    
 		    wv1.getEngine().load(link);
 		    
-		    tabNavegador.getChildren().add(wv1);
-		    
+		    //tabNavegador.getChildren().add(wv1);
+		    pBrowser.getChildren().add(wv1);
 	}
 	
 

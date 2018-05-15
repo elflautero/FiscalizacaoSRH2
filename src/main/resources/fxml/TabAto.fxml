@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="tabAto" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="745.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabAtoController">
+<Pane fx:id="tabAto" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabAtoController">
    <children>
-      <ScrollPane prefHeight="745.0" prefWidth="1140.0">
+      <ScrollPane prefHeight="680.0" prefWidth="1140.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1400.0" prefWidth="1140.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="1140.0">
                <children>
-                  <Pane fx:id="paneTipoAto" prefHeight="745.0" prefWidth="1140.0">
+                  <Pane fx:id="paneTipoAto" prefHeight="680.0" prefWidth="1140.0">
                      <children>
-                        <TableView fx:id="tvAto" layoutX="124.0" layoutY="314.0" prefHeight="113.0" prefWidth="890.0">
+                        <TableView fx:id="tvAto" layoutX="125.0" layoutY="333.0" prefHeight="113.0" prefWidth="890.0">
                            <columns>
                               <TableColumn fx:id="tcTipo" prefWidth="363.0" text="Tipo" />
                               <TableColumn fx:id="tcNumero" minWidth="0.0" prefWidth="250.0" text="Número" />
                               <TableColumn fx:id="tcSEI" prefWidth="276.0" text="SEI" />
                            </columns>
                         </TableView>
-                        <Pane layoutX="149.0" layoutY="245.0" prefHeight="47.0" prefWidth="839.0">
+                        <Pane layoutX="138.0" layoutY="286.0" prefHeight="47.0" prefWidth="839.0">
                            <children>
                               <Button fx:id="btnNovo" layoutX="10.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnNovoHab" prefHeight="22.0" prefWidth="76.0" text="Novo" />
                               <Button fx:id="btnSalvar" layoutX="97.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnSalvarHab" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
@@ -39,80 +39,34 @@
                               <TextField fx:id="tfPesquisar" layoutX="445.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
                            </children>
                         </Pane>
-                        <Pane fx:id="paneTipoAto" layoutX="53.0" layoutY="462.0" prefHeight="850.0" prefWidth="1035.0" />
-                        <Pane layoutX="235.0" layoutY="97.0" prefHeight="25.0" prefWidth="649.0">
-                           <children>
-                              <Label layoutX="14.0" layoutY="4.0" text="Infrações: " />
-                              <CheckBox layoutX="82.0" layoutY="4.0" mnemonicParsing="false" text="Inciso I" />
-                              <CheckBox layoutX="162.0" layoutY="4.0" mnemonicParsing="false" text="Inciso II" />
-                              <CheckBox layoutX="241.0" layoutY="4.0" mnemonicParsing="false" text="Inciso III" />
-                              <CheckBox layoutX="322.0" layoutY="4.0" mnemonicParsing="false" text="Inciso IV" />
-                              <CheckBox layoutX="404.0" layoutY="4.0" mnemonicParsing="false" text="Inciso V" />
-                              <CheckBox layoutX="484.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VI" />
-                              <CheckBox layoutX="569.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VII" />
-                           </children>
-                        </Pane>
-                        <Pane layoutX="224.0" layoutY="131.0" prefHeight="25.0" prefWidth="661.0">
-                           <children>
-                              <Label layoutX="11.0" layoutY="4.0" text="Penalidades: " />
-                              <CheckBox layoutX="93.0" layoutY="4.0" mnemonicParsing="false" text="Inciso I" />
-                              <CheckBox layoutX="173.0" layoutY="4.0" mnemonicParsing="false" text="Inciso II" />
-                              <CheckBox layoutX="252.0" layoutY="4.0" mnemonicParsing="false" text="Inciso III" />
-                              <CheckBox layoutX="333.0" layoutY="4.0" mnemonicParsing="false" text="Inciso IV" />
-                              <CheckBox layoutX="416.0" layoutY="4.0" mnemonicParsing="false" text="Inciso V" />
-                              <CheckBox layoutX="496.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VI" />
-                              <CheckBox layoutX="581.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VII" />
-                           </children>
-                        </Pane>
-                        <Pane layoutX="226.0" layoutY="196.0" prefHeight="25.0" prefWidth="661.0">
-                           <children>
-                              <Label layoutX="9.0" layoutY="4.0" text="Atenuantes: " />
-                              <CheckBox layoutX="91.0" layoutY="4.0" mnemonicParsing="false" text="Inciso I" />
-                              <CheckBox layoutX="171.0" layoutY="4.0" mnemonicParsing="false" text="Inciso II" />
-                              <CheckBox layoutX="250.0" layoutY="4.0" mnemonicParsing="false" text="Inciso III" />
-                              <CheckBox layoutX="331.0" layoutY="4.0" mnemonicParsing="false" text="Inciso IV" />
-                              <CheckBox layoutX="414.0" layoutY="4.0" mnemonicParsing="false" text="Inciso V" />
-                              <CheckBox layoutX="494.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VI" />
-                              <CheckBox layoutX="579.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VII" />
-                           </children>
-                        </Pane>
-                        <Pane layoutX="141.0" layoutY="165.0" prefHeight="25.0" prefWidth="834.0">
-                           <children>
-                              <Label layoutX="18.0" layoutY="5.0" text="Agravantes: " />
-                              <CheckBox layoutX="98.0" layoutY="4.0" mnemonicParsing="false" text="Inciso I" />
-                              <CheckBox layoutX="176.0" layoutY="4.0" mnemonicParsing="false" text="Inciso II" />
-                              <CheckBox layoutX="256.0" layoutY="4.0" mnemonicParsing="false" text="Inciso III" />
-                              <CheckBox layoutX="335.0" layoutY="4.0" mnemonicParsing="false" text="Inciso IV" />
-                              <CheckBox layoutX="416.0" layoutY="4.0" mnemonicParsing="false" text="Inciso V" />
-                              <CheckBox layoutX="499.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VI" />
-                              <CheckBox layoutX="579.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VII" />
-                              <CheckBox layoutX="664.0" layoutY="4.0" mnemonicParsing="false" text="Inciso VII" />
-                              <CheckBox layoutX="751.0" layoutY="4.0" mnemonicParsing="false" text="Inciso XI" />
-                           </children>
-                        </Pane>
                         <Pane layoutX="116.0" layoutY="14.0" prefHeight="31.0" prefWidth="859.0">
                            <children>
-                              <Label fx:id="lblUsEnd" layoutX="72.0" layoutY="2.0" prefHeight="25.0" prefWidth="712.0">
+                              <Label fx:id="lblVisAto" layoutX="72.0" layoutY="2.0" prefHeight="25.0" prefWidth="712.0">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="12.0" layoutY="6.0" text="Endereço: " />
+                              <Label layoutX="12.0" layoutY="6.0" text="Vistoria: " />
                               <Button layoutX="796.0" layoutY="2.0" mnemonicParsing="false" text="Buscar" />
                            </children>
                         </Pane>
-                        <Pane layoutX="98.0" layoutY="48.0" prefHeight="33.0" prefWidth="921.0">
+                        <Pane layoutX="98.0" layoutY="48.0" prefHeight="64.0" prefWidth="921.0">
                            <children>
                               <Label layoutX="7.0" layoutY="7.0" text="Tipo de Ato:" />
                               <ChoiceBox fx:id="cbAtoTipo" layoutX="82.0" layoutY="3.0" prefHeight="25.0" prefWidth="223.0" />
                               <Label layoutX="317.0" layoutY="7.0" text="Número do ato: " />
-                              <TextField layoutX="416.0" layoutY="3.0" prefHeight="25.0" prefWidth="87.0" promptText="12/2018" />
-                              <TextField layoutX="565.0" layoutY="3.0" prefHeight="25.0" prefWidth="87.0" promptText="0077941" />
+                              <TextField fx:id="tfAto" layoutX="416.0" layoutY="3.0" prefHeight="25.0" prefWidth="87.0" promptText="12/2018" />
+                              <TextField fx:id="tfAtoSEI" layoutX="565.0" layoutY="3.0" prefHeight="25.0" prefWidth="87.0" promptText="0077941" />
                               <Label layoutX="515.0" layoutY="7.0" text="n° SEI: " />
                               <Label layoutX="665.0" layoutY="7.0" text="Data da Fiscalização: " />
-                              <DatePicker layoutX="788.0" layoutY="3.0" prefHeight="25.0" prefWidth="112.0" />
+                              <DatePicker fx:id="dpDataFiscalizacao" layoutX="788.0" layoutY="3.0" prefHeight="25.0" prefWidth="110.0" />
+                              <DatePicker fx:id="dpDataCriacaoAto" layoutX="432.0" layoutY="37.0" prefHeight="25.0" prefWidth="110.0" />
+                              <Label layoutX="291.0" layoutY="41.0" text="Data de Criação do Ato: " />
                            </children>
                         </Pane>
+                        <Label layoutX="170.0" layoutY="124.0" text="CARACTERIZAÇÃO: " />
+                        <TextArea fx:id="taCaracterizacao" layoutX="170.0" layoutY="141.0" prefHeight="139.0" prefWidth="800.0" />
+                        <Button layoutX="975.0" layoutY="198.0" mnemonicParsing="false" text="?" />
                      </children>
                   </Pane>
                </children>

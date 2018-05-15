@@ -13,7 +13,7 @@
 
 <Pane fx:id="tabEndereco" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TabEnderecoController">
    <children>
-      <ScrollPane layoutY="1.0" prefHeight="750.0" prefWidth="1140.0">
+      <ScrollPane layoutY="1.0" prefHeight="680.0" prefWidth="1140.0">
         <content>
           <AnchorPane fx:id="aPaneEnd" minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="1140.0">
                <children>
