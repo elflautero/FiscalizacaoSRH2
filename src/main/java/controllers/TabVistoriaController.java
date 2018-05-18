@@ -1,12 +1,22 @@
 package controllers;
 
+
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import dao.VistoriaDao;
 import entity.Endereco;
 import entity.Vistoria;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +24,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -23,7 +35,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.web.HTMLEditor;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.StringConverter;
 import tabela.VistoriaTabela;
 
 public class TabVistoriaController implements Initializable{
@@ -46,6 +66,17 @@ public class TabVistoriaController implements Initializable{
 	@FXML DatePicker dpDataFiscalizacao;
 	@FXML DatePicker dpDataCriacaoAto;
 	
+	//Locale.setDefault(new Locale("pt", "BR"));
+	
+	//private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+			.parseCaseInsensitive()
+			.append(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+			.toFormatter();
+			
+	
+	
 	// TableView Endereço //
 			@FXML private TableView <VistoriaTabela> tvVistoria;
 			
@@ -61,6 +92,7 @@ public class TabVistoriaController implements Initializable{
 	@FXML Button btnPesquisarObjeto;
 	@FXML Button  btnPesquisarApresentacao;
 	@FXML Button btnPesquisarRelato;
+	@FXML Button btnRelatorio;
 	
 	
 	@FXML CheckBox checkInfra1;
@@ -103,6 +135,21 @@ public class TabVistoriaController implements Initializable{
 	String strAtenuantes;
 	
 	String strPesquisa = "";
+
+	HTMLEditor htmlObjeto;
+	
+	
+	HTMLEditor htmlApresentacao; // = new HTMLEditor();
+	HTMLEditor htmlRelato; //  = new HTMLEditor();
+	HTMLEditor htmlRecomendacao; //   = new HTMLEditor();
+
+	//-- pane para os editores html --//
+	@FXML Pane paneObjeto; // = new Pane();
+	@FXML Pane paneApresentacao; // = new Pane();
+	@FXML Pane paneRelato; // = new Pane();
+	@FXML Pane paneRecomendacao; // = new Pane();
+	
+	
 	
 	//-- passar vistoria para o maincontroller --//
 	public Vistoria visGeral;
@@ -284,9 +331,33 @@ public class TabVistoriaController implements Initializable{
 		
 	}
 	
-	
-	
 	public void btnNovoHab (ActionEvent event) {
+		
+		tfAto.setText(null);
+		tfAtoSEI.setText(null);
+		dpDataFiscalizacao.getEditor().clear(); // limpar datepicker
+		dpDataCriacaoAto.getEditor().clear();
+		
+		htmlObjeto.setHtmlText("");
+		htmlApresentacao.setHtmlText("");
+		htmlRelato.setHtmlText("");
+		htmlRecomendacao.setHtmlText("");
+		
+		tfAto.setDisable(false);
+		tfAtoSEI.setDisable(false);
+		dpDataFiscalizacao.setDisable(false);
+		dpDataCriacaoAto.setDisable(false);
+		
+		htmlObjeto.setDisable(false);
+		htmlApresentacao.setDisable(false);
+		htmlRelato.setDisable(false);
+		htmlRecomendacao.setDisable(false);
+		
+		btnNovo.setDisable(true);
+		btnSalvar.setDisable(false);
+		
+		btnEditar.setDisable(true);
+		btnExcluir.setDisable(true);
 		
 	}
 	
@@ -296,18 +367,19 @@ public class TabVistoriaController implements Initializable{
 		
 			vis.setVisIdentificacao(tfAto.getText());
 			vis.setVisSEI(tfAtoSEI.getText());
-			vis.setVisDataFiscalizacao(dpDataFiscalizacao.getValue().toString());
-			vis.setVisDataCriacao(dpDataCriacaoAto.getValue().toString());
+			
+			vis.setVisDataFiscalizacao(formatter.format(dpDataFiscalizacao.getValue()));
+			vis.setVisDataCriacao(formatter.format(dpDataCriacaoAto.getValue()));
 			
 			vis.setVisInfracoes(strInfracoes);
-			vis.setAtoPenalidades(strPenalidades);
+			vis.setVisPenalidades(strPenalidades);
 			vis.setVisAgravantes(strAgravantes);
 			vis.setVisAtenuantes(strAtenuantes);
 			
-			vis.setVisObjeto(taObjeto.getText());
-			vis.setVisApresentacao(taApresentacao.getText());
-			vis.setVisRelato(taRelato.getText());
-			vis.setVisRecomendacoes(taRecomendacoes.getText());
+			vis.setVisObjeto(htmlObjeto.getHtmlText());
+			vis.setVisApresentacao(htmlApresentacao.getHtmlText());
+			vis.setVisRelato(htmlRelato.getHtmlText());
+			vis.setVisRecomendacoes(htmlRecomendacao.getHtmlText());
 			
 			
 			vis.setVisEndCodigoFK(eGeralVis);
@@ -320,6 +392,14 @@ public class TabVistoriaController implements Initializable{
 			listarVistorias(strPesquisa);
 			selecionarVistoria();
 			
+			//-- Alerta de interferência editada --//
+			Alert vSalva = new Alert (Alert.AlertType.CONFIRMATION);
+			vSalva.setTitle("Parabéns!");
+			vSalva.setContentText("vistoria salva com sucesso!");
+			vSalva.setHeaderText(null);
+			vSalva.show();
+			
+			
 			//-- número da vistoria para a tabela atos --//
 			System.out.println("código da vistoria salva " + vis.getVisCodigo());
 			visGeral = vis;
@@ -330,14 +410,125 @@ public class TabVistoriaController implements Initializable{
 	
 	public void btnEditarHab (ActionEvent event) {
 		
+		if (tfAto.isDisable()) {
+			
+			tfAto.setDisable(false);
+			tfAtoSEI.setDisable(false);
+			dpDataFiscalizacao.setDisable(false);
+			dpDataCriacaoAto.setDisable(false);
+			
+			htmlObjeto.setDisable(false);
+			htmlApresentacao.setDisable(false);
+			htmlRelato.setDisable(false);
+			htmlRecomendacao.setDisable(false);
+			
+		} else {
+		
+			try {
+			
+			VistoriaTabela visTab = tvVistoria.getSelectionModel().getSelectedItem();
+			
+			Vistoria vis = new Vistoria(visTab);
+			
+				//-- capturar endereço relacionado --//
+				vis.setVisEndCodigoFK(eGeralVis);
+			
+				//-- capturar tela --//
+				vis.setVisIdentificacao(tfAto.getText());
+				vis.setVisSEI(tfAtoSEI.getText());
+				
+				vis.setVisDataFiscalizacao(formatter.format(dpDataFiscalizacao.getValue()));  // está dando erro temporal nullpoint
+				vis.setVisDataCriacao(formatter.format(dpDataCriacaoAto.getValue()));
+				
+				vis.setVisInfracoes(strInfracoes);
+				vis.setVisPenalidades(strPenalidades);
+				vis.setVisAgravantes(strAgravantes);
+				vis.setVisAtenuantes(strAtenuantes);
+				
+				vis.setVisObjeto(htmlObjeto.getHtmlText());
+				vis.setVisApresentacao(htmlApresentacao.getHtmlText());
+				vis.setVisRelato(htmlRelato.getHtmlText());
+				vis.setVisRecomendacoes(htmlRecomendacao.getHtmlText());
+				
+						VistoriaDao visDao = new VistoriaDao();
+						
+						visDao.mergeVistoria(vis);
+						
+
+						listarVistorias(strPesquisa);
+						selecionarVistoria();
+						modularBotoes();
+						
+						//-- Alerta de interferência editada --//
+						Alert vMerge = new Alert (Alert.AlertType.CONFIRMATION);
+						vMerge.setTitle("Parabéns!");
+						vMerge.setContentText("vistoria editada!");
+						vMerge.setHeaderText(null);
+						vMerge.show();
+						
+						visGeral = vis;
+						main.pegarVistoria(vis);
+			
+			
+					} catch (Exception e) {
+						
+						System.out.println("Erro ao editar: " + e);
+						
+						//-- Alerta de interferência editada --//
+						Alert vMerge = new Alert (Alert.AlertType.ERROR);
+						vMerge.setTitle("Atenção!");
+						vMerge.setContentText("erro ao editar vistoria!");
+						vMerge.setHeaderText(null);
+						vMerge.show();
+						
+					}
+			
+			
+			
+		}
+		
 	}
 
 	public void btnExcluirHab (ActionEvent event) {
+		
+		try {
+		
+			VistoriaTabela visTab = tvVistoria.getSelectionModel().getSelectedItem();
+			
+			VistoriaDao visDao = new VistoriaDao();
+			
+			visDao.removerVistoria(visTab.getVisCodigo());
+			
+			listarVistorias(strPesquisa);
+			selecionarVistoria();
+			modularBotoes();
+			
+			//-- Alerta de interferência editada --//
+			Alert vRemover = new Alert (Alert.AlertType.CONFIRMATION);
+			vRemover.setTitle("Parabéns!");
+			vRemover.setContentText("vistoria excluída!");
+			vRemover.setHeaderText(null);
+			vRemover.show();
+		
+				} catch (Exception e) {
+					
+					System.out.println("Erro ao editar: " + e);
+					
+					//-- Alerta de interferência editada --//
+					Alert vRemover = new Alert (Alert.AlertType.ERROR);
+					vRemover.setTitle("Atenção!");
+					vRemover.setContentText("erro ao excluir vistoria!");
+					vRemover.setHeaderText(null);
+					vRemover.show();
+				}
+	
+		
 	
 	}
 	
 	public void btnCancelarHab (ActionEvent event) {
 		
+		modularBotoes();
 	}
 	
 	public void btnPesquisarHab (ActionEvent event) {
@@ -360,11 +551,237 @@ public class TabVistoriaController implements Initializable{
 	public void btnPesqRelHab (ActionEvent event) {
 	
 	}
-
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	
+	
+	public void btnRelatorioHab (ActionEvent event) {
+	
 		
+		File file = new File("../FiscalizacaoSRH/src/main/resources/html/relatoriovistoria.html");
+		
+		Document docHtml = null;
+		
+		try {
+			docHtml = Jsoup.parse(file, "UTF-8");  // retirei o  .clone()
+		} catch (IOException e1) {
+			System.out.println("Erro na leitura do documento e Jsoup!!!");
+			e1.printStackTrace();
+		}
+	
+		
+		//-- vistoria --//
+		docHtml.select("nRela").prepend(visGeral.getVisIdentificacao());
+		docHtml.select("nRelSEI").prepend(visGeral.getVisSEI());
+		
+		if (eGeralVis.getListUsuarios().get(0).getUsNome() != null) { // se usuário nulo 0 da lista nulo, não  há usuário cadastrado...
+			
+			//-- endereço --//
+			docHtml.select("nomeUs").prepend(eGeralVis.getListUsuarios().get(0).getUsNome());
+			docHtml.select("cpfUs").prepend(eGeralVis.getListUsuarios().get(0).getUsCPFCNPJ());
+			docHtml.select("endUs").prepend(eGeralVis.getListUsuarios().get(0).getUsDescricaoEnd()); 
+			
+			if (eGeralVis.getListUsuarios().get(0).getUsRA() != null) { //se o combox diferente de null, não acontece o mesmo no textfield
+				docHtml.select("raUs").prepend(eGeralVis.getListUsuarios().get(0).getUsRA());
+			}
+			
+			docHtml.select("cepUs").prepend(eGeralVis.getListUsuarios().get(0).getUsCEP());
+			docHtml.select("cidUs").prepend(eGeralVis.getListUsuarios().get(0).getUsCidade());
+			docHtml.select("ufUs").prepend(eGeralVis.getListUsuarios().get(0).getUsEstado());
+			docHtml.select("telUs").prepend(eGeralVis.getListUsuarios().get(0).getUsTelefone());
+			docHtml.select("celUs").prepend(eGeralVis.getListUsuarios().get(0).getUsCelular());
+			docHtml.select("emailUs").prepend(eGeralVis.getListUsuarios().get(0).getUsEmail());
+			
+		}
+		
+		//-- latitude e longitude do endereço --//
+		docHtml.select("latEnd").prepend(eGeralVis.getLat_Endereco().toString());
+		docHtml.select("lngEnd").prepend(eGeralVis.getLon_Endereco().toString());
+		 
+		//-- objecto, apresentação, relato e recomendações --//
+		docHtml.select("objVis").prepend(visGeral.getVisObjeto());
+		docHtml.select("apreVis").prepend(visGeral.getVisApresentacao());
+		docHtml.select("relVis").prepend(visGeral.getVisRelato());
+		docHtml.select("recVis").prepend(visGeral.getVisRecomendacoes());
+		
+		
+		String html = new String ();
+		
+		html = docHtml.toString();
+		
+		html = html.replace("\"", "'");
+		html = html.replace("\n", "");
+		
+		html =  "\"" + html + "\"";
+		
+		//-- webview do relatório --//
+		
+		WebView browser = new WebView();
+		WebEngine webEngine = browser.getEngine();
+		webEngine.loadContent(html);
+		
+		Scene scene = new Scene(browser);
+		
+		Stage stage = new Stage(StageStyle.UTILITY);
+		stage.setWidth(1250);
+		stage.setHeight(750);
+        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.setResizable(false);
+        
+        stage.show();
+        
+        System.out.println("objeto e html texto");
+        //System.out.println(htmlObjeto.getHtmlText());
+        
+        TabNavegadorController.html = html;
+		
+	}
+	
+	//-- INITIALIZE --//
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		
+		modularBotoes();
+		
+		dpDataFiscalizacao.setConverter(new StringConverter<LocalDate>() {
+			
+			@Override
+			public String toString(LocalDate t) {
+				if (t != null) {
+					return formatter.format(t);
+				}
+				return null;
+			}
+			
+			@Override
+			public LocalDate fromString(String string) {
+				if (string != null && !string.trim().isEmpty()) {
+					return LocalDate.parse(string, formatter);
+				}
+				return null;
+			}
+
+		});
+		
+		dpDataCriacaoAto.setConverter(new StringConverter<LocalDate>() {
+			
+			@Override
+			public String toString(LocalDate t) {
+				if (t != null) {
+					return formatter.format(t);
+				}
+				return null;
+			}
+			
+			@Override
+			public LocalDate fromString(String string) {
+				if (string != null && !string.trim().isEmpty()) {
+					return LocalDate.parse(string, formatter);
+				}
+				return null;
+			}
+
+		});
+		
+		dpDataFiscalizacao.setOnAction((ActionEvent event) -> {
+			
+
+			System.out.println("valor sem formatar " + dpDataFiscalizacao.getValue());
+			System.out.println("valor formatado " + formatter.format(dpDataFiscalizacao.getValue()));
+		}
+				
+				
+		);
+		
+		/*
+		Platform.runLater(new Runnable() {
+		    @Override
+		    public void run() {
+		        htmlObjeto = new HTMLEditor();
+		    }
+		});
+		
+		*/
+		
+		// -- inicitalizar o mapa -- //
+				Platform.runLater(() ->{
+				relatarHTML();  
+				
+				});
+		
+	}
+	
+ 
+	
+	public void relatarHTML () {
+	
+		htmlObjeto = new HTMLEditor();
+		
+			htmlObjeto.setPrefSize(800, 200);
+			
+			htmlObjeto.setOnKeyPressed(event -> {
+			    if (event.getCode() == KeyCode.SPACE  
+			            || event.getCode() == KeyCode.TAB ) {
+			        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+			        event.consume();
+			    }
+			});
+			
+			StackPane root = new StackPane();
+			root.getChildren().add(htmlObjeto);
+			paneObjeto.getChildren().add(htmlObjeto);
+	    
+	   
+		htmlApresentacao  = new HTMLEditor();
+		
+			htmlApresentacao.setPrefSize(800, 200);
+			
+			htmlApresentacao.setOnKeyPressed(event -> {
+			    if (event.getCode() == KeyCode.SPACE  
+			            || event.getCode() == KeyCode.TAB ) {
+			        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+			        event.consume();
+			    }
+			});
+			
+			StackPane rootAp = new StackPane();
+			rootAp.getChildren().add(htmlApresentacao);
+		    paneApresentacao.getChildren().add(htmlApresentacao);
+	    
+	    
+		htmlRelato  = new HTMLEditor();
+		
+			htmlRelato.setPrefSize(800, 773);
+			
+			htmlRelato.setOnKeyPressed(event -> {
+			    if (event.getCode() == KeyCode.SPACE  
+			            || event.getCode() == KeyCode.TAB ) {
+			        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+			        event.consume();
+			    }
+			});
+			
+			
+			StackPane rootRel = new StackPane();
+			rootRel.getChildren().add(htmlRelato);
+			paneRelato.getChildren().add(htmlRelato);
+			
+		    
+		htmlRecomendacao  = new HTMLEditor();
+		
+			htmlRecomendacao.setPrefSize(800, 200);
+			
+			htmlRecomendacao.setOnKeyPressed(event -> {
+			    if (event.getCode() == KeyCode.SPACE  
+			            || event.getCode() == KeyCode.TAB ) {
+			        // Consume Event before Bubbling Phase, -> otherwise Scrollpane scrolls
+			        event.consume();
+			    }
+			});
+			
+			StackPane rootReco = new StackPane();
+			rootReco.getChildren().add(htmlRecomendacao);
+			paneRecomendacao.getChildren().add(htmlRecomendacao);
+
 	}
 	
 	
@@ -397,23 +814,23 @@ public class TabVistoriaController implements Initializable{
 				
 			VistoriaTabela visTab = new VistoriaTabela(
 					
-					vis.getVisCodigo(),
-					vis.getVisEndCodigoFK(),
-					vis.getVisObjeto(),
-					vis.getVisApresentacao(),
-					vis.getVisRelato(),
-					vis.getVisRecomendacoes(),
-					vis.getVisInfracoes(),
-					vis.getAtoPenalidades(),
-					vis.getVisAtenuantes(),
-					vis.getVisAgravantes(),
-					vis.getVisIdentificacao(),
-					vis.getVisSEI(),
-					vis.getVisDataFiscalizacao(),
-					vis.getVisDataCriacao(),
-					vis.getVisListAtos()
-					
-					);
+				vis.getVisCodigo(),
+				vis.getVisEndCodigoFK(),
+				vis.getVisObjeto(),
+				vis.getVisApresentacao(),
+				vis.getVisRelato(),
+				vis.getVisRecomendacoes(),
+				vis.getVisInfracoes(),
+				vis.getVisPenalidades(),
+				vis.getVisAtenuantes(),
+				vis.getVisAgravantes(),
+				vis.getVisIdentificacao(),
+				vis.getVisSEI(),
+				vis.getVisDataFiscalizacao(),
+				vis.getVisDataCriacao(),
+				vis.getVisListAtos()
+				
+				);
 				
 				
 				oListVis.add(visTab);
@@ -430,6 +847,7 @@ public class TabVistoriaController implements Initializable{
 			
 	 	}
 	
+	
 	// método selecionar vistoria -- //
 	 	public void selecionarVistoria () {
 		
@@ -440,53 +858,268 @@ public class TabVistoriaController implements Initializable{
 				
 				if (visTab == null) {
 					
-					/*
-					tfEnd.setText("");
+					btnNovo.setDisable(true);
+					btnSalvar.setDisable(true);
 					
-					tfEndCep.setText("");
-					tfEndCid.setText("");
-					//tfEndUF.setText("");
-					tfEndLat.setText("");
-					tfEndLon.setText("");
-					
-					btnEndNovo.setDisable(true);
-					btnEndSalvar.setDisable(true);
-					btnEndEditar.setDisable(false);
-					btnEndExc.setDisable(false);
-					btnEndCan.setDisable(false);
-					*/
-					System.out.println("valor null - método selecionar vistoria");
+					btnEditar.setDisable(false);
+					btnExcluir.setDisable(false);
+					btnCancelar.setDisable(false);
 					
 				} else {
 
 					tfAto.setText(visTab.getVisIdentificacao());
 					tfAtoSEI.setText(visTab.getVisSei());
 					
-					/*
-					// -- preencher os campos -- //
-					tfEnd.setText(endTab.getDesc_Endereco());
-					cbEndRA.setValue(endTab.getRA_Endereco());  //tfEndRA.setText(endTab.getRA_Endereco());
-					tfEndCep.setText(endTab.getCEP_Endereco());
-					tfEndCid.setText(endTab.getCid_Endereco());
-					cbEndUF.setValue(endTab.getUF_Endereco());  //tfEndUF.setText(endTab.getUF_Endereco());
-					tfEndLat.setText(endTab.getLat_Endereco().toString());
-					tfEndLon.setText(endTab.getLon_Endereco().toString());
+					System.out.println("Veja a data da fiscalização " + LocalDate.parse(visTab.getVisDataFiscalizacao(), formatter));
 					
-					// -- habilitar e desabilitar botões -- //
-					btnEndNovo.setDisable(true);
-					btnEndSalvar.setDisable(true);
-					btnEndEditar.setDisable(false);
-					btnEndExc.setDisable(false);
-					btnEndCan.setDisable(false);
 					
-					Endereco eGeral = new Endereco(endTab);
-				
-					main.pegarEnd(eGeral);
-					*/
+					dpDataFiscalizacao.setValue(LocalDate.parse(visTab.getVisDataFiscalizacao(), formatter));
+					dpDataCriacaoAto.setValue(LocalDate.parse(visTab.getVisDataCriacao(), formatter));
+					
+					//-- está dando erro na  hora de editar deste  jeito ---//
+					//dpDataFiscalizacao.getEditor().setText(visTab.getVisDataFiscalizacao());
+					//dpDataCriacaoAto.getEditor().setText(visTab.getVisDataCriacao());
+					
+					modularCheckBox ();
+					
+					String infr =  visTab.getVisInfracoes();
+					String pena = visTab.getVisPenalidades();
+					String agra = visTab.getVisAgravantes();
+					String aten = visTab.getVisAtenuantes();
+					
+					
+					
+					//-- infrações --//
+					if (infr != null) {
+						
+						String infrArray [] = infr.split("");
+						
+						System.out.println(infr);
+						
+						
+						for (int i = 0; i<infrArray.length; i++) {
+							if (infrArray[i].equals("1") ) {
+								checkInfra1.setSelected(true);
+							}
+							if (infrArray[i].equals("2") ) {
+								checkInfra2.setSelected(true);
+							}
+							if (infrArray[i].equals("3")  ) {
+								checkInfra3.setSelected(true);
+							}
+							if (infrArray[i].equals("4") ) {
+								checkInfra4.setSelected(true);
+							}
+							if (infrArray[i].equals("5")  ) {
+								checkInfra5.setSelected(true);
+							}
+							if (infrArray[i].equals("6") ) {
+								checkInfra6.setSelected(true);
+							}
+							if (infrArray[i].equals("7")  ) {
+								checkInfra7.setSelected(true);
+							}
+							
+							System.out.println(i + " veja as infrações selecionadas " + infrArray[i]);
+							
+						}}
+					
+
+									//-- penalidades --//
+									if (pena != null) {
+										
+										String penaArray [] = infr.split("");
+										
+										System.out.println(infr);
+										
+										
+										for (int i = 0; i<penaArray.length; i++) {
+											if (penaArray[i].equals("1") ) {
+												checkPena1.setSelected(true);
+											}
+											if (penaArray[i].equals("2") ) {
+												checkPena2.setSelected(true);
+											}
+											if (penaArray[i].equals("3")  ) {
+												checkPena3.setSelected(true);
+											}
+											if (penaArray[i].equals("4") ) {
+												checkPena4.setSelected(true);
+											}
+											if (penaArray[i].equals("5")  ) {
+												checkPena5.setSelected(true);
+											}
+											if (penaArray[i].equals("6") ) {
+												checkPena6.setSelected(true);
+											}
+											if (penaArray[i].equals("7")  ) {
+												checkPena7.setSelected(true);
+											}
+											
+											System.out.println(i + " veja as penalidades selecionadas" + penaArray[i]);
+											
+										}}
+									
+					//-- agravantes --//
+					if (agra != null) {
+						
+						String agraArray [] = infr.split("");
+						
+						System.out.println(agra);
+						
+						
+						for (int i = 0; i<agraArray.length; i++) {
+						
+							if (agraArray[i].equals("1") ) {
+								checkAgra1.setSelected(true);
+							}
+							if (agraArray[i].equals("2") ) {
+								checkAgra2.setSelected(true);
+							}
+							if (agraArray[i].equals("3")  ) {
+								checkAgra3.setSelected(true);
+							}
+							if (agraArray[i].equals("4") ) {
+								checkAgra4.setSelected(true);
+							}
+							if (agraArray[i].equals("5")  ) {
+								checkAgra5.setSelected(true);
+							}
+							if (agraArray[i].equals("6") ) {
+								checkAgra6.setSelected(true);
+							}
+							if (agraArray[i].equals("7")  ) {
+								checkAgra7.setSelected(true);
+							}
+							
+							if (agraArray[i].equals("8")  ) {
+								checkAgra8.setSelected(true);
+							}
+							
+							if (agraArray[i].equals("9")  ) {
+								checkAgra9.setSelected(true);
+							}
+							
+							System.out.println(i + " veja os agravantes selecionadas" + agraArray[i]);
+							
+						}}
+							
+									//-- atenuantes --//
+									if (aten != null) {
+										
+										String atenArray [] = infr.split("");
+										
+										System.out.println(aten);
+										
+										
+										for (int i = 0; i<atenArray.length; i++) {
+										
+											if (atenArray[i].equals("1") ) {
+												checkAten1.setSelected(true);
+											}
+											if (atenArray[i].equals("2") ) {
+												checkAten2.setSelected(true);
+											}
+											if (atenArray[i].equals("3")  ) {
+												checkAten3.setSelected(true);
+											}
+											if (atenArray[i].equals("4") ) {
+												checkAten4.setSelected(true);
+											}
+											if (atenArray[i].equals("5")  ) {
+												checkAten5.setSelected(true);
+											}
+											if (atenArray[i].equals("6") ) {
+												checkAten6.setSelected(true);
+											}
+											if (atenArray[i].equals("7")  ) {
+												checkAten7.setSelected(true);
+											}
+											
+										
+											System.out.println(i + " veja os atenuantes selecionadas" + atenArray[i]);
+											
+										}}
+					
+					
+					htmlObjeto.setHtmlText(visTab.getVisObjeto());
+					htmlApresentacao.setHtmlText(visTab.getVisApresentacao());
+					htmlRelato.setHtmlText(visTab.getVisRelato());
+					htmlRecomendacao.setHtmlText(visTab.getVisRecomendacoes());
+					
+					
+					//-- pegar a vistoria selecionada --//
+					Vistoria visG = new Vistoria(visTab);
+					visGeral = visG;
+					main.pegarVistoria(visGeral);
+					
+					//-- mudar o endereço de acordo com a seleção --//
+					eGeralVis = visTab.getVisEndCodigoFK();
+					lblVisEnd.setText(eGeralVis.getDesc_Endereco() + " |  RA: "  + eGeralVis.getRA_Endereco() );
+					
+					btnNovo.setDisable(true);
+					btnSalvar.setDisable(true);
+					btnEditar.setDisable(false);
+					btnExcluir.setDisable(false);
+					btnCancelar.setDisable(false);
+					
 					
 				}
 				}
 			});
 		}
-
+	 	
+	 public void modularBotoes () {
+		 
+		 tfAto.setDisable(true);
+		 tfAtoSEI.setDisable(true);
+		 dpDataFiscalizacao.setDisable(true);
+		 dpDataCriacaoAto.setDisable(true);
+		 
+		 btnSalvar.setDisable(true);
+		 btnEditar.setDisable(true);
+		 btnExcluir.setDisable(true);
+		 
+		 btnNovo.setDisable(false);
+	 }
+	 
+	 public void modularCheckBox () {
+		 
+		 checkInfra1.setSelected(false);
+		 checkInfra2.setSelected(false);
+		 checkInfra3.setSelected(false);
+		 checkInfra4.setSelected(false);
+		 checkInfra5.setSelected(false);
+		 checkInfra6.setSelected(false);
+		 checkInfra7.setSelected(false);
+		 
+		 checkPena1.setSelected(false);
+		 checkPena2.setSelected(false);
+		 checkPena3.setSelected(false);
+		 checkPena4.setSelected(false);
+		 checkPena5.setSelected(false);
+		 checkPena6.setSelected(false);
+		 checkPena7.setSelected(false);
+		 
+		 checkAten1.setSelected(false);
+		 checkAten2.setSelected(false);
+		 checkAten3.setSelected(false);
+		 checkAten4.setSelected(false);
+		 checkAten5.setSelected(false);
+		 checkAten6.setSelected(false);
+		 checkAten7.setSelected(false);
+		 
+		 
+		 checkAgra1.setSelected(false);
+		 checkAgra2.setSelected(false);
+		 checkAgra3.setSelected(false);
+		 checkAgra4.setSelected(false);
+		 checkAgra5.setSelected(false);
+		 checkAgra6.setSelected(false);
+		 checkAgra7.setSelected(false);
+		 checkAgra8.setSelected(false);
+		 checkAgra9.setSelected(false);
+	 }
+	 
+	
 }

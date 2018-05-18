@@ -1,16 +1,11 @@
 package controllers;
 
 import java.awt.List;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.swing.text.TableView;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -51,7 +46,7 @@ public class TabNavegadorController implements Initializable{
 	//-- Array de Strings - Documentos Capturados --//
 	String[] docsSei; // = new String [contDocSei];
 	
-	String html;
+	static String html;
 	
 	// array list para a captura de dados dos documentos --//
 	ArrayList<String> docsList = new ArrayList<String>();
@@ -74,9 +69,7 @@ public class TabNavegadorController implements Initializable{
 	
 	WebView wv1;
 	
-	
 	// table view de documentos capturados do sei
-	
 	ObservableList<String []> numDosObservable;
 	
 	TableView tv;
@@ -241,6 +234,8 @@ public class TabNavegadorController implements Initializable{
 					btnIframe.setOnAction(new EventHandler<ActionEvent>() {
 			            @Override public void handle(ActionEvent e) {
 			            	
+			            	/*
+			            	
 			            	File file = new File("../FiscalizacaoSRH/src/main/resources/html/autodeinfracao.html");
 			    			
 			        		Document docHtml = null;
@@ -262,10 +257,13 @@ public class TabNavegadorController implements Initializable{
 			        		
 			        		html =  "\"" + html + "\"";
 			        		
+			        		*/
+			            	
+			        			//-- imprimir o relatório ou tn no editor do SEI --//
 								wv2.getEngine().executeScript(
-				            			"var x = document.getElementsByTagName('iframe')[2];"
+				            			"var x = document.getElementsByTagName('iframe')[1];"
 				            			+ "var y = x.contentDocument;" 
-										+ "y.body.innerHTML = " +html+ ";"
+										+ "y.body.innerHTML = " + html + ";"
 				            			);
 								
 			            }

@@ -73,7 +73,7 @@ public class VistoriaTabela {
 			this.visIdentificacao = new SimpleStringProperty(visIdentificacao);
 			this.visSEI = new SimpleStringProperty(visSEI);
 			this.visDataCriacao = new SimpleStringProperty(visDataCriacao);
-			this.visDataFiscalizacao = new SimpleStringProperty(visDataFiscalizacao);
+			this.visDataFiscalizacao = new SimpleStringProperty (visDataFiscalizacao);
 			
 			this.visListAtos = new SimpleListProperty<Ato>();
 	}

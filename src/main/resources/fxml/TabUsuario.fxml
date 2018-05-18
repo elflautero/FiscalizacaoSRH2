@@ -24,7 +24,7 @@
                      </font>
                   </Label>
                   <Button fx:id="btnBucarEnd" layoutX="944.0" layoutY="14.0" mnemonicParsing="false" text="Buscar" />
-                  <Pane layoutX="101.0" layoutY="55.0" prefHeight="157.0" prefWidth="890.0">
+                  <Pane layoutX="142.0" layoutY="55.0" prefHeight="157.0" prefWidth="857.0">
                      <children>
                         <ChoiceBox fx:id="cbTipoPessoa" layoutX="8.0" layoutY="21.0" prefHeight="25.0" prefWidth="106.0" />
                         <Label layoutX="9.0" prefHeight="18.0" prefWidth="42.0" text="Tipo: " />
@@ -56,7 +56,7 @@
                         
                            </children>
                   </Pane>
-                  <Pane layoutX="125.0" layoutY="212.0" prefHeight="47.0" prefWidth="819.0">
+                  <Pane layoutX="161.0" layoutY="212.0" prefHeight="47.0" prefWidth="819.0">
                      <children>
                         <Button fx:id="btnUsNovo" layoutX="8.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnUsNovoHab" prefHeight="22.0" prefWidth="76.0" text="Novo" />
                         <Button fx:id="btnUsSalvar" layoutX="93.0" layoutY="11.0" mnemonicParsing="false" onAction="#btnUsSalvarHab" prefHeight="22.0" prefWidth="76.0" text="Salvar" />
@@ -67,7 +67,7 @@
                         <TextField fx:id="tfUsPesquisar" layoutX="426.0" layoutY="11.0" prefHeight="23.0" prefWidth="295.0" />
                      </children>
                   </Pane>
-                  <TableView fx:id="tvListaUs" layoutX="95.0" layoutY="207.0" prefHeight="123.0" prefWidth="890.0">
+                  <TableView fx:id="tvListaUs" layoutX="125.0" layoutY="272.0" prefHeight="123.0" prefWidth="890.0">
                      <columns>
                         <TableColumn fx:id="tcUsNome" prefWidth="363.0" text="Nome" />
                         <TableColumn fx:id="tcUsCPFCNPJ" minWidth="0.0" prefWidth="250.0" text="CPF/CNPJ" />

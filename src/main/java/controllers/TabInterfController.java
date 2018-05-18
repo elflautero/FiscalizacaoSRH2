@@ -228,6 +228,7 @@ public class TabInterfController implements Initializable {
 				
 				btnIntNovo.setDisable(true);
 				btnIntSalvar.setDisable(true);
+				
 				btnIntEdit.setDisable(false);
 				btnIntExc.setDisable(false);
 				btnIntCan.setDisable(false);
@@ -823,6 +824,7 @@ public class TabInterfController implements Initializable {
 				
 				{
 					try {
+						System.out.println("antes de chamr o método abrir tabs no initialize, valor da newString: " + newString);
 						abrirTabs(newString); 
 					} catch (IOException e) {
 						System.out.println("erro na chamada do método abrirTabSuperficial: " + e);
@@ -935,18 +937,22 @@ public class TabInterfController implements Initializable {
 		
 		}
 		
+		/*
 		if (newString == null) {
 			
 			paneTipoInterferencia.getChildren().clear();
 			
 			System.out.println("valor null");  // MELHORAR, ESTÁ DANDO ERRO NULL POINT  EXCEPTIONS
 		}
+		*/
+		
 		
 		if (newString.equals("Caminhão Pipa") 					|| 
 				newString.equals("Lançamento de Águas Pluviais")	|| 
 					newString.equals("Lançamento de Efluentes")			|| 
 						newString.equals("Barragem")						||
-							newString.equals("Outros")	)	
+							newString.equals("Outros")					||
+								newString.equals(null) 	)	// or null para não dar null  point ...
 		{
 			paneTipoInterferencia.getChildren().clear();
 		}

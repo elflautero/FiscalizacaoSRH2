@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import tabela.VistoriaTabela;
+
 @Entity
 public class Vistoria implements Serializable{
 
@@ -48,7 +50,7 @@ public class Vistoria implements Serializable{
 	private String visInfracoes;
 
 	@Column (name="vis_penalidades", columnDefinition="varchar(20)") // vai ficar assim no  banco, incisos: 1,2,3,4,5,6,7,8,9
-	private String atoPenalidades;
+	private String visPenalidades;
 	
 	@Column (name="vis_atenuantes", columnDefinition="varchar(20)")
 	private String visAtenuantes;
@@ -56,17 +58,18 @@ public class Vistoria implements Serializable{
 	@Column (name="vis_agravantes", columnDefinition="varchar(20)")
 	private String visAgravantes;
 	
-	@Column (name="vis_objecto", columnDefinition="varchar(350)")
+	@Column (name="vis_objecto", columnDefinition="varchar(600)")
 	private String visObjeto;
 	
-	@Column (name="vis_apresentacao", columnDefinition="varchar(350)")
+	@Column (name="vis_apresentacao", columnDefinition="varchar(600)")
 	private String visApresentacao;
 	
-	@Column (name="vis_relato", columnDefinition="varchar(6000)")
+	@Column (name="vis_relato", columnDefinition="varchar(10000)")
 	private String visRelato;
 	
 	@Column (name="vis_recomendacoes", columnDefinition="varchar(600)")
 	private String visRecomendacoes;
+	
 	
 	@Column (name="vis_Data_Fiscalizacao", columnDefinition="varchar(15)")
 	private String visDataFiscalizacao;
@@ -74,9 +77,34 @@ public class Vistoria implements Serializable{
 	@Column (name="vis_Data_Criacao", columnDefinition="varchar(15)")
 	private String visDataCriacao;
 	
+	//-- construtor padrão --//
+	public Vistoria (VistoriaTabela visTab) {
+		
+		this.visCodigo = visTab.getVisCodigo();
+		this.visEndCodigoFK = visTab.getVisEndCodigoFK();
+		this.visListAtos = visTab.getListAtos();
+		this.visIdentificacao = visTab.getVisIdentificacao();
+		this.visSEI = visTab.getVisSei();
+		this.visInfracoes = visTab.getVisInfracoes();
+		this.visPenalidades = visTab.getVisPenalidades();
+		this.visAtenuantes = visTab.getVisAtenuantes();
+		this.visAgravantes = visTab.getVisAgravantes();
+		this.visObjeto = visTab.getVisObjeto();
+		this.visApresentacao = visTab.getVisApresentacao();
+		this.visRelato = visTab.getVisRelato();
+		this.visRecomendacoes = visTab.getVisRecomendacoes();
+		this.visDataFiscalizacao = visTab.getVisDataFiscalizacao();
+		this.visDataCriacao = visTab.getVisDataCriacao();
+		
+	}
 	
+	//-- construtor vistoria tabela --//
+	
+	public Vistoria () {
+		
+	}
 	// getters e setters //
-
+	
 	public String getVisIdentificacao() {
 		return visIdentificacao;
 	}
@@ -142,12 +170,12 @@ public class Vistoria implements Serializable{
 		this.visInfracoes = visInfracoes;
 	}
 
-	public String getAtoPenalidades() {
-		return atoPenalidades;
+	public String getVisPenalidades() {
+		return visPenalidades;
 	}
 
-	public void setAtoPenalidades(String atoPenalidades) {
-		this.atoPenalidades = atoPenalidades;
+	public void setVisPenalidades(String atoPenalidades) {
+		this.visPenalidades = atoPenalidades;
 	}
 
 	public String getVisAtenuantes() {
