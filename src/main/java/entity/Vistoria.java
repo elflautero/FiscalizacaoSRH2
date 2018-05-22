@@ -64,7 +64,7 @@ public class Vistoria implements Serializable{
 	@Column (name="vis_apresentacao", columnDefinition="varchar(600)")
 	private String visApresentacao;
 	
-	@Column (name="vis_relato", columnDefinition="varchar(10000)")
+	@Column (name="vis_relato", columnDefinition="varchar(20000)")
 	private String visRelato;
 	
 	@Column (name="vis_recomendacoes", columnDefinition="varchar(600)")
