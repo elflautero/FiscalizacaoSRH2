@@ -187,6 +187,7 @@ public class TabVistoriaController implements Initializable{
 	int tipoAto = 2;
 	
 	public void checkInfraHab (ActionEvent event) {
+		
 		int count = 0;
 		String strCheckInfra = "";
 		
@@ -220,11 +221,10 @@ public class TabVistoriaController implements Initializable{
 			count ++;
 		}
 		
-		System.out.println("contador de cliques infração " + count);
-		strInfracoes = "";
 		strInfracoes = strCheckInfra;
+		
+		System.out.println("contador de cliques infração " + count);
 		System.out.println("infrações " + strInfracoes);
-		//System.out.println("infrações: " + strCheckInfra);
 		
 	}
 	
@@ -261,8 +261,9 @@ public class TabVistoriaController implements Initializable{
 			strCheckAten += "7";
 			count ++;
 		}
-		strPenalidades = "";
+		
 		strPenalidades = strCheckAten;
+		
 		System.out.println("contador de penalidades " + count);
 		System.out.println("penalidades " + strPenalidades);
 		
@@ -309,12 +310,11 @@ public class TabVistoriaController implements Initializable{
 			strCheckAten += "9";
 			count ++;
 		}
-		strAtenuantes = "";
 		
 		strAtenuantes = strCheckAten;
+		
 		System.out.println("contador de atenuantes " + count);
 		System.out.println("atenuantes selecionados " + strAtenuantes);
-		//System.out.println("atenunações: " + strCheckAten);
 		
 	}
 	
@@ -324,57 +324,58 @@ public class TabVistoriaController implements Initializable{
 		
 		if (checkAgra1.isSelected()) {
 			count ++;
-			strCheckAgra += "1";
+			strCheckAgra += "a";
 		}
 		if (checkAgra2.isSelected()) {
 			count ++;
-			strCheckAgra += "2";
+			strCheckAgra += "b";
 		}
 		if (checkAgra3.isSelected()) {
 			count ++;
-			strCheckAgra += "3";
+			strCheckAgra += "c";
 		}
 		if (checkAgra4.isSelected()) {
 			count ++;
-			strCheckAgra += "4";
+			strCheckAgra += "d";
 		}
 		if (checkAgra5.isSelected()) {
 			count ++;
-			strCheckAgra += "5";
+			strCheckAgra += "e";
 		
 		}
 		if (checkAgra6.isSelected()) {
-			strCheckAgra += "6";
+			strCheckAgra += "f";
 			count ++;
 		}
 		if (checkAgra7.isSelected()) {
-			strCheckAgra += "7";
+			strCheckAgra += "g";
 			count ++;
 		}
 		
 		if (checkAgra8.isSelected()) {
-			strCheckAgra += "8";
+			strCheckAgra += "h";
 			count ++;
 		}
 		
 		if (checkAgra9.isSelected()) {
-			strCheckAgra += "9";
+			strCheckAgra += "i";
 			count ++;
 		}
 		if (checkAgra10.isSelected()) {
-			strCheckAgra += "A";
+			strCheckAgra += "j";
 			count ++;
 		}
 		if (checkAgra11.isSelected()) {
-			strCheckAgra += "B";
+			strCheckAgra += "k";
 			count ++;
 		}
 		if (checkAgra12.isSelected()) {
-			strCheckAgra += "C";
+			strCheckAgra += "l";
 			count ++;
 		}
-		strAgravantes = "";
+		
 		strAgravantes = strCheckAgra;
+		
 		System.out.println("contador de agravantes " + count);
 		System.out.println("agravantes " + strAgravantes);
 		
@@ -422,9 +423,6 @@ public class TabVistoriaController implements Initializable{
 			vis.setVisDataFiscalizacao(formatter.format(dpDataFiscalizacao.getValue()));
 			vis.setVisDataCriacao(formatter.format(dpDataCriacaoAto.getValue()));
 			
-			System.out.println("ao salvar " + strInfracoes);
-			System.out.println("ao salvar " + strPenalidades);
-			
 			vis.setVisInfracoes(strInfracoes);
 			vis.setVisPenalidades(strPenalidades);
 			vis.setVisAgravantes(strAgravantes);
@@ -455,7 +453,7 @@ public class TabVistoriaController implements Initializable{
 			
 			
 			//-- número da vistoria para a tabela atos --//
-			System.out.println("código da vistoria salva " + vis.getVisCodigo());
+			
 			visGeral = vis;
 			main.pegarVistoria(vis);
 			
@@ -744,44 +742,42 @@ public class TabVistoriaController implements Initializable{
 
 		//tem que colocar um  if
 		for (int i = 0; i<agraArray.length; i++) {
-			if (agraArray[i].equals("1") ) {
+			if (agraArray[i].equals("a") ) {
 				docHtml.select("agraRel").append(agraIncisos[0]);
 			}
-			if (agraArray[i].equals("2") ) {
+			if (agraArray[i].equals("b") ) {
 				docHtml.select("agraRel").append(agraIncisos[1]);
 			}
-			if (agraArray[i].equals("3")  ) {
+			if (agraArray[i].equals("c")  ) {
 				docHtml.select("agraRel").append(agraIncisos[2]);
 			}
-			if (agraArray[i].equals("4") ) {
+			if (agraArray[i].equals("d") ) {
 				docHtml.select("agraRel").append(agraIncisos[3]);
 			}
-			if (agraArray[i].equals("5")  ) {
+			if (agraArray[i].equals("e")  ) {
 				docHtml.select("agraRel").append(agraIncisos[4]);
 			}
-			if (agraArray[i].equals("6") ) {
+			if (agraArray[i].equals("f") ) {
 				docHtml.select("agraRel").append(agraIncisos[5]);
 			}
-			if (agraArray[i].equals("7")  ) {
+			if (agraArray[i].equals("g")  ) {
 				docHtml.select("agraRel").append(agraIncisos[6]);
 			}
-			if (agraArray[i].equals("8")  ) {
+			if (agraArray[i].equals("h")  ) {
 				docHtml.select("agraRel").append(agraIncisos[7]);
 			}
-			if (agraArray[i].equals("9")  ) {
+			if (agraArray[i].equals("i")  ) {
 				docHtml.select("agraRel").append(agraIncisos[8]);
 			}
-			if (agraArray[i].equals("A")  ) {
+			if (agraArray[i].equals("j")  ) {
 				docHtml.select("agraRel").append(agraIncisos[9]);
 			}
-			if (agraArray[i].equals("B")  ) {
+			if (agraArray[i].equals("k")  ) {
 				docHtml.select("agraRel").append(agraIncisos[10]);
 			}
-			if (agraArray[i].equals("C")  ) {
+			if (agraArray[i].equals("l")  ) {
 				docHtml.select("agraRel").append(agraIncisos[11]);
 			}
-			
-			System.out.println("Tamanho agraArray "  + agraArray.length + " veja o agravante : " + agraArray[i]);
 					
 		}	// com if, mais um }
 		
@@ -811,9 +807,6 @@ public class TabVistoriaController implements Initializable{
         stage.setResizable(false);
         
         stage.show();
-        
-        System.out.println("objeto e html texto");
-        //System.out.println(htmlObjeto.getHtmlText());
         
         TabNavegadorController.html = html;
 		
@@ -876,9 +869,6 @@ public class TabVistoriaController implements Initializable{
 		
 		dpDataFiscalizacao.setOnAction((ActionEvent event) -> {
 			
-
-			System.out.println("valor sem formatar " + dpDataFiscalizacao.getValue());
-			System.out.println("valor formatado " + formatter.format(dpDataFiscalizacao.getValue()));
 		}
 				
 				
@@ -1029,8 +1019,7 @@ public class TabVistoriaController implements Initializable{
 				
 				
 				oListVis.add(visTab);
-				System.out.println("Lista de denúncias vinculadas ao endereço: " + visTab.getListAtos());
-	 					
+						
 		}
 			
 			
@@ -1068,16 +1057,9 @@ public class TabVistoriaController implements Initializable{
 					tfAto.setText(visTab.getVisIdentificacao());
 					tfAtoSEI.setText(visTab.getVisSei());
 					
-					System.out.println("Veja a data da fiscalização " + LocalDate.parse(visTab.getVisDataFiscalizacao(), formatter));
-					
-					
 					dpDataFiscalizacao.setValue(LocalDate.parse(visTab.getVisDataFiscalizacao(), formatter));
 					dpDataCriacaoAto.setValue(LocalDate.parse(visTab.getVisDataCriacao(), formatter));
-					
-					//-- está dando erro na  hora de editar deste  jeito ---//
-					//dpDataFiscalizacao.getEditor().setText(visTab.getVisDataFiscalizacao());
-					//dpDataCriacaoAto.getEditor().setText(visTab.getVisDataCriacao());
-					
+						
 					modularCheckBox ();
 					
 					String infr =  visTab.getVisInfracoes();
@@ -1092,34 +1074,45 @@ public class TabVistoriaController implements Initializable{
 						
 						infrArray = infr.split("");
 						
-						System.out.println("valor string infra  " + infr);
+						//System.out.println("valor string infra auto selecionadas  " + infr);
 						
 						
 						for (int i = 0; i<infrArray.length; i++) {
 							if (infrArray[i].equals("1") ) {
 								checkInfra1.setSelected(true);
+								
 							}
 							if (infrArray[i].equals("2") ) {
 								checkInfra2.setSelected(true);
+								
 							}
 							if (infrArray[i].equals("3")  ) {
 								checkInfra3.setSelected(true);
+								
+								
 							}
 							if (infrArray[i].equals("4") ) {
 								checkInfra4.setSelected(true);
+								
+								
 							}
 							if (infrArray[i].equals("5")  ) {
 								checkInfra5.setSelected(true);
+								
+								
 							}
 							if (infrArray[i].equals("6") ) {
 								checkInfra6.setSelected(true);
+								
+								
 							}
 							if (infrArray[i].equals("7")  ) {
 								checkInfra7.setSelected(true);
+								
 							}
 							
-							System.out.println(i + " veja as infrações array selecionadas " + infrArray[i]);
-							
+							//System.out.println(i + " veja as infrações array selecionadas " + infrArray[i]);
+							checkInfraHab(null);
 						}}
 					
 
@@ -1128,35 +1121,47 @@ public class TabVistoriaController implements Initializable{
 										
 										String penaArray [] = pena.split("");
 										
-										System.out.println("valor string pena: " + pena);
+										//System.out.println("valor string pena auto selecionadas: " + pena);
 										
 										
 										for (int i = 0; i<penaArray.length; i++) {
 											
 											if (penaArray[i].equals("1") ) {
 												checkPena1.setSelected(true);
+												
 											}
 											if (penaArray[i].equals("2") ) {
 												checkPena2.setSelected(true);
+												
 											}
 											if (penaArray[i].equals("3")  ) {
 												checkPena3.setSelected(true);
+												
 											}
 											if (penaArray[i].equals("4") ) {
 												checkPena4.setSelected(true);
+												checkPena4.selectedProperty().addListener(new ChangeListener<Boolean>() {
+													public void changed (ObservableValue <? extends Boolean> ov, Boolean old_val, Boolean new_val)
+													{
+														checkPenaHab(null);
+													}
+												});
 											}
 											if (penaArray[i].equals("5")  ) {
 												checkPena5.setSelected(true);
+												
 											}
 											if (penaArray[i].equals("6") ) {
 												checkPena6.setSelected(true);
+												
 											}
 											if (penaArray[i].equals("7")  ) {
 												checkPena7.setSelected(true);
+												
 											}
 											
-											System.out.println(i + " veja as penalidades array selecionadas" + penaArray[i]);
-											
+											//System.out.println(i + " veja as penalidades array selecionadas" + penaArray[i]);
+											checkPenaHab(null);
 										}}
 									
 							//-- atenuantes --//
@@ -1164,43 +1169,50 @@ public class TabVistoriaController implements Initializable{
 								
 								atenArray = aten.split("");
 								
-								System.out.println("valor string atenuantes " + aten);
-								System.out.println("tamanho da array atenuantes: " + atenArray);
-								
+								//System.out.println("valor string atenuantes auto selecionadas" + aten);
 								
 								for (int i = 0; i<atenArray.length; i++) {
 								
 									if (atenArray[i].equals("1") ) {
 										checkAten1.setSelected(true);
+										
 									}
 									if (atenArray[i].equals("2") ) {
 										checkAten2.setSelected(true);
+										
 									}
 									if (atenArray[i].equals("3")  ) {
 										checkAten3.setSelected(true);
+										
 									}
 									if (atenArray[i].equals("4") ) {
 										checkAten4.setSelected(true);
+										
 									}
 									if (atenArray[i].equals("5")  ) {
 										checkAten5.setSelected(true);
+										
 									}
 									if (atenArray[i].equals("6") ) {
 										checkAten6.setSelected(true);
+										
 									}
 									if (atenArray[i].equals("7")  ) {
 										checkAten7.setSelected(true);
+										
 									}
 									if (atenArray[i].equals("8")  ) {
 										checkAten8.setSelected(true);
+										
 									}
 									if (atenArray[i].equals("9")  ) {
 										checkAten9.setSelected(true);
+										
 									}
 									
 								
-									System.out.println(i + " veja os atenuantes array selecionadas" + atenArray[i]);
-									
+									//System.out.println(i + " veja os atenuantes array selecionadas" + atenArray[i]);
+									checkAtenHab(null);
 								}}
 							
 											//-- agravantes --//
@@ -1208,56 +1220,67 @@ public class TabVistoriaController implements Initializable{
 												
 												agraArray = agra.split("");
 												
-												System.out.println("valor string agravantes " + agra);
-												
-												System.out.println("tamanho  da agraArray: " + agraArray.length);
-												
+												//System.out.println("valor string agravantes auto selecionadas " + agra);
 												
 												for (int i = 0; i<agraArray.length; i++) {
 												
-													if (agraArray[i].equals("1") ) {
+													if (agraArray[i].equals("a") ) {
 														checkAgra1.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("2") ) {
+													if (agraArray[i].equals("b") ) {
 														checkAgra2.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("3")  ) {
+													if (agraArray[i].equals("c")  ) {
 														checkAgra3.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("4") ) {
+													if (agraArray[i].equals("d") ) {
 														checkAgra4.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("5")  ) {
+													if (agraArray[i].equals("e")  ) {
 														checkAgra5.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("6") ) {
+													
+													if (agraArray[i].equals("f") ) {
 														checkAgra6.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("7")  ) {
+													if (agraArray[i].equals("g")  ) {
 														checkAgra7.setSelected(true);
+														
 													}
 													
-													if (agraArray[i].equals("8")  ) {
+													if (agraArray[i].equals("h")  ) {
 														checkAgra8.setSelected(true);
+														
 													}
 													
-													if (agraArray[i].equals("9")  ) {
+													if (agraArray[i].equals("i")  ) {
 														checkAgra9.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("A")  ) {
+													if (agraArray[i].equals("j")  ) {
 														checkAgra10.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("B")  ) {
+													if (agraArray[i].equals("k")  ) {
 														checkAgra11.setSelected(true);
+														
 													}
-													if (agraArray[i].equals("C")  ) {
+													if (agraArray[i].equals("l")  ) {
 														checkAgra12.setSelected(true);
+														
 													}
 													
-													System.out.println(i + " veja os agravantes array selecionadas" + agraArray[i]);
-													
+													//System.out.println(i + " veja os agravantes array selecionadas" + agraArray[i]);
+													checkAgraHab(null);
 												}}
 							
+					
 					
 					htmlObjeto.setHtmlText(visTab.getVisObjeto());
 					htmlApresentacao.setHtmlText(visTab.getVisApresentacao());
@@ -1487,7 +1510,7 @@ public class TabVistoriaController implements Initializable{
 			
 		
 			infraIncisos [0] = "<p>I - derivar ou utilizar recursos hídricos para qualquer finalidade, sem a respectiva " + 
-					"outorga de direito de uso; </p>";
+					"outorga de direito de uso;</p>";
 			
 			
 			infraIncisos [1] = "<p>II - implantar ou iniciar a implantação de empreendimento que exija derivação ou " + 
@@ -1572,6 +1595,8 @@ public class TabVistoriaController implements Initializable{
 		 
 		 
 	 }
+	 
+	
 	 
 
 }
