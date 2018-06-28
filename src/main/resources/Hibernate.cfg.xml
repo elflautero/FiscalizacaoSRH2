@@ -15,8 +15,8 @@
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 		
 		<property name="connection.url">jdbc:mysql://br234.hostgator.com.br:3306/somde078_srh2</property>
-		<property name="connection.username">somde078_srh2</property>
-		<property name="connection.password">12345</property>
+		<property name="connection.username"></property>
+		<property name="connection.password"></property>
 		
 		<property name="hibernate.connection.pool_size">10</property>
 		
